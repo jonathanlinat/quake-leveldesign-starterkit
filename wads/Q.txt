@@ -1,0 +1,23 @@
+05/01/97
+
+
+Q.wad
+
+
+This is the wadfile I use.  It's clean, contains id, hipnotic, rogue
+and ctf4 textures, and is only 5 megs (as apposed to merging all these
+wads together, making 10 megs).  It took me a few hours, but I managed
+to clean out duplicates, duplicates with a different name and textures
+which are rarely used.  Bonuses are all the item textures (health packs
+et al), and even some id textures that were not in any of the original
+Quake wads (e.g. the yellow lights from American's Dm4.)  I decided to
+make this wad to eliminate the chances of using two identical textures
+with different names (which can significantlly raise the size of your
+bsp for nothing.)  And also because 5 megs is sweeter on an editor than
+10 (which would make editing slower), and because I felt all the *good*
+textures really only needed to be in *one* wad.  Hence, Q.wad.
+
+
+David Kelvin
+
+-= Levelboy =- 

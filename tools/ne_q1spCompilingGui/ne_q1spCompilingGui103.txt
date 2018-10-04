@@ -1,0 +1,29 @@
+ne_q1spCompilingGui v1.0.3
+
+For information on setting this up: http://shoresofnis.wordpress.com/2010/03/30/ne_q1spcompilinggui
+For more quake related stuff: http://necros.quaddicted.com
+
+Changelog:
+
+v1.0.3:
+-Automatically copies .lit file into output folder.
+-Automatically copies .pts file into output folder.
+
+v1.0.2:
+-Added Skip face removal support
+  Skip automatically runs after QBSP when you check the box on the main screen.
+-Added pointfile support.  Available in File->Pointfile (or Ctrl+P)
+  Copies the .pts file from the working folder back into your source folder so it can be accessed by your map editor.
+-Added pointfile filename extension renaming (for use with GTKRadiant).  Options in the Folder Setup dialog window.  Choose between .pts or .lin.
+-Added .bat extension to "Quake Engine" dialog box to allow the easy selection of batch files as well as executables.
+-Icon added.
+
+v1.0.1:
+-Added some error checking to recover in the case of corrupted config.ini.  It still requires you to restart the program though.
+-Added 'factory defaults' in the case of a deleted config.ini.  It still requires you to restart.
+-Checking 'Run Quake' or running quake manually will automatically apply +map mapname, you still need to enter -game mod in the arguments though.
+-Added 'About' information.
+-Changed main window to allow it to be minimized.
+
+v1.0
+-Released
