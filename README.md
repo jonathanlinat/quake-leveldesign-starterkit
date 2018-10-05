@@ -1,5 +1,7 @@
 # Quake Level Design Starter Kit
 
+![](https://image.ibb.co/cofyte/quakeleveldesignstarterkit_logo.png)
+
 This **Starter Kit** is mainly based on files / directory structure and set of tools recommended by [dumptruck_ds](https://twitter.com/david_spell).
 
 ## Features
@@ -33,3 +35,8 @@ Also, create a folder called `maps` into the `id1` folder. This is the folder us
 ## Usage
 
 [![Video](http://img.youtube.com/vi/gONePWocbqA/0.jpg)](http://www.youtube.com/watch?v=gONePWocbqA)
+
+## Credits
+
+[Image](https://i.imgur.com/p0E4SuR.png) used to create the Starter Kit illustration.
+
