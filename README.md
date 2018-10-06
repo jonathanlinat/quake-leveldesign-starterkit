@@ -12,7 +12,8 @@ It includes:
 * TrenchBroom 2.0.6 [[Link](http://kristianduske.com/trenchbroom/)]
 * ericw-tools 0.18.1 [[Link](https://ericwa.github.io/ericw-tools/)]
 * ne_q1spCompilingGui 1.0.3 [[Link](https://shoresofnis.wordpress.com/utilities/ne_q1spcompilinggui/)]
-* `id`, `hipnotic`, `rogue` and `ctf4` textures [[Link](https://www.quaddicted.com)]
+* Quake Tools 1.0.0 [[Link](https://joshua.itch.io/quake-tools/)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)]
+* `id`, `hipnotic`, `rogue` and `ctf4` textures [[Link](https://www.quaddicted.com/)]
 
 ## Prerequisites
 
