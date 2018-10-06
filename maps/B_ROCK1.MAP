@@ -1,0 +1,35 @@
+{
+{
+( 0 8 200 ) ( 0 0 200 ) ( 0 0 -8 ) ROCK1SID 0 0 90 -1 1
+( 32 16 200 ) ( 16 16 200 ) ( 16 16 -8 ) ROCK1SID 0 0 90 -1 1
+( 32 0 200 ) ( 32 8 200 ) ( 32 8 -8 ) ROCK1SID 0 0 90 -1 1
+( 16 0 200 ) ( 32 0 200 ) ( 32 0 -8 ) ROCK1SID 0 0 90 -1 1
+( 16 0 32 ) ( 16 8 32 ) ( 32 8 32 ) ROCKETTOP 0 0 0 1 1
+( 32 8 0 ) ( 16 8 0 ) ( 16 0 0 ) ROCKETTOP 0 0 0 1 1
+}
+"wad" "gfx/items.wad"
+"classname" "worldspawn"
+}
+{
+"light" "200"
+"origin" "40 56 56"
+"classname" "light"
+}
+{
+"light" "200"
+"origin" "-40 -40 -56"
+"classname" "light"
+}
+{
+"light" "200"
+"origin" "-40 40 8"
+"classname" "light"
+}
+{
+"origin" "40 -24 8"
+"classname" "light"
+}
+{
+"origin" "16 8 72"
+"classname" "light"
+}

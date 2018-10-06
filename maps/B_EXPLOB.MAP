@@ -1,0 +1,36 @@
+{
+{
+( 0 8 200 ) ( 0 0 200 ) ( 0 0 -8 ) +0_BOX_SIDE 0 0 0 1 1
+( 48 32 200 ) ( 32 32 200 ) ( 32 32 -8 ) +0_BOX_SIDE 0 0 0 1 1
+( 32 16 200 ) ( 32 24 200 ) ( 32 24 -8 ) +0_BOX_SIDE 0 0 0 1 1
+( 16 0 200 ) ( 32 0 200 ) ( 32 0 -8 ) +0_BOX_SIDE 0 0 0 1 1
+( 16 0 64 ) ( 16 8 64 ) ( 32 8 64 ) +0_BOX_TOP 0 0 0 1 1
+( 32 8 0 ) ( 16 8 0 ) ( 16 0 0 ) +0_BOX_TOP 0 0 0 1 1
+}
+"wad" "gfx/items.wad"
+"classname" "worldspawn"
+}
+{
+"light" "200"
+"origin" "56 72 56"
+"classname" "light"
+}
+{
+"light" "200"
+"origin" "-40 -40 -56"
+"classname" "light"
+}
+{
+"light" "200"
+"origin" "-40 72 8"
+"classname" "light"
+}
+{
+"origin" "64 -32 8"
+"classname" "light"
+}
+{
+"classname" "light"
+"origin" "8 16 136"
+"light" "200"
+}

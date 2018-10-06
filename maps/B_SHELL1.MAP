@@ -1,0 +1,31 @@
+{
+{
+( 0 16 200 ) ( 0 8 200 ) ( 0 8 -8 ) SHOT1SID 0 0 0 1 1
+( 16 32 200 ) ( 0 32 200 ) ( 0 32 -8 ) SHOT1SID 0 0 0 1 1
+( 32 0 200 ) ( 32 8 200 ) ( 32 8 -8 ) SHOT1SID 0 0 0 1 1
+( 0 0 200 ) ( 16 0 200 ) ( 16 0 -8 ) SHOT1SID 0 0 0 1 1
+( 0 8 24 ) ( 0 16 24 ) ( 16 16 24 ) SHOT1TOP 0 0 0 1 1
+( 16 16 0 ) ( 0 16 0 ) ( 0 8 0 ) ROCKETTOP 0 0 0 1 1
+}
+"classname" "worldspawn"
+"wad" "gfx/items.wad"
+}
+{
+"classname" "light"
+"origin" "48 56 56"
+"light" "200"
+}
+{
+"classname" "light"
+"origin" "-24 -16 -56"
+"light" "200"
+}
+{
+"classname" "light"
+"origin" "-24 56 8"
+"light" "200"
+}
+{
+"classname" "light"
+"origin" "48 -16 8"
+}

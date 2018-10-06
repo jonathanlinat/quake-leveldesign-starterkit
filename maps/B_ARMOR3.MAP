@@ -1,0 +1,30 @@
+{
+{
+( 0 32 80 ) ( 0 0 80 ) ( 0 0 0 ) ARMOR3 0 0 0 1 1
+( 32 32 80 ) ( 0 32 80 ) ( 0 32 0 ) ARMOR3 0 0 0 1 1
+( 32 0 80 ) ( 32 32 80 ) ( 32 32 0 ) ARMOR3 0 0 0 1 1
+( 0 0 80 ) ( 32 0 80 ) ( 32 0 0 ) ARMOR3 0 0 0 1 1
+( 0 0 32 ) ( 0 32 32 ) ( 32 32 32 ) ARMOR3 0 0 0 1 1
+( 32 32 0 ) ( 0 32 0 ) ( 0 0 0 ) ARMOR3 0 0 0 1 1
+}
+"wad" "/raid/quake/id1_/gfx/items.wad"
+"classname" "worldspawn"
+}
+{
+"origin" "40 40 56"
+"classname" "light"
+}
+{
+"origin" "-40 -40 -56"
+"classname" "light"
+}
+{
+"light" "200"
+"origin" "40 -40 0"
+"classname" "light"
+}
+{
+"light" "200"
+"origin" "-40 40 0"
+"classname" "light"
+}

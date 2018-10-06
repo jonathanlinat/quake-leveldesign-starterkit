@@ -1,0 +1,32 @@
+{
+{
+( 0 32 16 ) ( 0 0 16 ) ( 0 0 0 ) +0_MED25S 0 0 0 1 1
+( 32 32 16 ) ( 0 32 16 ) ( 0 32 0 ) +0_MED25S 0 0 0 1 1
+( 32 16 16 ) ( 32 48 16 ) ( 32 48 0 ) +0_MED25S 0 0 0 1 1
+( 0 0 16 ) ( 32 0 16 ) ( 32 0 0 ) +0_MED25S 0 0 0 1 1
+( 0 0 16 ) ( 0 32 16 ) ( 32 32 16 ) +0_MED25 0 0 0 1 1
+( 32 32 0 ) ( 0 32 0 ) ( 0 0 0 ) +0_MED25 0 0 0 1 1
+}
+"wad" "gfx/items.wad"
+"classname" "worldspawn"
+}
+{
+"classname" "light"
+"origin" "-24 -24 56"
+"light" "200"
+}
+{
+"classname" "light"
+"origin" "56 56 -40"
+"light" "200"
+}
+{
+"classname" "light"
+"origin" "-24 56 8"
+"light" "200"
+}
+{
+"classname" "light"
+"origin" "56 -24 8"
+"light" "200"
+}

@@ -1,0 +1,28 @@
+{
+{
+( 0 32 16 ) ( 0 0 16 ) ( 0 0 0 ) BACKPACK 0 0 0 1 1
+( 32 24 16 ) ( 0 24 16 ) ( 0 24 0 ) BACKPACK 0 0 0 1 1
+( 24 0 16 ) ( 24 32 16 ) ( 24 32 0 ) BACKPACK 0 0 0 1 1
+( 0 0 16 ) ( 32 0 16 ) ( 32 0 0 ) BACKPACK 0 0 0 1 1
+( 0 0 24 ) ( 0 32 24 ) ( 32 32 24 ) BACKPACK 0 0 0 1 1
+( 32 32 0 ) ( 0 32 0 ) ( 0 0 0 ) BACKPACK 0 0 0 1 1
+}
+"wad" "/raid/quake/id1_/gfx/items.wad"
+"classname" "worldspawn"
+}
+{
+"origin" "72 72 96"
+"classname" "light"
+}
+{
+"origin" "-40 -40 96"
+"classname" "light"
+}
+{
+"origin" "-40 72 -56"
+"classname" "light"
+}
+{
+"origin" "72 -40 -56"
+"classname" "light"
+}
