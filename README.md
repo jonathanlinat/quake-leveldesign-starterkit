@@ -12,13 +12,20 @@ It includes:
 * TrenchBroom 2.0.6 [[Link](http://kristianduske.com/trenchbroom)]
 * ericw-tools 0.18.1 [[Link](https://ericwa.github.io/ericw-tools)]
 * ne_q1spCompilingGui 1.0.3 [[Link](https://shoresofnis.wordpress.com/utilities/ne_q1spcompilinggui)]
+
+Extras:
+
 * Quake Tools 1.0.0 [[Link](https://joshua.itch.io/quake-tools)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)]
 * TexMex 3.4 [[Link](https://quakewiki.org/wiki/TexMex)]
 * Original Quake maps and textures [[Link](https://www.quaddicted.com)]
 
 ## Prerequisites
 
-You need [Git](https://git-scm.com/) and a legal copy of [Quake](https://en.wikipedia.org/wiki/Quake_(video_game)). You can buy one on [Steam](https://store.steampowered.com/app/2310) or [Good Old Games](https://www.gog.com/game/quake_the_offering).
+You need:
+
+* Git [[Link](https://git-scm.com/)]
+* A legal copy of Quake [[Steam](https://store.steampowered.com/app/2310)] [[Good Old Games](https://www.gog.com/game/quake_the_offering)]
+* Microsoft Visual C++ Redistributable for Visual Studio 2015 [[x86](https://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/vc_redist.x86.exe)] [[x64](https://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/vc_redist.x64.exe)]
 
 ## Installation
 
