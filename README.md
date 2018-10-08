@@ -18,6 +18,7 @@ Extras:
 * Quake Tools 1.0.0 [[Link](https://joshua.itch.io/quake-tools)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)]
 * TexMex 3.4 [[Link](https://quakewiki.org/wiki/TexMex)]
 * Original Quake maps and textures [[Link](https://www.quaddicted.com)]
+* Prototype textures [[Link](http://khreathor.xyz/site/prototype/)]
 
 ## Prerequisites
 
@@ -52,6 +53,8 @@ Last but not least, copy and paste into `id1` folder the original `pak0.pak` and
 ## Usage and Quickstart
 
 [![Video](http://img.youtube.com/vi/gONePWocbqA/0.jpg)](http://www.youtube.com/watch?v=gONePWocbqA)
+
+This video tutorial is part of this awesome series by [dumptruck_ds](https://twitter.com/david_spell). Please, [check it out](https://www.youtube.com/playlist?list=PLgDKRPte5Y0AZ_K_PZbWbgBAEt5xf74aE)!
 
 ## Credits
 
