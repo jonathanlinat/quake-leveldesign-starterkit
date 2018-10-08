@@ -25,6 +25,7 @@ You need:
 
 * Git [[Link](https://git-scm.com/)]
 * A legal copy of Quake [[Steam](https://store.steampowered.com/app/2310)] [[Good Old Games](https://www.gog.com/game/quake_the_offering)]
+* Microsoft Visual C++ Redistributable for Visual Studio 2013 [[x86](http://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x86.exe)] [[x64](http://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x64.exe)]
 * Microsoft Visual C++ Redistributable for Visual Studio 2015 [[x86](https://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/vc_redist.x86.exe)] [[x64](https://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/vc_redist.x64.exe)]
 
 ## Installation
