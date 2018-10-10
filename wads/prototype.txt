@@ -1,0 +1,25 @@
+============================================================
+Name:				Prototype WAD
+Date:				18th August 2017.
+File:             	prototype.zip
+Author:           	Aleksander "Khreathor" Marhall 
+Email:            	khreathor@khreathor.xyz
+Twitter:            https://twitter.com/khreathor
+URL:              	http://khreathor.xyz/site/prototype/
+Version:          	1.0
+
+============================================================
+
+COPYRIGHT NOTICES
+-----------------
+
+Feel free to use it with any Quake release.
+I'm fine if you use it with other games, but give me a credit.
+
+If you want to make HD texture versions based on this WAD,
+You have to pay me $10000 and invite me to piniata party.
+This is no joke...
+
+Have fun!
+
+============================================================
