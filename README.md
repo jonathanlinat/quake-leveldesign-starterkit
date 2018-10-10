@@ -8,17 +8,18 @@ This **Starter Kit** is mainly based on files / directory structure and set of t
 
 It includes:
 
-* Quakespasm 0.93.1 [[Link](http://www.quakespasm.sourceforge.net)]
-* TrenchBroom 2.0.6 [[Link](http://kristianduske.com/trenchbroom)]
-* ericw-tools 0.18.1 [[Link](https://ericwa.github.io/ericw-tools)]
-* ne_q1spCompilingGui 1.0.3 [[Link](https://shoresofnis.wordpress.com/utilities/ne_q1spcompilinggui)]
+* Quakespasm 0.93.1, Fitzgibbons & Journeymen [[Link](http://www.quakespasm.sourceforge.net)]
+* TrenchBroom 2.0.6, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
+* ericw-tools 0.18.1, Eric Wasylishen [[Link](https://ericwa.github.io/ericw-tools)]
+* ne_q1spCompilingGui 1.0.3, C. Jones [[Link](https://shoresofnis.wordpress.com/utilities/ne_q1spcompilinggui)]
 
 Extras:
 
-* Quake Tools 1.0.0 [[Link](https://joshua.itch.io/quake-tools)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)]
-* TexMex 3.4 [[Link](https://quakewiki.org/wiki/TexMex)]
-* Original Quake maps and textures [[Link](https://www.quaddicted.com)]
-* Prototype textures [[Link](http://khreathor.xyz/site/prototype/)]
+* Quake Tools 1.0.0, Joshua Skelton [[Link](https://joshua.itch.io/quake-tools)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)]
+* TexMex 3.4, Mike Jackman [[Link](https://quakewiki.org/wiki/TexMex)]
+* Original Quake maps, John Romero [[Link](https://rome.ro/news/2016/2/14/quake-map-sources-released)]
+* Original Quake textures [[Link](https://www.quaddicted.com)]
+* Prototype WAD textures 1.0, Aleksander "Khreathor" Marhall [[Link](http://khreathor.xyz/site/prototype/)]
 
 ## Prerequisites
 
