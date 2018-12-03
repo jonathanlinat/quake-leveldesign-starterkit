@@ -9,7 +9,7 @@ This **Starter Kit** is mainly based on files / directory structure and set of t
 It includes:
 
 * Quakespasm 0.93.1, Fitzgibbons & Journeymen [[Link](http://www.quakespasm.sourceforge.net)]
-* TrenchBroom 2.0.6, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
+* TrenchBroom 2.1.0, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
 * ericw-tools 0.18.1, Eric Wasylishen [[Link](https://ericwa.github.io/ericw-tools)]
 * ne_q1spCompilingGui 1.0.3, C. Jones [[Link](https://shoresofnis.wordpress.com/utilities/ne_q1spcompilinggui)]
 
@@ -27,8 +27,7 @@ You need:
 
 * Git [[Link](https://git-scm.com/)]
 * A legal copy of Quake [[Steam](https://store.steampowered.com/app/2310)] [[Good Old Games](https://www.gog.com/game/quake_the_offering)]
-* Microsoft Visual C++ Redistributable for Visual Studio 2013 [[x86](http://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x86.exe)] [[x64](http://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x64.exe)]
-* Microsoft Visual C++ Redistributable for Visual Studio 2015 [[x86](https://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/vc_redist.x86.exe)] [[x64](https://download.microsoft.com/download/9/3/F/93FCF1E7-E6A4-478B-96E7-D4B285925B00/vc_redist.x64.exe)]
+* Microsoft Visual C++ Redistributable for Visual Studio 2017 [[x86](https://download.microsoft.com/download/e/6/6/e66c5871-7afe-4640-a454-786eabe8aae8/vc_redist.x86.exe)] [[x64](https://download.microsoft.com/download/7/2/5/72572684-052f-4aa9-9170-9d40813a87be/vc_redist.x64.exe)]
 
 ## Installation
 

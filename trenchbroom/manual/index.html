@@ -1,23 +1,21 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta http-equiv="Content-Style-Type" content="text/css" />
-  <meta name="generator" content="pandoc" />
-  <meta name="author" content="Kristian Duske" />
-  <title>TrenchBroom Manual</title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="default.css" type="text/css" />
+<meta charset="UTF-8">
+<meta name="generator" content="pandoc">
+<meta name="author" content="Kristian Duske">
+<title>TrenchBroom Manual</title>
+<link rel="stylesheet" href="default.css">
 </head>
 <body>
-  <script src="shortcuts.js"></script>
-  <script src="shortcuts_helper.js"></script>
-<div id="TOC">
+<script src="shortcuts.js"></script>
+<script src="shortcuts_helper.js"></script>
+<section id="TOC">
 <div id="TOC_INNER">
-<div id="TOC_HEADER">
-<img src="icon.png" alt="TrenchBroom Icon" />
+<header id="TOC_HEADER">
+<img src="icon.png" alt="TrenchBroom Icon">
 <h2>Table of Contents</h2>
-</div>
+</header>
 <ul>
 <li><a href="#introduction">Introduction</a><ul>
 <li><a href="#features">Features</a></li>
@@ -29,6 +27,7 @@
 <li><a href="#main_window">Main Window</a></li>
 <li><a href="#camera_navigation">Camera Navigation</a></li>
 <li><a href="#navigating-the-2d-viewports">Navigating the 2D Viewports</a></li>
+<li><a href="#fov-and-zoom">FOV and Zoom</a></li>
 </ul></li>
 <li><a href="#selection">Selection</a><ul>
 <li><a href="#selecting-objects">Selecting Objects</a></li>
@@ -65,6 +64,8 @@
 <li><a href="#expression_language">Expression Language</a></li>
 <li><a href="#solving-problems">Solving Problems</a></li>
 <li><a href="#display-models-for-entities">Display Models for Entities</a></li>
+<li><a href="#point-files-and-portal-files">Point Files and Portal Files</a></li>
+<li><a href="#game-configuration-files">Game Configuration Files</a></li>
 </ul></li>
 <li><a href="#getting-involved">Getting Involved</a><ul>
 <li><a href="#suggesting-a-feature">Suggesting a Feature</a></li>
@@ -74,8 +75,8 @@
 <li><a href="#references_and_links">References and Links</a></li>
 </ul>
 </div>
-</div>
-<div id="CONTENT">
+</section>
+<main id="CONTENT">
 <h1 id="introduction">Introduction</h1>
 <p>TrenchBroom is a level editing program for brush-based game engines such as Quake, Quake 2, and Hexen 2. TrenchBroom is easy to use and provides many simple and advanced tools to create complex and interesting levels with ease. This document contains the manual for TrenchBroom. Reading this document will teach you how to use TrenchBroom and how to use its advanced features.</p>
 <h2 id="features">Features</h2>
@@ -96,7 +97,8 @@
 <ul>
 <li>Robust vertex editing with edge and face splitting and manipulating multiple vertices together</li>
 <li>Clipping tool with two and three points</li>
-<li>CSG operations: merge, subtract, intersect</li>
+<li>Scale and shear tools</li>
+<li>CSG operations: merge, subtract, intersect, hollow</li>
 <li>UV view for easy texture manipulations</li>
 <li>Precise texture lock for all brush editing operations</li>
 <li>Multiple texture collections</li>
@@ -259,12 +261,7 @@ p1*--v1---&gt;*p3</code></pre>
 <h2 id="camera_navigation">Camera Navigation</h2>
 <p>Navigation in TrenchBroom is quite simple and straightforward. You will mostly use the mouse to move and pan the camera and to look around. There are also some keyboard shortcuts to help you position the camera with more precision. Just like in Quake, the camera cannot be rolled - in other words, up is always in the positive Z direction and down is always in the negative Z direction. The behavior of the camera can be controlled in the <a href="#mouse_input">preferences</a>.</p>
 <h3 id="looking-and-moving-around">Looking and Moving Around</h3>
-<p>In the 3D viewport, can look around by holding the right mouse button and dragging the mouse around. There are several ways to move the camera around. First and foremost, you can move the camera forward and backward in the viewing direction by spinning the scroll wheel. If you prefer to have the scroll wheel move the camera in the direction where the mouse cursor is pointing, you can check the “Move camera towards cursor” option in the preferences. To move the camera sideways and up / down, hold the middle mouse button and drag the mouse in any direction. For tablet users, there is an option in the preferences that will enable you to move the camera horizontally by holding <script>print_key(307);</script>. Additionally, you can use the <a href="#fly_mode">fly mode</a> keyboard shortcuts even when fly mode is disabled.</p>
-<h3 id="orbiting">Orbiting</h3>
-<p>The camera orbit mode allows you to rotate the camera about a selectable point. To get an idea as to what this means, imagine that you define a point in the map by clicking on a brush. The point where you clicked will be the center of your camera orbit. Now image a sphere whose center is the point where you just clicked and whose radius is the distance between the camera and the point. Orbiting will move the camera on the surface of that sphere while adjusting the camera’s direction so that you keep looking at the same point. Visually, this is the same as rotating the entire map about the orbit center. Of course, you are not actually rotating anything - only the camera’s position and direction are modified. Note that, since up and down are always fixed, you cannot cross the north and south poles of the orbit sphere.</p>
-<p>Camera orbit mode is very useful if you are editing a brush because it allows you to view this brush from all sides quickly. Its best to try it and see for yourself how useful it is. To invoke the orbit mode, click and drag with the right mouse button while holding <script>print_key(307);</script>. The orbit center is the point in the map which you initially clicked. Dragging sideways will orbit the camera horizontally and dragging up and down will orbit the camera vertically. You can change the orbit radius during the orbit with the scroll wheel.</p>
-<h3 id="fly-mode">Fly Mode</h3>
-<p>Fly mode allows you to move around freely in a map, much like “no clipping” modes in some games do. When fly mode is active, you cannot perform any editing and your mouse cursor is hidden until fly mode is deactivated again. Hit <script>print_action("Controls/Map view/Toggle fly mode");</script> to toggle fly mode. The following table lists the keyboard shortcuts you can use to move the camera around when in fly mode.</p>
+<p>In the 3D viewport, can look around by holding the right mouse button and dragging the mouse around. There are several ways to move the camera around. First and foremost, you can move the camera forward and backward in the viewing direction by spinning the scroll wheel. If you prefer to have the scroll wheel move the camera in the direction where the mouse cursor is pointing, you can check the “Move camera towards cursor” option in the preferences. To move the camera sideways and up / down, hold the middle mouse button and drag the mouse in any direction. For tablet users, there is an option in the preferences that will enable you to move the camera horizontally by holding <script>print_key(307);</script>. Additionally, you can use the following keyboard shortcuts:</p>
 <table>
 <thead>
 <tr class="header">
@@ -289,8 +286,19 @@ p1*--v1---&gt;*p3</code></pre>
 <td>Right</td>
 <td><script>print_action("Controls/Camera/Move right");</script></td>
 </tr>
+<tr class="odd">
+<td>Up</td>
+<td><script>print_action("Controls/Camera/Move up");</script></td>
+</tr>
+<tr class="even">
+<td>Down</td>
+<td><script>print_action("Controls/Camera/Move down");</script></td>
+</tr>
 </tbody>
 </table>
+<h3 id="orbiting">Orbiting</h3>
+<p>The camera orbit mode allows you to rotate the camera about a selectable point. To get an idea as to what this means, imagine that you define a point in the map by clicking on a brush. The point where you clicked will be the center of your camera orbit. Now image a sphere whose center is the point where you just clicked and whose radius is the distance between the camera and the point. Orbiting will move the camera on the surface of that sphere while adjusting the camera’s direction so that you keep looking at the same point. Visually, this is the same as rotating the entire map about the orbit center. Of course, you are not actually rotating anything - only the camera’s position and direction are modified. Note that, since up and down are always fixed, you cannot cross the north and south poles of the orbit sphere.</p>
+<p>Camera orbit mode is very useful if you are editing a brush because it allows you to view this brush from all sides quickly. Its best to try it and see for yourself how useful it is. To invoke the orbit mode, click and drag with the right mouse button while holding <script>print_key(307);</script>. The orbit center is the point in the map which you initially clicked. Dragging sideways will orbit the camera horizontally and dragging up and down will orbit the camera vertically. You can change the orbit radius during the orbit with the scroll wheel.</p>
 <h3 id="automatic-navigation">Automatic Navigation</h3>
 <p>You can center the camera on the current selection by choosing <script>print_menu_item("Menu/View/Camera/Focus on Selection");</script> from the menu. This will position the camera so that all selected objects become visible. The camera will not be rotated at all; only its position will be changed. Note that this action will also adjust the 2D viewports so that the selection becomes visible there as well.</p>
 <p>Finally, you can move the camera to a particular position. To do this, choose <script>print_menu_item("Menu/View/Camera/Move Camera to");</script> and enter the position into the dialog that pops up. This does not affect the 2D views.</p>
@@ -299,6 +307,9 @@ p1*--v1---&gt;*p3</code></pre>
 <img src="Linked2DViewports.gif" alt="Linked YZ and XZ viewports" /><figcaption>Linked YZ and XZ viewports</figcaption>
 </figure>
 <p>Navigating the 2D viewports is naturally a lot simpler than navigating the 3D viewport. You can pan the viewport by holding and dragging either the middle or the right mouse button, and you can use the scroll wheel to adjust the zoom. Note that if you have set your viewport layout to show more than one 2D viewport, then the 2D viewportss are linked. Specifically, the zoom factor is linked so that you always have a consistent zoom level across all 2D viewports, and the viewports are panned simultaneously along the same axes. This means that if you pan the XY viewport along the X axis, the XZ viewport gets panned along the X axis, too, so that you don’t have to pan both viewports manually. Also note that zooming always keeps the coordinates under the mouse pointer invariant, that is, you can focus on a particular object or area by hovering the mouse over it and zooming in or out.</p>
+<h2 id="fov-and-zoom">FOV and Zoom</h2>
+<p>For the 3D view, the camera FOV (field of vision) can be adjusted in the view preferences by dragging the slider. This is a permanent setting.</p>
+<p>To temporarily adjust the camera’s zoom, hold <script>print_key(306);</script> and scroll the mouse wheel. To reset the zoom factor, hit <script>print_action("Controls/Map view/Reset camera zoom");</script>.</p>
 <h1 id="selection">Selection</h1>
 <p>There are two different kinds of things that can be selected in TrenchBroom: objects and brush faces. Most of the time, you will select objects such as entities and brushes. Selecting individual brush faces is only useful for changing their attributes, e.g. the textures. You can only select objects or brush faces, but not both at the same time. However, a selection of brushes (and nothing else) is treated as if all of their brush faces were selected individually.</p>
 <figure>
@@ -431,6 +442,18 @@ p1*--v1---&gt;*p3</code></pre>
 <td style="text-align: left;">Rotating objects</td>
 </tr>
 <tr class="odd">
+<td>Scale Tool</td>
+<td>2D, 3D</td>
+<td>Modal</td>
+<td style="text-align: left;">Scaling brushes</td>
+</tr>
+<tr class="even">
+<td>Shear Tool</td>
+<td>2D, 3D</td>
+<td>Modal</td>
+<td style="text-align: left;">Shearing brushes</td>
+</tr>
+<tr class="odd">
 <td>Clip Tool</td>
 <td>2D, 3D</td>
 <td>Modal</td>
@@ -460,6 +483,14 @@ p1*--v1---&gt;*p3</code></pre>
 <tr class="even">
 <td>Rotate Tool</td>
 <td style="text-align: left;"><script>print_menu_item("Menu/Edit/Tools/Rotate Tool");</script></td>
+</tr>
+<tr class="odd">
+<td>Scale Tool</td>
+<td style="text-align: left;"><script>print_menu_item("Menu/Edit/Tools/Scale Tool");</script></td>
+</tr>
+<tr class="even">
+<td>Shear Tool</td>
+<td style="text-align: left;"><script>print_menu_item("Menu/Edit/Tools/Shear Tool");</script></td>
 </tr>
 <tr class="odd">
 <td>Clip Tool</td>
@@ -775,6 +806,46 @@ p1*--v1---&gt;*p3</code></pre>
 </tbody>
 </table>
 <p>In the case of the 3D viewport, the normal of the mirror plane is the coordinate system axis that is closest to the right axis of the camera. This means that if the camera is pointing in the general direction of the Y axis, and therefore its right axis points in the general direction of the X axis, the normal of the mirror plane will be the X axis. Sometimes, you will not be able to determine which of the coordinate system axes is closest to the right axis of the camera because the right axis is close to two coordinate system axes. To avoid such confusion, it is best to perform flipping in the 2D viewports.</p>
+<h3 id="scaling_objects">Scaling Objects</h3>
+<p>Hit <script>print_menu_item("Menu/Edit/Tools/Scale Tool");</script> to activate the scale tool. If you know the exact X/Y/Z scale factors you want, you can enter them in the toolbar and click “Apply”. The selected objects will be scaled relative to the center of their bounding box.</p>
+<figure>
+<img src="ScaleToolToolbar.png" alt="Scale Tool Toolbar" /><figcaption>Scale Tool Toolbar</figcaption>
+</figure>
+<p>Otherwise, there are various ways to interactively scale your selected objects.</p>
+<p>In the 3D view:</p>
+<ul>
+<li><p>Dragging a side of the bounding box stretches that axis only.</p>
+<figure>
+<img src="Scale3DSide.gif" alt="Dragging a side of the bounding box" /><figcaption>Dragging a side of the bounding box</figcaption>
+</figure></li>
+<li><p>Dragging an edge stretches the two adjacent sides of the bounding box proportionally.</p>
+<figure>
+<img src="Scale3DEdge.gif" alt="Dragging an edge of the bounding box" /><figcaption>Dragging an edge of the bounding box</figcaption>
+</figure></li>
+<li><p>Dragging a corner resizes all 3 axes proportionally.</p>
+<figure>
+<img src="Scale3DCorner.gif" alt="Dragging a corner of the bounding box" /><figcaption>Dragging a corner of the bounding box</figcaption>
+</figure></li>
+</ul>
+<p>In 2D views:</p>
+<ul>
+<li>Corners allow unconstrained scaling along 2 axes.</li>
+<li>Sides stretch a single axis only, as in the 3D view.</li>
+</ul>
+<p>Two modifiers can be used in both the 2D and 3D views:</p>
+<ul>
+<li><p><script>print_key(306);</script> causes all 3 axes to scale proportionally in 3D views, or only the 2 axes perpendicular to the camera in 2D views. You can press/unpress <script>print_key(306);</script> during a drag. (<script>print_key(306);</script> has no effect when dragging corners in 3D, since all 3 axes are already scaled proportionally.)</p></li>
+<li><p><script>print_key(307);</script> moves the scale anchor point to the center of the bounding box. Otherwise, the anchor point is opposite the handle being dragged.</p>
+<figure>
+<img src="Scale3DSideCenter.gif" alt="Dragging a side of the bounding box with <script>print_key(307);</script>" /><figcaption>Dragging a side of the bounding box with <script>print_key(307);</script></figcaption>
+</figure></li>
+</ul>
+<h3 id="shearing_objects">Shearing Objects</h3>
+<p>Hit <script>print_menu_item("Menu/Edit/Tools/Shear Tool");</script> to activate the shear tool. Dragging a side of the bounding box shears along that plane. You can add the <script>print_key(307);</script> key to drag vertically if you’re not shearing the top or bottom of the bounding box.</p>
+<p>Texture lock in the Shear tool only works in Valve 220 format maps.</p>
+<figure>
+<img src="Shear3DVertical.gif" alt="Vertical shearing in the 3D viewport with <script>print_key(307);</script>" /><figcaption>Vertical shearing in the 3D viewport with <script>print_key(307);</script></figcaption>
+</figure>
 <h3 id="deleting-objects">Deleting Objects</h3>
 <p>Deleting objects is as simple as selecting them and choosing <script>print_menu_item("Menu/Edit/Delete");</script>. Note that if you delete all remaining brushes of a brush entity, that entity gets deleted automatically. Likewise, if you delete all remaining objects of a group, that group also gets deleted.</p>
 <h2 id="shaping-brushes">Shaping Brushes</h2>
@@ -799,6 +870,12 @@ p1*--v1---&gt;*p3</code></pre>
 <li>The vertices of the dragged faces are snapped to the grid planes, i.e., whenever at least one vertex component (X,Y, or Z) is a multiple of the current grid size, the face is snapped to that vertex. This makes it easy to align a face to other adjacent faces.</li>
 </ul>
 <p>Both snap modes are used simultaneously. There may be situations when you have to move the camera closer to a face in order to have sufficient precision when dragging the face.</p>
+<h4 id="moving-faces-instead-of-resizing">Moving Faces Instead of Resizing</h4>
+<p>The brush resize tool offers a quick way to move an individual face of a brush in 2D views. Hold <script>print_key(307);</script> in addition to <script>print_key(306);</script> when starting to drag a face in a 2D view to enable this mode. You will notice that a face is highlighted as usual, but when you start dragging the mouse, the face will just be moved in the direction you are dragging. The move is not restricted by the face normal, and other faces will be affected as well.</p>
+<figure>
+<img src="ResizeTool2DFaceMoving.gif" alt="Resizing multiple brushes" /><figcaption>Resizing multiple brushes</figcaption>
+</figure>
+<p>The distance is snapped to the current grid size. Moving multiple faces is possible if the faces lie on the same plane.</p>
 <h3 id="clipping">Clipping</h3>
 <p>Clipping is the most basic operation for Quake maps due to how brushes are <a href="#brush_geometry">constructed from planes</a>. In essence, all that clipping does is adding a new plane to a brush and, depending on the brush’s shape, removing other planes from it if they become superfluous. In TrenchBroom, clipping is done using the clip tool, which you can activate by choosing <script>print_menu_item("Menu/Edit/Tools/Clip Tool");</script>. The clip tool lets you define a clip plane in various ways, and the lets you apply that plane to the selected brushes.</p>
 <p>There are three different outcomes of applying a clip plane: Drop all parts of the selected brushes that are in front of the (oriented) clip plane, drop all parts of the selected brushes that are behind the clip plane, or slice the selected brushes into two pieces each. The following image illustrates these three modes:</p>
@@ -900,6 +977,12 @@ p1*--v1---&gt;*p3</code></pre>
 <li>Be careful with detail brushes, they might open vis portals.</li>
 <li>Detail might also result in PVS leaves too much information, better to turn some detail into actual brushes to force vis to break a room into several PVS leaves. Or use hint brushes to force vis to add more leaves.</li>
 </ul>
+<h4 id="uv-lock">UV Lock</h4>
+<p>The regular Texture Lock prefence doesn’t apply to vertex editing - instead, there is a separate preference called UV Lock toggled with <script>print_action("Controls/Map view/Toggle UV lock");</script> or the checkbox in the vertex editing toolbar:</p>
+<figure>
+<img src="VertexEditingToolbar.png" alt="Vertex editing toolbar" /><figcaption>Vertex editing toolbar</figcaption>
+</figure>
+<p>When this setting is enabled, TrenchBroom will attempt to keep vertex UV coordinates the same when using the vertex editing tools.</p>
 <h3 id="csg-operations">CSG Operations</h3>
 <p>CSG stands for Constructive Solid Geometry. CSG is a technique used in professional modeling tools to create complex shape by combining simple shapes using set operators such as union (sometimes called addition), subtraction, and intersection. However, CSG union and subtraction cannot be directly applied to brushes since they may create concave shapes which cannot be represented directly using brushes (remember that brushes are always convex). But some of these operators can be emulated with brushes. TrenchBroom supports the operations <em>convex merge</em> (in place of union), <em>subtraction</em> (emulated by creating new brushes to represent the resulting concave shape), and <em>intersection</em> (supported directly).</p>
 <h4 id="csg-convex-merge">CSG Convex Merge</h4>
@@ -914,6 +997,12 @@ p1*--v1---&gt;*p3</code></pre>
 <img src="CSGSubtractArch.gif" alt="CSG subtracting to create an arch" /><figcaption>CSG subtracting to create an arch</figcaption>
 </figure>
 <p>The image above shows an example where an arch is created by subtraction. The result contains eight brushes that perfectly represent the arch. To perform a CSG subtraction, first select the minuends (the brushes you wish to subtract from) and then add the subtrahend to the selection and choose <script>print_menu_item("Menu/Edit/CSG/Subtract");</script>. Assuming you have selected n brushes, TrenchBroom applies the subtraction to the selected brushes by subtracting the nth selected brush (the most recently selected one) from the n-1 previously selected brushes.</p>
+<h4 id="csg-hollow">CSG Hollow</h4>
+<p>CSG hollow is a shortcut for subtracting a smaller version of a brush from itself. This can be useful to quickly block out rooms. Just select a brush and choose <script>print_menu_item("Menu/Edit/CSG/Hollow");</script> to hollow out the selected brush. The resulting walls will have a thickness of the current grid size.</p>
+<figure>
+<img src="CSGHollow.gif" alt="CSG hollow" /><figcaption>CSG hollow</figcaption>
+</figure>
+<p>In this example, a cube is hollowed out, leaving six brushes which form the walls, floor, and ceiling of the resulting room. Note that the wall thickness is determined by the grid size.</p>
 <h4 id="csg-intersection">CSG Intersection</h4>
 <p>CSG intersection takes a set of brushes and computes their intersection, that is, it computes the largest brush that is contained in each of the input brushes. Another way to think of this is that intersection takes that part of the input brushes where they all overlap, and creates a new brush that represents that part. If there is no such part, then the input brushes are disjoint, and their intersection is empty. The input brushes are then removed from the map.</p>
 <figure>
@@ -947,7 +1036,6 @@ p1*--v1---&gt;*p3</code></pre>
 <img src="ReplaceTexture.png" alt="Texture Replace Window (Mac OS X)" /><figcaption>Texture Replace Window (Mac OS X)</figcaption>
 </figure>
 <p>Select the texture you wish to replace in the left texture browser. This browser by default only shows you the textures which are currently in use in the map. In the screenshot, the texture “b_pv_v1a1” has been selected for replacement and therefore has a red border. Then select the replacement texture in the right texture browser (“b_sr_20c” in the screenshot). Finally, hit the “Replace” button. The replacement is applied to all brush faces in the map if nothing is currently selected. Otherwise, it is applied to the selected brush faces only. If the replacement succeeded, the faces which have been replaced are subsequently selected. Otherwise, the selection remains unchanged.</p>
-<p>Note that the window is not modal - you can switch back to the main window to change your selection if you wish.</p>
 <h3 id="setting-face-attributes">Setting Face Attributes</h3>
 <p>Face attributes control how textures are mapped onto brush faces. At the very least, every face has the attributes offset, scale, and angle. The offset allows you to shift a texture on a face, the scale factors stretch the texture, and by changing the angle you can rotate the texture. Additionally, some engines have further attributes. Quake 2 adds surface flags and a surface value, and additional content flags. All of these values can be changed in different ways: There is a face attribute editor that allows you to enter the values directly, you can use keyboard shortcuts in the 3D viewport, or you can use the UV editor.</p>
 <h4 id="the-face-attribute-editor">The Face Attribute Editor</h4>
@@ -1246,8 +1334,8 @@ p1*--v1---&gt;*p3</code></pre>
 <td>Sensitivity and settings for moving the camera with the mouse. If you use a tablet, the setting “Alt+MMB drag to move camera” might make navigation easier for you.</td>
 </tr>
 <tr class="even">
-<td>Fly Mode</td>
-<td>Sensitivity, axis inversion and keyboard shortcuts when in <a href="#fly_mode">fly mode</a>.</td>
+<td>Move Keys</td>
+<td>Keyboard shortcuts for moving around in the map, with a separate slider to control the speed.</td>
 </tr>
 </tbody>
 </table>
@@ -1408,7 +1496,7 @@ p1*--v1---&gt;*p3</code></pre>
 <ol type="1">
 <li>Set the working directory to <code>${MAP_DIR_PATH}</code>.</li>
 <li>Add an <em>Export Map</em> task and set its target to <code>${WORK_DIR_PATH}/${MAP_BASE_NAME}-compile.map</code>.</li>
-<li>Add <em>Run Tool</em> tasks for the compilation tools that you wish to run. Use the expressions <code>${MAP_BASE_NAME}-compile.map`` and</code>${MAP_BASE_NAME}.bsp` to specify the input and output files for the tools. Since you have set a working directory, you don’t need to specify absolute paths here.</li>
+<li>Add <em>Run Tool</em> tasks for the compilation tools that you wish to run. Use the expressions <code>${MAP_BASE_NAME}-compile.map</code> and <code>${MAP_BASE_NAME}.bsp</code> to specify the input and output files for the tools. Since you have set a working directory, you don’t need to specify absolute paths here.</li>
 <li>Finally, add a <em>Copy Files</em> task and set its source to <code>${WORK_DIR_PATH}/${MAP_BASE_NAME}.bsp</code> and its target to <code>${GAME_DIR_PATH}/${MODS[-1]}/maps</code>. This copies the file to the maps directory within the last enabled mod.</li>
 </ol>
 <p>The last step will copy the bsp file to the appropriate directory within the game path. You can add more <em>Copy Files</em> tasks if the compilation produces more than just a bsp file (e.g. lightmap files). Alternatively, you can use a wildcard expression such as <code>${WORK_DIR_PATH}/${MAP_BASE_NAME}.*</code> to copy related files.</p>
@@ -1533,7 +1621,7 @@ p1*--v1---&gt;*p3</code></pre>
 <tr class="odd">
 <td><code>Number</code></td>
 <td style="text-align: left;"><code>false</code> if value is <code>0.0</code>, <code>true</code> otherwise</td>
-<td style="text-align: left;">string representation, e.g. “1.0”</td>
+<td style="text-align: left;">string representation, e.g. “1.0”</td>
 <td style="text-align: left;"><em>trivial</em></td>
 <td style="text-align: left;">error</td>
 <td style="text-align: left;">error</td>
@@ -1587,7 +1675,7 @@ p1*--v1---&gt;*p3</code></pre>
 GroupedTerm    = &quot;(&quot; Term &quot;)&quot;
 Term           = SimpleTerm | Switch | CompoundTerm
 
-SimpleTerm     = Variable | Literal | Subscript | UnaryTerm | GroupedTerm
+SimpleTerm     = Name | Literal | Subscript | UnaryTerm | GroupedTerm
 CompoundTerm   = AlgebraicTerm | LogicalTerm | ComparisonTerm | Case
 
 UnaryTerm      = Plus | Minus | LogicalNegation | BinaryNegation
@@ -1595,10 +1683,10 @@ AlgebraicTerm  = Addition | Subtraction | Multiplication | Division | Modulus
 LogicalTerm    = LogicalAnd | LogicalOr
 BinaryTerm     = BinaryAnd | BinaryXor | BinaryOr | BinaryLeftShift | BinaryRightShift
 ComparisonTerm = Less | LessOrEqual | Equal | Inequal | GreaterOrEqual | Greater</code></pre>
-<h3 id="variables-and-literals">Variables and Literals</h3>
-<p>A variable name is a string that begins with an alphabetic character or an underscore, possibly followed by more alphanumeric characters and underscores.</p>
-<pre><code>Variable       = ( &quot;_&quot; | Alpha ) { &quot;_&quot; | Alpha | Numeric }</code></pre>
-<p><code>MODS</code>, <code>_var1</code>, <code>_123</code> are all valid variable names while <code>1_MODS</code>, <code>$MODS</code>, <code>_$MODS</code> are not. When an expression is evaluated, all variable names are simply replaced by the values of the variables they reference. If a value is not of type <code>String</code>, it will be converted to that type. If the value is not convertible to type <code>String</code>, then an error will be thrown.</p>
+<h3 id="names-and-literals">Names and Literals</h3>
+<p>A name is a string that begins with an alphabetic character or an underscore, possibly followed by more alphanumeric characters and underscores.</p>
+<pre><code>Name       = ( &quot;_&quot; | Alpha ) { &quot;_&quot; | Alpha | Numeric }</code></pre>
+<p><code>MODS</code>, <code>_var1</code>, <code>_123</code> are all valid names while <code>1_MODS</code>, <code>$MODS</code>, <code>_$MODS</code> are not. When an expression is evaluated, all variable names are simply replaced by the values of the variables they reference. If a value is not of type <code>String</code>, it will be converted to that type. If the value is not convertible to type <code>String</code>, then an error will be thrown.</p>
 <p>A literal is either a string, a number, a boolean, an array, or a map literal.</p>
 <pre><code>Literal        = String | Number | Boolean | Array | Map
 
@@ -1606,12 +1694,12 @@ Boolean        = &quot;true&quot; | &quot;false&quot;
 String         = &quot;&quot;&quot; { Char } &quot;&quot;&quot; | &quot;&#39;&quot; { Char } &quot;&#39;&quot;
 Number         = Numeric { Numeric } [ &quot;.&quot; Numeric { Numeric } ]</code></pre>
 <p>Note that strings can either be enclosed by double or single quotes, but you cannot mix these two styles. If you enclose a string by double quotes, you need to escape all literal double quotes within the string with backslashes like so: “this is a \”fox\&quot;&quot;, but this is not necessary when using single quotes to enclose that string: ‘this is a “fox”’ is also a valid string literal.</p>
-<p>Further note that number literals need not contain a fractional part and can be written like integers, i.e. <code>1</code> instead of <code>1.0</code>.</p>
+<p>Further note that number literals need not contain a fractional part and can be written like integers, i.e. <code>1</code> instead of <code>1.0</code>.</p>
 <p>Array literals can be specified by giving a comma-separated list of expressions or ranges enclosed in brackets.</p>
 <pre><code>Array          = &quot;[&quot; [ ExpOrRange { &quot;,&quot; ExpOrRange } ] &quot;]&quot;
 ExpOrRange     = Expression | Range
 Range          = Expression &quot;..&quot; Expression</code></pre>
-<p>An array literal is a possibly empty comma-separated list of expressions or ranges. A range is a special type that represents a range of integer values. Ranges are specified by two expressions separated by two dots. A range denotes a list of number values, so both expressions must evaluate to a value that is convertible to type <code>Number</code>. The first expression denotes the starting value of the range, and the second expression denotes the ending value of the range, both of which are inclusive. The range <code>1.0..3.0</code> therefore denotes the list <code>1.0</code>, <code>2.0</code>, <code>3.0</code>. Note that the starting value may also be greater than the ending value, e.g. <code>3.0..1.0</code>, which denotes the same list as <code>1.0..3.0</code>, but in the opposite order.</p>
+<p>An array literal is a possibly empty comma-separated list of expressions or ranges. A range is a special type that represents a range of integer values. Ranges are specified by two expressions separated by two dots. A range denotes a list of number values, so both expressions must evaluate to a value that is convertible to type <code>Number</code>. The first expression denotes the starting value of the range, and the second expression denotes the ending value of the range, both of which are inclusive. The range <code>1.0..3.0</code> therefore denotes the list <code>1.0</code>, <code>2.0</code>, <code>3.0</code>. Note that the starting value may also be greater than the ending value, e.g. <code>3.0..1.0</code>, which denotes the same list as <code>1.0..3.0</code>, but in the opposite order.</p>
 <p>The following table gives some examples of valid array literal expressions.</p>
 <table>
 <thead>
@@ -1647,16 +1735,17 @@ Range          = Expression &quot;..&quot; Expression</code></pre>
 </tr>
 </tbody>
 </table>
-<p>A map is a comma-separated list of of key-value pairs, enclosed in braces. Note that keys are strings, and so must be quoted. The value is separated from the key by a colon character.</p>
+<p>A map is a comma-separated list of of key-value pairs, enclosed in braces. Note that keys are strings or names. To use certain special characters or whitespace in the key, it must be given as a string. The value is separated from the key by a colon character.</p>
 <pre><code>Map            = &quot;{&quot; [ KeyValuePair { &quot;,&quot; KeyValuePair } ] &quot;}&quot;
-KeyValuePair   = String &quot;:&quot; Expression</code></pre>
+KeyValuePair   = StringOrName &quot;:&quot; Expression
+StringOrName   = String | Name</code></pre>
 <p>An example of a valid map expression looks as follows:</p>
 <pre><code>{
-    &quot;some_key&quot;   : &quot;a string&quot;,
-    &quot;other_key&quot;  : 1+2,
-    &quot;another_key&quot;: [1..3]
+    &quot;some key&quot;   : &quot;a string&quot;,
+    other_key  : 1+2,
+    another_key: [1..3]
 }</code></pre>
-<p>This expression evaluates to a map containing the value <code>&quot;a string&quot;</code> under the key <code>some_key</code>, the value <code>3.0</code> under the key <code>other_key</code>, and an array containing the values <code>1.0</code>, <code>2.0</code>, and <code>3.0</code> under the key <code>another_key</code>.</p>
+<p>This expression evaluates to a map containing the value <code>&quot;a string&quot;</code> under the key <code>some key</code>, the value <code>3.0</code> under the key <code>other_key</code>, and an array containing the values <code>1.0</code>, <code>2.0</code>, and <code>3.0</code> under the key <code>another_key</code>.</p>
 <h3 id="subscript">Subscript</h3>
 <p>Certain values such as strings, arrays, or maps can be subscripted to access some of their elements.</p>
 <pre><code>Subscript      = SimpleTerm &quot;[&quot; ExpOrAnyRange { &quot;,&quot; ExpOrAnyRange } &quot;]&quot;
@@ -2559,6 +2648,382 @@ one point per second
     ]
 ]</code></pre>
 <p>To improve compatibility to other editors, the model definition can also be named <em>studio</em> or <em>studioprop</em> in FGD files.</p>
+<h2 id="point-files-and-portal-files">Point Files and Portal Files</h2>
+<p>TrenchBroom can load point files (PTS) generated by QBSP, which help locate leaks. After you open a point file with <script>print_menu_item("Menu/File/Load Point File");</script>, it’s rendered as a sequence of green line segments which will connect the map interior to the void. Hit <script>print_menu_item("Menu/View/Camera/Move to Next Point");</script> to move the camera to the first point, and continue hitting <script>print_menu_item("Menu/View/Camera/Move to Next Point");</script> to fly along the path, which should show you where the leak is.</p>
+<p>Portal files (PRT), also generated by QBSP, let you visualize the portals between BSP leafs. They can be loaded with <script>print_menu_item("Menu/File/Load Portal File");</script> and are rendered as translucent red polygons.</p>
+<h2 id="game-configuration-files">Game Configuration Files</h2>
+<p>TrenchBroom uses game configuration files to provide support for different games. Some game configuration files come with the editor. They are installed at <code>&lt;ResourcePath&gt;/games</code>, where the value of <code>&lt;ResourcePath&gt;</code> depends on the platform according to the following table.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Platform</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Windows</td>
+<td>The directory where the TrenchBroom executable is located.</td>
+</tr>
+<tr class="even">
+<td>macOS</td>
+<td><code>TrenchBroom.app/Contents/Resources</code></td>
+</tr>
+<tr class="odd">
+<td>Linux</td>
+<td><code>&lt;prefix&gt;/share/trenchbroom</code>, where <code>&lt;prefix&gt;</code> is the installation prefix.</td>
+</tr>
+</tbody>
+</table>
+<p>The folder <code>&lt;ResourcePath&gt;/games</code> contains a <code>.cfg</code> file for each supported game, and additional folders which can contain additional resources related to the game such as icons, palettes or entity definition files.</p>
+<p>It is not recommended to change these builtin game configurations, as they will be overwritten when an update is installed. To modify the existing game configrations or to add new configurations, you can place them in the folder <code>&lt;UserDataPath&gt;/games</code>, where the value of <code>&lt;UserDataPath&gt;</code> is again platform dependent.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Platform</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Windows</td>
+<td><code>C:\Users\&lt;username&gt;\AppData\Roaming\TrenchBroom</code></td>
+</tr>
+<tr class="even">
+<td>macOS</td>
+<td><code>~/Library/Application Support/TrenchBroom</code></td>
+</tr>
+<tr class="odd">
+<td>Linux</td>
+<td><code>~/.trenchbroom</code></td>
+</tr>
+</tbody>
+</table>
+<p>To add a new game configuration to TrenchBroom, place it into a folder under <code>&lt;UserDataPath&gt;/games</code> – note that you might need to create that folder if it does not exist. You will need to write your own <code>GameConfig.cfg</code> file, or you can copy one of the builtin files and base your game configuration on that. Additionally, you can place additional resources in the folder you created. As an example, suppose you want to add a game configuration for a game called “Example”. For this, you would create a new folder <code>&lt;UserDataPath&gt;/games/Example</code>, and within that folder, you would create a game configuration file called <code>GameConfig.cfg</code>. If you need additional resource such as an icon or entity definition files, you would place those files into this newly created folder as well.</p>
+<p>To override a builtin game configuration file, copy the folder containing the builtin file and place it in <code>&lt;UserDataPath&gt;/games</code>. TrenchBroom will prioritize your custom game configurations over the builtin files, but you can still access the resources in the game’s resource sub folder without problems. If you wish, you can also override some of these resources by placing a file of the same name in your game resource sub directory.</p>
+<p>As an example, consider the case where you want to override the builtin Quake game configuration and the builtin entity definition file for Quake. Copy the file <code>&lt;ResourcePath&gt;/games/Quake/GameConfig.cfg</code> to <code>&lt;UserDataPath&gt;/games/Quake</code> and modify it as needed. Then copy the file <code>&lt;ResourcePath&gt;/games/Quake/Quake.fgd</code> to <code>&lt;UserDataPath&gt;/games/Quake</code> and modify it, too. When you load the game configuration in TrenchBroom, the editor will pick up the modified files instead of the builtin ones.</p>
+<h3 id="game-configuration-file-syntax">Game Configuration File Syntax</h3>
+<p>Game configuration files need to specify the following information.</p>
+<ul>
+<li>A <strong>name</strong> used show in the UI and used to find resources in a sub folder of the game configuration folders</li>
+<li>An <strong>icon</strong> to show in the UI (optional)</li>
+<li><strong>File formats</strong> to identify which map file formats to support for this game</li>
+<li>A <strong>Filesystem</strong> to specify the game asset search paths and package file format (e.g. pak files)</li>
+<li><strong>Textures</strong>
+<ul>
+<li>A <strong>texture package format</strong> (file packages such as wad files or directory packages containing loose image files)</li>
+<li>A <strong>texture format</strong> such as mip files</li>
+<li>A <strong>palette file</strong> (optional)</li>
+<li>The <strong>worldspawn property</strong> to store the texture packages in the map file</li>
+</ul></li>
+<li><strong>Entities</strong>
+<ul>
+<li>The builtin <strong>entity definition files</strong></li>
+<li>The <strong>default color</strong> to use in the UI</li>
+<li>The supported <strong>model formats</strong>, e.g. mdl</li>
+</ul></li>
+<li><strong>Brush content types</strong> to specify different types of brushes in the editor such as clip brushes or trigger brushes (optional)</li>
+<li><strong>Face attributes</strong> to specify which additional attributes to allow on brush faces (optional)</li>
+</ul>
+<p>The game configuration is an <a href="#expression_language">expression language</a> map with a specific structure, which is explained using an example.</p>
+<pre><code>{
+    &quot;version&quot;: 2, // mandatory, indicates the version of the file&#39;s syntax
+    &quot;name&quot;: &quot;Quake 2&quot;, // mandatory, the name to use in the UI
+    &quot;icon&quot;: &quot;Quake2/Icon.png&quot;, // optional, the icon to show in the UI
+    &quot;fileformats&quot;: [ // a list of supported file formats with custom initial maps to be loaded when a new file is created
+        { &quot;format&quot;: &quot;Standard&quot;, &quot;initialmap&quot;: &quot;initial_standard.map&quot; },
+        { &quot;format&quot;: &quot;Valve&quot;, &quot;initialmap&quot;: &quot;initial_valve.map&quot; },
+        { &quot;format&quot;: &quot;Quake2&quot;, &quot;initialmap&quot;: &quot;initial_quake2.map&quot; }
+    ],
+    &quot;filesystem&quot;: { // defines the file system used to search for game assets
+        &quot;searchpath&quot;: &quot;baseq2&quot;, // the path in the game folder at which to search for assets
+        &quot;packageformat&quot;: { &quot;extension&quot;: &quot;pak&quot;, &quot;format&quot;: &quot;idpak&quot; } // the package file format
+    },
+    &quot;textures&quot;: { // where to search for textures and how to read them, see below
+        &quot;package&quot;: { &quot;type&quot;: &quot;directory&quot;, &quot;root&quot;: &quot;textures&quot; },
+        &quot;format&quot;: { &quot;extensions&quot;: [ &quot;wal&quot; ], &quot;format&quot;: &quot;idwal&quot; },
+        &quot;palette&quot;: &quot;pics/colormap.pcx&quot;,
+        &quot;attribute&quot;: &quot;_tb_textures&quot;
+    },
+    &quot;entities&quot;: { // the builtin entity definition files for this game
+        &quot;definitions&quot;: [ &quot;Quake2/Quake2.fgd&quot; ],
+        &quot;defaultcolor&quot;: &quot;0.6 0.6 0.6 1.0&quot;,
+        &quot;modelformats&quot;: [ &quot;md2&quot; ]
+    },
+    &quot;brushtypes&quot;: [
+        {
+            &quot;name&quot;: &quot;Clip brushes&quot;,
+            &quot;attribs&quot;: [ &quot;transparent&quot; ],
+            &quot;match&quot;: &quot;texture&quot;,
+            &quot;pattern&quot;: &quot;clip&quot;
+        },
+        {
+            &quot;name&quot;: &quot;Skip brushes&quot;,
+            &quot;attribs&quot;: [ &quot;transparent&quot; ],
+            &quot;match&quot;: &quot;texture&quot;,
+            &quot;pattern&quot;: &quot;skip&quot;
+        },
+        {
+            &quot;name&quot;: &quot;Hint brushes&quot;,
+            &quot;attribs&quot;: [ &quot;transparent&quot; ],
+            &quot;match&quot;: &quot;texture&quot;,
+            &quot;pattern&quot;: &quot;hint*&quot;
+        },
+        {
+            &quot;name&quot;: &quot;Detail brushes&quot;,
+            &quot;match&quot;: &quot;contentflag&quot;,
+            &quot;flags&quot;: [ &quot;detail&quot; ]
+        },
+        {
+            &quot;name&quot;: &quot;Liquid brushes&quot;,
+            &quot;match&quot;: &quot;contentflag&quot;,
+            &quot;flags&quot;: [ &quot;lava&quot;, &quot;slime&quot;, &quot;water&quot; ]
+        },
+        {
+            &quot;name&quot;: &quot;Trigger brushes&quot;,
+            &quot;attribs&quot;: [ &quot;transparent&quot; ],
+            &quot;match&quot;: &quot;classname&quot;,
+            &quot;pattern&quot;: &quot;trigger*&quot;
+        }
+    ],
+}</code></pre>
+<h4 id="file-formats">File Formats</h4>
+<p>The file format is specified by an array of maps under the key <code>fileformats</code>. The following formats are supported.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Standard</td>
+<td>Standard Quake map file</td>
+</tr>
+<tr class="even">
+<td>Valve</td>
+<td>Valve map file (like Standard, but with different texture info per face)</td>
+</tr>
+<tr class="odd">
+<td>Quake2</td>
+<td>Quake 2 map file</td>
+</tr>
+<tr class="even">
+<td>Hexen2</td>
+<td>Hexen 2 map file (like Quake, but with an additional, but unused value per face)</td>
+</tr>
+</tbody>
+</table>
+<p>Each entry of the array must have the following structure:</p>
+<pre><code>{ 
+    &quot;format&quot;: &quot;Standard&quot;, 
+    &quot;initialmap: &quot;initial_standard.map&quot;
+}</code></pre>
+<p>Thereby, the <code>format</code> key is mandatory but the <code>initialmap</code> key is optional. The <code>initialmap</code> key refers to a map file in the game’s configuration sub folder which should be loaded if a new document is created. If no initial map is specified, or if the file cannot be found, TrenchBroom will create a map containing a single brush at the origin.</p>
+<h4 id="file-system">File System</h4>
+<p>The file system is used in the editor to load game assets, and it is specified by a map under the key <code>filesystem</code>. The map contains two keys, <code>searchpath</code> and <code>packageformat</code>.</p>
+<ul>
+<li><code>searchpath</code> is the subdirectory under the game directory (set in the game preferences) at which the editor will search for game assets. The editor will search loose files in this path, but it will also mount packages found here.</li>
+<li><code>packageformat</code> specifies the format of the packages to mount. It is a map with two keys, <code>extension</code> and <code>format</code>.
+<ul>
+<li><code>extensions</code> specifies the file extensions of the package files to mount (alternatively allows <code>extension</code> to specify only one extension)</li>
+<li><code>format</code> specifies the format of the package files</li>
+</ul></li>
+</ul>
+<p>The following package formats are supported.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>idpak</td>
+<td>Id pak file, used by Quake, Quake 2, Hexen 2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="texture-configurations">Texture Configurations</h4>
+<p>Every texture configuration consists of a package specification, a format specification, and optionally a palette and a storage specifier.</p>
+<p>TrenchBroom supports two types of texture packages: File based and directory based. File based texture packages expect the textures to be stored in package files that contain multiple textures, such as <code>.wad</code> files for Quake and Hexen 2. A file based texture configuration looks like this:</p>
+<pre><code>&quot;textures&quot;: {
+    &quot;package&quot;: { &quot;type&quot;: &quot;file&quot;, &quot;format&quot;: { &quot;extension&quot;: &quot;wad&quot;, &quot;format&quot;: &quot;wad2&quot; } },
+    &quot;format&quot;: { &quot;extension&quot;: &quot;D&quot;, &quot;format&quot;: &quot;idmip&quot; },
+    &quot;palette&quot;: &quot;gfx/palette.lmp&quot;,
+    &quot;attribute&quot;: &quot;wad&quot;
+},</code></pre>
+<p>For file-based texture configurations, the following texture package formats are supported:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>wad2</td>
+<td>wad file, used by Quake, Quake 2, Hexen 2</td>
+</tr>
+<tr class="even">
+<td>wad3</td>
+<td>wad file, used by Half Life</td>
+</tr>
+</tbody>
+</table>
+<p>A directory based texture configuration looks as follows. It differs only in the package configuration, all other keys are equivalent.</p>
+<pre><code>&quot;textures&quot;: {
+    &quot;package&quot;: { &quot;type&quot;: &quot;directory&quot;, &quot;root&quot;: &quot;textures&quot; },
+    &quot;format&quot;: { &quot;extensions&quot;: [ &quot;wal&quot; ], &quot;format&quot;: &quot;idwal&quot; },
+    &quot;palette&quot;: &quot;pics/colormap.pcx&quot;,
+    &quot;attribute&quot;: &quot;_tb_textures&quot;
+},</code></pre>
+<p>In a directory-based texture package configuration, the <code>root</code> key specifies the folder at which to search for the texture packages. This folder is relative to the game file system set up according to the <code>filesystem</code> configuration earlier in the file. TrenchBroom will create a texture collection for each folder contained in the root folder specified here.</p>
+<p>In the case of Quake 2, the builtin game configuration specifies the search path of the file system as <code>&quot;baseq2&quot;</code> and the texture package root as <code>&quot;textures&quot;</code>, so TrenchBroom will create a texture collection for each folder found in <code>&lt;Game Path&gt;/baseq2/textures</code>.</p>
+<p>The remaining keys in a texture configuration are the same for file based and texture based texture package configurations.</p>
+<p>The <code>format</code> key specifies the format of the texture files found in the package.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>idmip</td>
+<td>mip file, used by Quake and Hexen</td>
+</tr>
+<tr class="even">
+<td>hlmip</td>
+<td>mip file, used by Half Life</td>
+</tr>
+<tr class="odd">
+<td>dkmip</td>
+<td>mip file, used by Daikatana</td>
+</tr>
+<tr class="even">
+<td>idwal</td>
+<td>wal file, used by Quake 2</td>
+</tr>
+<tr class="odd">
+<td>image</td>
+<td>image file</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>image</code> format can be used to load a wide array of image formats such as tga, pcx, jpeg, and so on. TrenchBroom uses the [FreeImage Library] to load these images and supports any file type supported by this library.</p>
+<p>Optionally, you can specify a palette. The value of the <code>palette</code> key specifies a path, relative to the file system, where TrenchBroom will look for a palette file that comes with the game’s assets.</p>
+<p>Finally, the <code>attribute</code> key specifies the name of a worldspawn property where TrenchBroom will store the list of selected texture collections in the map file.</p>
+<h4 id="entity-configuration">Entity Configuration</h4>
+<p>In the entity configuration section, you can specify which entity definition files come with your game configuration, which model formats are supported for rendering the entity models in the editor, and a default color for entities.</p>
+<pre><code>&quot;entities&quot;: { // the builtin entity definition files for this game
+    &quot;definitions&quot;: [ &quot;Quake2/Quake2.fgd&quot; ],
+    &quot;defaultcolor&quot;: &quot;0.6 0.6 0.6 1.0&quot;,
+    &quot;modelformats&quot;: [ &quot;md2&quot; ]
+},</code></pre>
+<p>The <code>definitions</code> key provides a list of entity definition files. These files are specified by a path that is relative to the <code>games</code> directory where TrenchBroom searches for the game configurations.</p>
+<p>The <code>modelformats</code> key has a list of model formats used by this game. The following model formats are supported.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>mdl</td>
+<td>Quake model format</td>
+</tr>
+<tr class="even">
+<td>md2</td>
+<td>Quake 2 model format</td>
+</tr>
+<tr class="odd">
+<td>bsp</td>
+<td>Compiled brush model, used by Quake and Hexen 2</td>
+</tr>
+<tr class="even">
+<td>dkm</td>
+<td>Daikatana model format</td>
+</tr>
+</tbody>
+</table>
+<h4 id="brush-types">Brush Types</h4>
+<p>TrenchBroom recognizes certain tyes of brushes such as clip brushes or trigger brushes. But since the details can be game dependent, these brush types are defined in the game configuration. For this, the <code>brushtypes</code> key has a list of brush type configurations. Each configuration looks as follows.</p>
+<pre><code>{
+    &quot;name&quot;: &quot;Clip brushes&quot;,
+    &quot;attribs&quot;: [ &quot;transparent&quot; ],
+    &quot;match&quot;: &quot;texture&quot;,
+    &quot;pattern&quot;: &quot;clip&quot;
+},</code></pre>
+<p>The most important key is <code>match</code>, which specifies how TrenchBroom will recognize a brush of this type. This key can have the following values.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Match</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>texture</td>
+<td>Match against a texture name, must match all brush faces</td>
+</tr>
+<tr class="even">
+<td>contentflag</td>
+<td>Match against face content flags, must match all brush faces (used by Quake 2)</td>
+</tr>
+<tr class="odd">
+<td>classname</td>
+<td>Match against a brush entity class name</td>
+</tr>
+</tbody>
+</table>
+<p>Depending on the value of the <code>match</code> key, additional keys may be required to configure the matcher.</p>
+<ul>
+<li>For the <code>texture</code> matcher, the key <code>pattern</code> contains a pattern that is matched against the texture name. Wildcards <code>*</code> and <code>?</code> are allowed. Use backslashes to escape literal <code>*</code> and <code>?</code> chars.</li>
+<li>For the <code>contentflag</code> matcher, the key <code>flags</code> contains a list of content flag names to match against (see below for more info on content flags).</li>
+<li>For the <code>classname</code> matcher, key <code>pattern</code> contains a pattern that is matched against the classname of the brush entity that contains the brush. Wildcards <code>*</code> and <code>?</code> are allowed. Use backslashes to escape literal <code>*</code> and <code>?</code> chars.</li>
+</ul>
+<h4 id="face-attributes">Face Attributes</h4>
+<p>Face attributes currently come in two flavors: surface flags and content flags. Therefore, the <code>faceattribs</code> key contains two entries with keys <code>surfaceflags</code> and <code>contentflags</code> for the surface and content flags, respectively.</p>
+<p>Each of these entries contains a list where each entry consists of two entries with keys <code>name</code> and <code>description</code>. Note that the position of each flag entry determines the value of that flag. Suppose that <code>i</code> is the 0-based index of the entry, then the flags value corresponds to 2 to the power of <code>i</code>: The first entry has value 2^0 = 1, the second has value 2^1 = 2, the third has value 2^2 = 4, and so on.</p>
+<p>Consider the following example:</p>
+<pre><code>&quot;faceattribs&quot;: {
+    &quot;surfaceflags&quot;: [
+        {
+            &quot;name&quot;: &quot;light&quot;,
+            &quot;description&quot;: &quot;Emit light from the surface, brightness is specified in the &#39;value&#39; field&quot;
+        }, // value 1
+        {
+            &quot;name&quot;: &quot;slick&quot;,
+            &quot;description&quot;: &quot;The surface is slippery&quot;
+        } // value 2
+    ],
+    &quot;contentflags&quot;: [
+        {
+            &quot;name&quot;: &quot;solid&quot;,
+            &quot;description&quot;: &quot;Default for all brushes&quot;
+        }, // value 1
+        {
+            &quot;name&quot;: &quot;window&quot;,
+            &quot;description&quot;: &quot;Brush is a window (not really used)&quot;
+        }, // value 2
+        { 
+            &quot;name&quot;: &quot;unused&quot; 
+        }, // value 4
+        {
+            &quot;name&quot;: &quot;playerclip&quot;,
+            &quot;description&quot;: &quot;Player cannot pass through the brush (other things can)&quot;
+        }, // value 8
+    ]
+}</code></pre>
+<p>There are two surface flags with values 1 and 2, and four content flags with values 1, 2, 4, and 8. Note that the third flag, named “unused”, is just a placeholder. This is necessary so that the next flag, “playerclip”, receives the correct value of 8. Note that the <code>name</code> key is mandatory while the <code>description</code> key is optional.</p>
 <h1 id="getting-involved">Getting Involved</h1>
 <h2 id="suggesting-a-feature">Suggesting a Feature</h2>
 <p>If you have an idea for a nice feature that you’re missing in TrenchBroom, then you can submit a request at the <a href="http://github.com/kduske/TrenchBroom/issues/">TrenchBroom issue tracker</a>. Try to describe your feature, but don’t go into too much detail. If it gets picked up, we will hash out the details together.</p>
@@ -2566,7 +3031,7 @@ one point per second
 <p>You can submit bug reports at the <a href="http://github.com/kduske/TrenchBroom/issues/">TrenchBroom issue tracker</a>. Be sure to include the the following information:</p>
 <ul>
 <li><em>TrenchBroom version</em>: e.g., &quot;*“Version 2.0.0 f335082 D” see below</li>
-<li><em>Operation system and version</em>: e.g. “Windows 7 64bit”</li>
+<li><em>Operation system and version</em>: e.g. “Windows 7 64bit”</li>
 <li><em>Crash report and the map file</em>: When TrenchBroom crashes, it saves a crash report and the map file automatically. These files are placed in the folder containing the current map file, or in your documents folder if the current map hasn’t been saved yet. For example, if the map file you are editing has the name “rtz_q1.map”, the crash report will be named “rtz_q1-crash.txt”, and the saved map file will be named “rtz_q1-crash.map”. Existing files are not overwritten - TrenchBroom creates new file names by attaching a number at the end. Please choose the files with the highest numbers when reporting a bug.</li>
 <li><em>Exact steps to reproduce</em>: It is really helpful if you can provide exact info on how to reproduce the problem. Sometimes this can be difficult to describe, so you can attach screenshots or make screencasts if necessary. If you cannot reproduce the problem, please submit a bug report either way. The cause of the problem can often be deduced anyway.</li>
 </ul>
@@ -2581,10 +3046,11 @@ one point per second
 <ul>
 <li><a href="http://github.com/kduske/TrenchBroom/">TrenchBroom on github</a> - TrenchBroom’s github page</li>
 <li><a href="http://celephais.net/board/">func_msgboard</a> - Quake Mapping Forum</li>
+<li><a href="https://joshua.itch.io/quake-tools">Quake Tools</a> - Quake tools by Joshua Skelton</li>
 <li><a href="https://www.youtube.com/watch?v=gONePWocbqA">Tutorials by dumptruck_ds</a> - Video Tutorial Series</li>
 <li><a href="https://discordapp.com/invite/f5Y99aM">Quake Mapping Discord</a> - Quake Mapping Discord</li>
 <li><a href="https://tomeofpreach.wordpress.com/">Tome of Preach</a> - Quake Map Hacks and QuakeC Hacks</li>
 </ul>
-</div>
+</main>
 </body>
 </html>
