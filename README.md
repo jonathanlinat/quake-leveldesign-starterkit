@@ -4,12 +4,14 @@
 
 This **Starter Kit** is mainly based on files / directory structure and set of tools recommended by [dumptruck_ds](https://twitter.com/david_spell).
 
+_Note: Only for Microsoft Windows users._
+
 ## Features
 
 It includes:
 
 * Quakespasm 0.93.1, Fitzgibbons & Journeymen [[Link](http://www.quakespasm.sourceforge.net)]
-* TrenchBroom 2019.1, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
+* TrenchBroom 2019.3, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
 * ericw-tools 0.18.1, Eric Wasylishen [[Link](https://ericwa.github.io/ericw-tools)]
 * ne_q1spCompilingGui 1.0.3, C. Jones [[Link](https://shoresofnis.wordpress.com/utilities/ne_q1spcompilinggui)]
 
