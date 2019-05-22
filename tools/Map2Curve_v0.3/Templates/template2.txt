@@ -1,0 +1,4 @@
+rad 512
+res 20
+arc 180
+shift 1

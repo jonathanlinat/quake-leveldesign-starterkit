@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><XnView_script version="1.0" name="XnConvert_Template">
+    <Output folder="C:/YourBMPFiles" filename=";{Filename};{Width};{Height};" case="4" startIndex="1">
+        <Options overwrite="1" orgDate="false" keepMeta="true" keepICC="false" keepFolder="false" keepParentFolder="false" keepExtension="true" delOrg="false" multipage="false" allPages="false" openExplorer="false" openBrowser="false" clearItems="false"/>
+        <BMP compress="false" hdrOS2="false"/>
+    </Output>
+</XnView_script>

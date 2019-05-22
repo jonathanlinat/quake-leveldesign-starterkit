@@ -1,0 +1,157 @@
+{
+"classname" "worldspawn"
+"classname" "worldspawn"
+"sounds" "1"
+"MaxRange" "4096"
+"mapversion" "220"
+"wad" "\goldsrc\gamedata\decals.wad;\goldsrc\gamedata\halflife.wad;\goldsrc\gamedata\liquids.wad;\goldsrc\gamedata\xeno.wad;\goldsrc\gamedata\zhlt.wad;\steamlibrary\steamapps\common\half-life\valve\aegis2.wad"
+}
+{
+"classname" "path_corner"
+"origin" "-1664 3328 0"
+"targetname" "path1"
+"target" "path101"
+}
+{
+"classname" "path_corner"
+"origin" "-384 3456 32"
+"targetname" "path101"
+"target" "path102"
+}
+{
+"classname" "path_corner"
+"origin" "1280 3328 96"
+"targetname" "path102"
+"target" "path103"
+}
+{
+"classname" "path_corner"
+"origin" "2688 2688 192"
+"targetname" "path103"
+"target" "path104"
+}
+{
+"classname" "path_corner"
+"origin" "3712 1536 256"
+"targetname" "path104"
+"target" "path105"
+}
+{
+"classname" "path_corner"
+"origin" "4224 -256 160"
+"targetname" "path105"
+"target" "path106"
+}
+{
+"classname" "path_corner"
+"origin" "3968 -1792 64"
+"targetname" "path106"
+"target" "path107"
+}
+{
+"classname" "path_corner"
+"origin" "2944 -2816 0"
+"targetname" "path107"
+"target" "path108"
+}
+{
+"classname" "path_corner"
+"origin" "1536 -2944 64"
+"targetname" "path108"
+"target" "path109"
+}
+{
+"classname" "path_corner"
+"origin" "768 -2304 160"
+"targetname" "path109"
+"target" "path110"
+}
+{
+"classname" "path_corner"
+"origin" "640 -1152 224"
+"targetname" "path110"
+"target" "path111"
+}
+{
+"classname" "path_corner"
+"origin" "256 -256 352"
+"targetname" "path111"
+"target" "path112"
+}
+{
+"classname" "path_corner"
+"origin" "-512 256 416"
+"targetname" "path112"
+"target" "path113"
+}
+{
+"classname" "path_corner"
+"origin" "-1408 384 352"
+"targetname" "path113"
+"target" "path114"
+}
+{
+"classname" "path_corner"
+"origin" "-2176 0 160"
+"targetname" "path114"
+"target" "path115"
+}
+{
+"classname" "path_corner"
+"origin" "-2560 -768 64"
+"targetname" "path115"
+"target" "path116"
+}
+{
+"classname" "path_corner"
+"origin" "-3200 -1536 0"
+"targetname" "path116"
+"target" "path117"
+}
+{
+"classname" "path_corner"
+"origin" "-4352 -1536 64"
+"targetname" "path117"
+"target" "path118"
+}
+{
+"classname" "path_corner"
+"origin" "-4992 -640 160"
+"targetname" "path118"
+"target" "path119"
+}
+{
+"classname" "path_corner"
+"origin" "-4736 896 224"
+"targetname" "path119"
+"target" "path120"
+}
+{
+"classname" "path_corner"
+"origin" "-4096 1664 192"
+"targetname" "path120"
+"target" "path121"
+}
+{
+"classname" "path_corner"
+"origin" "-2816 1920 96"
+"targetname" "path121"
+"target" "path122"
+}
+{
+"classname" "path_corner"
+"origin" "-2432 2944 64"
+"targetname" "path122"
+"target" "path123"
+}
+{
+"classname" "path_corner"
+"origin" "-1664 3328 0"
+"targetname" "path123"
+"target" "path124"
+}
+{
+"classname" "path_corner"
+"origin" "-384 3456 32"
+"targetname" "path124"
+}
