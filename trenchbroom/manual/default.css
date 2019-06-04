@@ -3,8 +3,9 @@ a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, bo
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font: inherit;
+	font: unset;
 	vertical-align: baseline;
+	box-sizing: border-box;
 }
 
 body {
@@ -19,7 +20,7 @@ blockquote, q {
 	quotes: none;
 }
 
-blockquote:after, blockquote:before, q:after, q:before {
+blockquote::after, blockquote::before, q::after, q::before {
 	content: "";
 	content: none;
 }
@@ -31,15 +32,13 @@ table {
 
 pre {
 	padding: 20px;
+	margin-left: 20px;
+	margin-right: 20px;
 	overflow-x: auto;
 	overflow-y: hidden;
 	background-color: #eee;
 	border: 1px solid #ccc;
 	border-radius: 4px;
-}
-
-pre > div {
-	padding: 20px 20px 0;
 }
 
 code {
@@ -120,15 +119,18 @@ a {
 
 figure {
 	border-radius: 4px;
-	background-color: #ccc;
-	box-sizing: border-box;
+	background-color: #ddd;
+	display: inline-block;
+	margin-left: 20px;
+	margin-right: 20px;
 }
 
 figure figcaption {
-	padding: 10px 0;
+	padding: 5px 0 10px;
 	text-align: center;
 	font-size: .75rem;
 	font-weight: 700;
+	line-height: 1;
 	color: #333;
 }
 
@@ -136,19 +138,12 @@ img {
 	max-width: 100%;
 	border-radius: 4px;
 	padding: 1px;
-	box-sizing: border-box;
 	background-color: #eee;
-}
-
-figure {
-	display: inline-block;
-	margin-left: 20px;
-	margin-right: 20px;
 }
 
 figure img {
 	margin: 0;
-	background-color: inherit;
+	background-color: unset;
 }
 
 p img {
@@ -160,6 +155,12 @@ table {
 	display: block;
 	overflow-x: auto;
 	white-space: nowrap;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+table colgroup col {
+	width: unset !important;
 }
 
 table thead tr th {
@@ -173,66 +174,191 @@ table tbody tr td, table thead tr th {
 	vertical-align: middle;
 }
 
+.shortcut, table tbody tr.odd {
+	background-color: #eee;
+}
+
 .shortcut {
 	font-size: .75rem;
 	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 	font-weight: 700;
+	line-height: 1.5;
 	border: 1px solid #ccc;
 	margin: 0 2px;
 	padding: 2px 4px;
-	background-color: #eee;
 	border-radius: 4px;
+}
+
+br {
+	display: none;
 }
 
 dl, figure, h1, h2, h3, h4, img, ol, p, pre, table, ul {
 	margin-bottom: 20px;
 }
 
+@media (max-width: 768px) {
+	figure, pre {
+		max-width: -webkit-max-content;
+		max-width: -moz-max-content;
+		max-width: max-content;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	figure {
+		display: block;
+	}
+
+	table {
+		max-width: -webkit-max-content;
+		max-width: -moz-max-content;
+		max-width: max-content;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
 body {
-	display: grid;
-	grid-template-columns: auto auto;
+	display: flex;
+	height: 100vh;
 	color: #333;
 }
 
-body > main, body > section {
-	padding: 20px 20px 0;
+body > main, body > nav, body > section {
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 10px 20px 0;
 }
 
-body #TOC {
-	box-sizing: border-box;
+body #toc {
+	min-width: -webkit-max-content;
+	min-width: -moz-max-content;
+	min-width: max-content;
 	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 	font-size: 16px;
-	background-color: #eee;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 	user-select: none;
 }
 
-body #TOC #TOC_INNER #TOC_HEADER {
+body #toc, body #toc_toggler {
+	background-color: #eee;
+	z-index: 100;
+}
+
+body #toc_toggler {
+	min-width: 48px;
+	display: none;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px 0;
+	font-size: 20px;
+}
+
+body #toc_toggler > img {
+	width: 24px;
+	height: 24px;
+}
+
+body #toc_toggler > a {
+	color: #333;
+}
+
+body #toc_inner_header {
+	margin-top: 10px;
 	text-align: center;
 }
 
-body #TOC #TOC_INNER img {
+body #toc_inner_header > img {
 	display: inline-block;
 	margin-bottom: 10px;
 }
 
-body #TOC #TOC_INNER > ul {
+body #toc_inner > ul {
 	margin-top: 10px;
 	margin-left: 0;
 	list-style-type: none;
 }
 
-body #TOC #TOC_INNER > ul > li > a {
+body #toc_inner > ul > li:not(:first-child) {
+	margin-top: 10px;
+}
+
+body #toc_inner > ul > li > a {
 	font-weight: 700;
 }
 
-body #CONTENT {
+body #content {
 	overflow: auto;
-	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 	font-size: 16px;
 }
 
-body #CONTENT h1, body #CONTENT h2, body #CONTENT h3, body #CONTENT h4 {
+body #content h1, body #content h2, body #content h3, body #content h4 {
 	width: 100%;
 	display: inline-block;
+	margin-top: 10px;
+}
+
+body #content_version {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+}
+
+body #content_version p {
+	font-size: .75rem;
+	text-align: right;
+	color: #999;
+	margin: unset;
+}
+
+body #content_version p span::before {
+	content: " - ";
+}
+
+body #content_version p span:first-child::before {
+	content: unset;
+}
+
+@media (max-width: 768px) {
+	body #toc {
+		display: none;
+		width: 100vw;
+	}
+
+	body #toc_toggler {
+		display: flex;
+	}
+
+	body #toc_inner_header {
+		text-align: left;
+	}
+
+	body #toc_inner_header > img {
+		display: none;
+	}
+
+	body #toc:target {
+		display: block;
+	}
+
+	body #toc:target ~ #content {
+		width: 0;
+		height: 0;
+		overflow: hidden;
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+
+	body #content_version p span {
+		display: list-item;
+		list-style: none;
+	}
+
+	body #content_version p span::before {
+		content: unset;
+	}
 }
