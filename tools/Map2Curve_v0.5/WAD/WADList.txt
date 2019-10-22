@@ -1,0 +1,6 @@
+// Here you can put any WAD files you are using in your maps.
+// Use absolute paths only!
+// Example:
+// C:\SteamLibrary\steamapps\common\Half-Life\valve\halflife.wad
+
+// Alternatively you can place a copy of the actual WAD-file in the WAD dir.

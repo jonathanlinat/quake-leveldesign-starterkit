@@ -1,0 +1,237 @@
+@PointClass size(-32 -32 -32, 32 32 32) color(43 224 212) = info_curve_export : "M2C Export Settings"
+[
+	m2c_target(string) : "Target File"
+	m2c_append(choices) : "Overwrite Target File?" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Yes (Default)"
+		1 : "No"
+	]
+]
+
+
+@PointClass size(-16 -16 -16, 16 16 16) color(43 224 212) = info_curve : "M2C Curve Settings"
+[
+	m2c_rad(string) : "Radius"
+	m2c_offset(string) : "Offset"
+	m2c_res(string) : "Sides (4-384)"
+	m2c_type(choices) : "Type" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Pi (Default)"
+		1 : "Grid"
+		2 : "Path Extrusion"
+	]
+	m2c_shift(choices) : "Shift" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Null-Shift"
+		1 : "Per Section"
+		2 : "Per Brush"
+		3 : "Per Brush Texture"
+		4 : "Aligned left on Section"
+		5 : "Per Group Texture (Default)"
+	]
+	m2c_range_start(string) : "Start (0-100)"
+	m2c_range_end(string) : "End (0-100)"
+	m2c_height(string) : "Height"
+	m2c_ramp(choices) : "Ramp" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "No Ramp (Default)"
+		1 : "Linear Ramp"
+		2 : "Smooth Ramp"
+	]
+
+	INFO(string) : ""
+	INFO(string) : "### ADVANCED ###"
+	m2c_ramptex(choices) : "Sloped Tex Mode" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Sheared (Default)"
+		1 : "Square"
+	]
+	m2c_round(choices) : "Round" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Off (Default)"
+		1 : "On"
+	]
+	m2c_tri(choices) : "Triangulation" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Off (Default)"
+		1 : "On"
+	]
+	m2c_bounds(choices) : "Bounding Box" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Off (Default)"
+		1 : "On"
+	]
+	m2c_nulltex(string) : "NULL Tex"
+	m2c_skipnull(choices) : "Skip NULL on Export?" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "No (Default)"
+		1 : "Yes"
+	]
+	m2c_spike_height(string) : "Spike height"
+	m2c_gaps(choices) : "Gap-Brushes" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Off (Default)"
+		1 : "On"
+	]
+	m2c_gaplen(string) : "Gap Length"
+	m2c_transit_tri(choices) : "Transition Tri" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Off (Default)"
+		1 : "On"
+	]
+	m2c_transit_round(choices) : "Transition Round" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Off (Default)"
+		1 : "On"
+	]
+	m2c_obj(choices) : "OBJ Export?" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "No (Default)"
+		1 : "Yes"
+	]
+
+	INFO(string) : ""
+	INFO(string) : "### DETAIL GROUPS ###"
+	m2c_d_enable(choices) : "Enable?" : 0 =
+	[
+		0 : "UNSET"
+		1 : "Yes (Default)"
+		-1 : "No"
+	]
+	m2c_d_pos(string) : "Position (0-1)"
+	m2c_d_autoyaw(choices) : "Auto-Yaw" : 0 =
+	[
+		0 : "UNSET"
+		1 : "On (Default)"
+		-1 : "Off"
+	]
+	m2c_d_autopitch(choices) : "Auto-Pitch" : 0 =
+	[
+		0 : "UNSET"
+		1 : "On (Default)"
+		-1 : "Off"
+	]
+	m2c_d_autoname(choices) : "Auto-Name" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Off (Default)"
+		1 : "On"
+	]
+	m2c_d_separate(choices) : "Separate Export" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Off (Default)"
+		1 : "On"
+	]
+	m2c_d_draw(string) : "Export every x-th"
+	m2c_d_skip(string) : "Skip every x-th"
+	m2c_d_draw_rand(choices) : "Random Export" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "No (Default)"
+		1 : "Yes"
+	]
+	INFO3(string) : " Format: (on/off min max)" : "0 -180 180"
+	m2c_d_pos_rand(string) : "Random Position"
+	m2c_d_rotz_rand(string) : "Random Yaw"
+	m2c_d_movey_rand(string) : "Random Move Y"
+
+	INFO(string) : ""
+	INFO(string) : "### PATHS ###"
+	m2c_path(string) : "Custom Path File"
+	m2c_p_cornerfix(choices) : "Path Corner Fix" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Off (Default)"
+		1 : "On"
+	]
+	m2c_p_reverse(choices) : "Path Reverse" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Off (Default)"
+		1 : "On"
+	]
+	m2c_p_split(choices) : "Path Split" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Off (Default)"
+		1 : "On"
+	]
+
+	INFO(string) : ""
+	INFO(string) : "### TRANSFORMATIONS ###"
+	m2c_scale(string) : "Final Scale (e.g. 0.5)"
+	m2c_rot(string) : "Final Rotation (X,Y,Z)"
+	m2c_move(string) : "Final Movement  (X,Y,Z)"
+	m2c_scale_src(string) : "Source Scale (e.g. 0.5)"
+	m2c_rot_src(string) : "Source Rotation (X,Y,Z)"
+
+]
+
+@PointClass color(43 224 212) = info_detailgroup : "M2C Detail Group Settings"
+[
+	m2c_d_group(string) : "Detail Group Name"
+	INFO(string) : " ! Add this key to any Entity" : "m2c_d_group"
+	INFO(string) : " ! and use group name as value"
+	INFO(string) : " ! to make it use these settings"
+	m2c_d_enable(choices) : "Enable?" : 0 =
+	[
+		0 : "UNSET"
+		1 : "Yes (Default)"
+		-1 : "No"
+	]
+	m2c_d_pos(string) : "Position (0-1)"
+	m2c_d_autopitch(choices) : "Auto-Pitch" : 0 =
+	[
+		0 : "UNSET"
+		1 : "On (Default)"
+		-1 : "Off"
+	]
+	m2c_d_autoyaw(choices) : "Auto-Yaw" : 0 =
+	[
+		0 : "UNSET"
+		1 : "On (Default)"
+		-1 : "Off"
+	]
+	m2c_d_autoname(choices) : "Auto-Name" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "Off (Default)"
+		1 : "On"
+	]
+	m2c_d_separate(choices) : "Export separately?" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "No (Default)"
+		1 : "Yes"
+	]
+	INFO2(string) : ""
+	INFO2(string) : "### Export ###"
+	m2c_d_draw(string) : "Export every x-th"
+	m2c_d_skip(string) : "Skip every x-th"
+	m2c_d_draw_rand(choices) : "Random Export" : 0 =
+	[
+		0 : "UNSET"
+		-1 : "No (Default)"
+		1 : "Yes"
+	]
+	INFO3(string) : ""
+	INFO3(string) : "### Randomize ###"
+	INFO3(string) : " Format: (on/off min max)" : "0 -180 180"
+	m2c_d_pos_rand(string) : "Random Position"
+	m2c_d_rotz_rand(string) : "Random Yaw"
+	m2c_d_movey_rand(string) : "Random Move Y"
+]

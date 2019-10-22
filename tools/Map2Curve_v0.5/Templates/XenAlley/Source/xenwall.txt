@@ -1,0 +1,6 @@
+rad 0
+type 2
+shift 1
+p_reverse 1
+p_split 1
+bounds 0

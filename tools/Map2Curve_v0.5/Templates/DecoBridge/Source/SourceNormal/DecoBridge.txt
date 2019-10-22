@@ -1,0 +1,14 @@
+rad 0
+offset 128
+shift 5
+res 24
+
+range_start 0
+range_end 25
+
+d_angle 0.5
+d_separate 0
+
+nulltex SOLIDHINT
+
+bounds 1

@@ -1,0 +1,376 @@
+
+		// ============ Default Settings for Map2Curve v0.5 ============ //
+
+
+
+			// ======== Input Output File Settings ======== //
+
+source		"UNSET"
+			// Data-Type:		String
+			// Default Value:	"UNSET"
+			// Example:		C:\MyMaps\MySourceMap.map (absolute)
+			//			"C:\My Map Folder\MySourceMap.map" (absolute with spaces)
+			//			\MySourceMap.map (relative)
+			// Description:		Custom input map file path.
+
+target		"UNSET"
+			// Data-Type:		String
+			// Default Value:	"UNSET"
+			// Example:		C:\MyMaps\MyTargetMap.map (absolute)
+			// Description:		Custom output map file path.
+
+append		0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off - Overwrites target map completely.
+			//			1 : On  - Includes generated map into existing target map.
+			// Description:		Whether or not a generated curve gets appended onto an existing mapfile.
+
+obj		0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : On
+			// Description:		Exports individual curve objects as OBJ files.
+
+
+			// ======== General Curve Settings ======== //
+
+rad		0
+			// Data-Type:		Float
+			// Default Value:	0
+			// Valid Range:		>=0
+			// States:		0 : Original Radius is being taken from source map brushwork.
+			// Example:		512
+			// Description:		Curve radius in game units.
+
+offset		0
+			// Data-Type:		Float
+			// Default Value:	0
+			// Valid Range:		Any
+			// Example:		-128
+			// Description:		Additional offset on top of radius in game units.
+
+res		8
+			// Data-Type:		Integer
+			// Default Value:	8
+			// Valid Range:		0-384
+			// States:		0 : Auto - Based on previous curves radius and number of sides.
+			// Example:		28
+			// Description:		Number of sides for the curve.
+
+type		0
+			// Data-Type:		Integer
+			// Default Value:	0
+			// States:		0 : Pi circle
+			//			1 : Grid circle
+			//			2 : Path Extrusion
+			// Description:		Type of construction frame.
+
+shift		5
+			// Data-Type:		Integer
+			// Default Value:	5
+			// Valid Range:		0-5
+			// States:		0 : Nullshift
+			//			1 : Per Section
+			//			2 : Per Brush
+			//			3 : Per Brush Texture
+			//			4 : Aligned Left(Section)
+			//			5 : Per Group Texture
+			// Description:		Horizontal texture shift mode.
+
+range_start	0
+			// Data-Type:		Float
+			// Default Value:	0
+			// Valid Range:		0-100
+			// Example:		25
+			// Description:		Start of export range in percent. Also has an impact
+			//			on the result of smooth ramp generation!
+
+range_end	100
+			// Data-Type:		Float
+			// Default Value:	100
+			// Valid Range:		0-100
+			// Example:		75
+			// Description:		End of export range in percent. Also has an impact
+			//			on the result of smooth ramp generation!
+
+bounds		0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : On - Creates a bounding box for the entire generated curve object.
+			// Description:		Enables or disables a brush box that covers the generated objects,
+			//			for an easier handling in a map editor.
+
+height		0
+			// Data-Type:		Float
+			// Default Value:	0
+			// Valid Range:		>0
+			// Example:		64
+			// Description:		Adds custom height to every section (stair steps) in game units.
+
+ramp		0
+			// Data-Type:		Integer
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : Linear Ramp
+			//			2 : Smooth Ramp
+			// Description:		Creates a ramp when height setting is greater than 0.
+
+ramptex 	0
+			// Data-Type:		Integer
+			// Default Value:	0
+			// States:		0 : Sheared
+			//			1 : Square
+			// Description:		Defines the texture alignment method for sloped brushes.
+
+round		0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : On
+			// Description:		Rounds all coordinates of curve brushes to integer numbers.
+
+tri		0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : On
+			// Description:		Triangulates all curve brushes.
+
+
+
+
+
+			// ======== Advanced Features ======== //
+			
+nulltex		NULL
+			// Data-Type:		String
+			// Default Value:	NULL
+			// Example:		SOLIDHINT
+			// Description:		Default texture for faces that occour when triangulating brushes.
+
+spike_height	4
+			// Data-Type:		Integer
+			// Default Value:	4
+			// Valid Range:		>0
+			// Example:		16
+			// Description:		Default height for spike shaped brushes that occour when triangulating
+			//			complex brushes.
+
+skipnull 	0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : On
+			// Description:		Brushes that only consist of NULL faces are being skipped during export.
+
+gaps		0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : On
+			// Description:		Gap brushes are middle sections that can be used for various mapping purposes.
+
+gaplen		256
+			// Data-Type:		Float
+			// Default Value:	256
+			// Valid Range:		>0
+			// Example:		512
+			// Description:		Controls the length of gap brushes.
+
+transit_tri	0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : On
+			// Description:		Triangulates the first and last brush of a curve object.
+			//			When combined with transit_round the resulting curve can be connected
+			//			to another curve a lot easier or be modifed in another way.
+
+transit_round	0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : On
+			// Description:		Rounds the coordinates of the first and last face vertices of a curve object
+			//			so the resulting brushes can be connected to other brushwork easier.
+			//			Is usually being used along with transit_tri.
+
+
+
+
+			// ======== Path Extrusion ======== //
+			
+path		"UNSET"
+			// Data-Type:		String
+			// Default Value:	"UNSET"
+			// Example:		C:\MyMaps\MyTargetMap.map (absolute)
+			// Description:		Custom file path to map that has path_corners in it.
+
+p_cornerfix 0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : On
+			// Description:		Re-arranges inwards corners for path extrusion objects,
+			//			to avoid overlapping meshes.
+
+p_reverse  	0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : On
+			// Description:		Reverses path direction. (forwards<>backwards)
+
+p_split		0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : On
+			// Description:		Whether or not the final path extrusion object is being
+			//			split into smaller parts on file export.
+
+
+
+
+			// ======== Transformations ======== //
+
+scale 		0
+			// Data-Type:		Float
+			// Default Value:	0
+			// Valid Range:		Any
+			// Example:		0.75
+			// Description:		Scaling for the final generated curve object.
+			//			Won't affect point entities and currently only works for all axes at once!
+
+rot 		"0 0 0"
+			// Data-Type:		Float
+			// Default Value:	"0 0 0"
+			// Valid Range:		Any
+			// Example:		"0 45 -200.5"
+			// Description:		Rotation for the final generated curve object. Axis order is XYZ.
+
+move 		"0 0 0"
+			// Data-Type:		Float
+			// Default Value:	"0 0 0"
+			// Valid Range:		Any
+			// Example:		"0.75 -512 256"
+			// Description:		Transition for the final generated curve object.
+
+
+scale_src 	0
+			// Data-Type:		Float
+			// Default Value:	0
+			// Valid Range:		Any
+			// Example:		1.25
+			// Description:		Scaling for the source map.
+			//			Won't affect point entities and currently only works for all axes at once!
+
+rot_src 	"0 0 0"
+			// Data-Type:		Float
+			// Default Value:	"0 0 0"
+			// Valid Range:		Any
+			// Example:		"-0.25 45 -75"
+			// Description:		Rotation for the source map. Axis order is XYZ.
+			//			Currently doesn't work as intended for detail objects when
+			//			rotated around axes other than X!
+
+
+
+			// ======== Detail objects ======== //
+
+d_pos		0.5
+			// Data-Type:		Float
+			// Default Value:	0.5
+			// Valid Range:		0-1
+			// Example:		0.33
+			// Description:		Controls the relative position of the detail object along the curve
+			//			section. 0 is start, 1 is end.
+
+d_enable	1
+			// Data-Type:		Bool
+			// Default Value:	1
+			// States:		1 : On
+			//			0 : Off
+			// Description:		Enables or disables detail groups entirely or for single groups only, when used directly via info_detailgroup in an Editor.
+
+d_autopitch	1
+			// Data-Type:		Bool
+			// Default Value:	1
+			// States:		1 : On
+			//			0 : Off
+			// Description:		Enables or disables automatic Y rotation (Pitch) for detail objects on ramps.
+
+d_autoyaw	1
+			// Data-Type:		Bool
+			// Default Value:	1
+			// States:		1 : On
+			//			0 : Off
+			// Description:		Enables or disables automatic Z rotation (Yaw) for detail objects.
+
+d_autoname	0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off - All detail objects of a group share the original keyvalues.
+			//			1 : On  - Each detail object has individual keyvalues.
+			// Description:		Wheter or not certain keyvalues (currently for "targetname" and "target")
+			//			of detail entities (solid and point) get numbered consecutively per section.
+			//			Needs d_separate to be active for solid entities to be affected as well!
+			// 			Example: (targetname) section 1 <door01>, section 2 <door02>, etc.
+
+d_separate	0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off - One object.
+			//			1 : On  - Individual objects.
+			// Description:		Wheter or not detail objects that are solid entities (e.g. func_wall)
+			//			get exported as individual or whole object.
+
+d_rotz_rand	"0 0 0"
+			// Data-Type:		Bool, Float, Float
+			// Default Value:	"0 0 0"
+			// Valid Range:		"0/1 Any Any"
+			// Example:		"1 -90 180"
+			// Description:		Random rotation around Z (Yaw) in degree within min and max limit.
+			//			First value (de)actiates the feature. Second and third are the limits.
+
+d_movey_rand	"0 0 0"
+			// Data-Type:		Bool, Float, Float
+			// Default Value:	"0 0 0"
+			// Valid Range:		"0/1 Any Any"
+			// Example:		"1 -500 64"
+			// Description:		Random transition (movement) along Y axis in game units within min and max limit.
+
+d_pos_rand	"0 0 0"
+			// Data-Type:		Bool, Float, Float
+			// Default Value:	"0 0 0"
+			// Valid Range:		"0/1 0-1 0-1"
+			// Example:		"1 0.25 0.75"
+			// Description:		Randomizes the position of the detail object along the curve
+			//			section within min and max range.
+
+d_draw		0
+			// Data-Type:		Integer
+			// Default Value:	0
+			// Valid Range:		>=0
+			// Example:		5
+			// Description:		If greater than 0, every x-th detail object of a group is being exported.
+
+d_skip		0
+			// Data-Type:		Integer
+			// Default Value:	0
+			// Valid Range:		>=0
+			// Example:		3
+			// Description:		If greater than 0, every x-th detail object of a group is being skipped from export.
+
+d_draw_rand	0
+			// Data-Type:		Bool
+			// Default Value:	0
+			// States:		0 : Off
+			//			1 : On
+			// Description:		Randomizes the export of detail objects entirely.
+
+
+
