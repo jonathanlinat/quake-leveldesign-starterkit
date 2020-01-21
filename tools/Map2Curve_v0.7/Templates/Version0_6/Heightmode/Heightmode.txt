@@ -1,0 +1,33 @@
+
+
+splinefile Templates\Version0_6\Heightmode\Spline.map
+source Templates\Version0_6\Heightmode\Bevel.map
+
+
+rad 0
+rad 0
+rad 0
+rad 0
+
+ramp 1
+type 0
+res 16
+
+heightmode 0 // linear slope
+heightmode 1 // smooth slope
+heightmode 2 // height from spline file
+heightmode 3 // random between 0 and 256 (res*height)
+
+height 16
+height 16
+height 0 // height is being overridden by height info from splinefile
+height 16
+
+p_scale "0 0 0"
+p_scale "0 0 0"
+p_scale "0 0 0.5" // to scale the input-spline by 0.5 on the Z axis only
+
+move "-768 0 0"
+move "0 0 0"
+move "768 0 0"
+move "1536 0 0"

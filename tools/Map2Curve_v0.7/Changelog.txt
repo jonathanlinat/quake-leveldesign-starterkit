@@ -1,0 +1,248 @@
+v0.7
+- Added RMF export per default. Can be toggled with:
+  - rmf 0/1
+- Added carving for detail objects. Can be toggled with:
+  - d_carve 0/1
+- Added ability of custom origin brush and entity for detail objects.
+  Either add an "ORIGIN"-textured brush or an info_target with
+  name-keyvalue "ORIGIN" to a detail group.
+- Added random detail object group scaling withing limits. Can be
+  set with "d_scale_rand" similar to other transformation commands:
+  - d_scale_rand "1 0.5 2" (0/1 min max)
+- Added automatic assignment of any ungrouped entity to the same
+  detail object group. Can be toggled with:
+  - d_autoassign 0/1
+  Only works globally at the moment (for all defined curves).
+- Added flatcircle command to make Pi circle flat instead of
+  pointed. Original circle size is being maintained.
+  - flatcircle 0/1
+- Added another bounding box type: Hollow box. Can be used with:
+  - bounds 2
+- Added a precise circle spin mode for detail objects. Can be
+  toggled with:
+  - d_circlemode 0/1
+- Added vertex welding for carved brushes and fixing of 
+  "borderliner" vertex coordinates (e.g. 128.00002 = 128).
+- Fixed a problem due to different vertex order of MAP files that were
+  exported from J.A.C.K. editor. M2C would print invalid brush errors
+  without apparent reason.
+
+v0.6
+- Added the new curve type "intersecting spline extrusion" (3), which
+  works very different to the simple spline type (2). It can produce
+  much smoother shapes, but will also generate floating point
+  coordinates more likely.
+- Added the following commands for spline curves:
+  - p_scale "0 0 0" - scales a spline from an external splinefile on
+                      the 3 axes (XYZ) individually
+  - p_expand +/-0   - expands the imported spline by a given amount
+                      of game units
+  - p_evenout (0/1) - adds new knots to the imported spline in a way,
+                      that preserves the original knots, but gives the
+                      whole spline a matching level of detail, based
+                      on the shortest edge length
+- Added texmode command to control the way textures are being mapped
+  onto brush faces.
+    (0) Square texture mapping (Default)
+    (1) Seamless texture mapping
+        Note: needs "tri 1" to work; no ramps supported; only works on
+        circle curve types (type 0/1)
+- Added command "c_enable" to toggle curve brushes, which works analog
+  to "d_enable", which toggles detail objects on and off.
+- Added command "map" to toggle export to map format. Is active per
+  default.
+- Made Detail Objects work for all curve types! They only worked for
+  Pi circle (0, default curve type) until now.
+- Changed nomenclature of "path" to "spline" in general.
+- Changed "path" command to "splinefile" to make it more distinct.
+- Added "heightmode" command to control the way how height is being
+  added to the curve sections:
+    (0) Linear Slope
+    (1) Smooth Slope
+    (2) Spline (Height is being taken from splinefile)
+    (3) Random Jagged
+- Made negative heights possible.
+- Changed "ramp" command to be for only enabling (1) and disabling (0)
+  ramp mode instead of toggling slope mode (1-linear/2-smooth) too.
+- Changed default texture for generated faces from "NULL" to
+  "SOLIDHINT", which is supported by the VHLT Compilers.
+- Changed bounding box texture from "NULL" to "SKIP", which causes
+  it to be ignored during compilation.
+- Added texture shift minimizing (will be applied automatically).
+- Fixed a textur issue with splines.
+- Fixed hanging ramp function bug, finally. (hopefully)
+
+v0.5
+1. Added FGD File and 3 Entities to use in Goldsource Editors!
+   - info_curve
+     This acts as a source of settings for one curve object. It features
+     the same commands as the so far used textfiles.
+   - info_curve_export
+     This only contains the export specific commands "target" and "append"
+     and will always overwrite these commands from other sources.
+   - info_detailgroup
+     This controls individual detail object groups and will overwrite
+     the global settings for those.
+
+2. Added "Detail Objects", which are objects (solid and point entities)
+   that are being cloned and aligned along generated curves.
+   Add the following commands to any entity (by leaving smart edit in
+   Hammer Editor):
+     Key: m2c_d_group
+     Value: YourGroupname
+   This will create a custom detail group that can have further settings.
+   Settings to control the detail groups can be used globally in
+   a usual preset file (txt) or info_curve entity or by using a personal
+   info_detailgroup entity, that has the same groupname.
+   You can also add settings directly to any of the groups member objects
+   (IMPORTANT: Add "m2c_" in front of them, e.g. "m2c_d_enable" and use
+   -1 instead of 0, as Hammer will not export 0 values to map-files).
+   Settings are:
+     - d_enable [0,1]    to turn detail objects on and off
+     - d_pos [0-1]       to control the position of a detail object
+     - d_autopitch [0,1] to turn Y axis rotation on ramps on/off
+     - d_autoyaw [0,1]   to turn Z axis rotation on/off
+     - d_autoname [0,1]  names and targetnames of Entites will get numbered
+     - d_separate [0,1]  to export detail objects as individual objects
+     - d_movey_rand [0/1 min max] Move objects along y axis randomly within range.
+     - d_rotz_rand [0/1 min max] Turn objects around z axis randomly within range.
+     - d_pos_rand [0/1 min max] Position objects along section randomly within range.
+     - d_draw [>0]	 export every x-th Detail Object of a group
+     - d_skip [>0]	 skip export of every x-th Detail Object of a group
+     - d_draw_rand [0,1] completely randomize the export of Detail Objects
+
+3. Gave M2C the ability to read texture informations from real WAD files.
+   You can either paste the (absolute) filepaths of your used WAD files to
+   the WADList.txt in the WAD folder or you can paste copies of the actual
+   WAD files in said folder. Whatever appears more convenient to you.
+
+4. Added commands "nulltex" and "spike_height".
+   - nulltex [e.g. "SOLIDHINT"] controls the texture that is being used
+     on new Faces when Brushes have been triangulated.
+   - spike_height [>0] controls the height of spike Brushes that occour
+     when triangulating complex Brushes
+
+5. Priority for settings is now (when superior one wasn't found):
+   For Map-Files (*.map):
+     (1) Map-internal info_curve entity if existing
+     (2) External preset-file (*.txt) if existing
+     (3) Default settings (DEFAULTS.txt) if existing
+     (4) Internal defaults
+   For Setting-Files (*.txt):
+     (1) External preset-file (*.txt) if existing
+     (2) Default settings (DEFAULTS.txt) if existing
+     (3) Internal defaults
+
+6. Made DEFAULTS.txt in root directory work as intended. The program
+   will now always use these defaults on any file, when no other settings
+   could be found or loaded.
+
+7. Optimized behaviour of target, source and append.
+   All of these work once per file, as before. Custom source files can only
+   be specified, when using Setting-Files (*.txt), as MAP-files will always
+   be their own source.
+
+8. Changed the rotation order for "rot" and "rot_src" from ZXY to XYZ and
+   the way how to submit rotation values from 90,45,135 to "90 45 135"
+   (quotation marks!).
+
+9. Added exe launch parameters, used like this: -param
+   Parameters are at the moment:
+   -autoclose (closes the program instantly after curve generation)
+
+v0.4
+1. Added custom file paths for input and output files.
+   target - specifies a custom file path for the final object export
+   source - specifies a custom file path for the source map file
+   path   - specifies a custom file path for a path file, atm used for
+            simple path extrusion (type 2)
+   Note: File-Paths that contain spaces, have to be put in quotation
+   marks -> "C:\Path\New Folder\mycustomfile.map"
+2. Added command "append" (0/1). When this is active, the exported object
+   will be appended to the existing target file, without deleting its
+   prior content.
+3. Added simple transformations, for final and source object:
+   scale 	n (e.g. "scale 0.75") 		affects the final object
+   scale_src 	n (e.g. "scale_src 1.25") 	affects the source object
+   Note: Scale only works for all axis at the same time atm.
+   rot 		x,y,z (e.g. "rot 0,45,0") 	affects the final object
+   rot_src 	x,y,z (e.g. "rot 0,45,0") 	affects the source object
+   move 	x,y,z (e.g. "move 0,512,256") 	affects the final object
+   Note: There is no "move_src" since "offset" is doing exactely that.
+4. Added bounding boxes per default. Can be deactivated by adding "bounds 0"
+   to the settings. The boxes will snap to a fixed grid size of 32 atm.
+5. Added commands "range_start" and "range_end" that control how much of
+   the generated curve object will be exported finally.
+   Both work as percentage value (0-100). For a curve with 12 sections
+   and a range of 25-50 this would mean that the sections 3-6 will be
+   exported.
+   Note: "range_end" replaces "arc".
+6. Added "transit_tri" and "transit_round" (0/1) to enable control over the
+   first and last brush of a curve and their respective cut-faces.
+   This can be used to use seamlessly connect different curves or other
+   brushwork, without having to triangulate and or round the whole curve.
+7. Added commands "gaps" and "gaplen", to create linear middle sections
+   between regular curve sections with a custom length (e.g. "gaplen 512").
+   These gaps can be used for even more flexibility in specific mapping
+   situations.
+   Note: Gaps are not affected by horizontal texture shift- and ramp-mode.
+         They only feature a basic h-shift.
+8. Overhaul of brush triangulation. Added complex triangulation.
+   The program will always use the most efficient way of triangulation:
+     - 5 or 6 sided brushes with a trapezoid or triangle profile and
+       upright front/back faces, will be turned into efficient wedge-
+       brushes
+     - Complex brushes will be split up into individual brushes. Each
+       face will be turned into as many triangular spikes as necessary.
+9. Added "skipnull" command. When active ("skipnull 1") it will skip
+   brushes during export, when they are made of NULL faces only.
+   This can be used effectively for triangulation of complex brushes,
+   by using the NULL texture on unneded faces to save file space.
+10.Finally added the shift mode "per group texture", that, when using
+   solid entities, will respect all brushes of that entity in terms of
+   horizontal texture shift calculation.
+
+2019-05-15
+v0.3
+1. Fixed crash when triangulating a triangular brush.
+2. Triangulation now default for ramp generation ("tri 1" statement not
+   necessary anymore)
+3. Triangulation for 5 sided brushes (Wedge Profile) now also possible.
+4. Added "path" type (type 2) for arc generation. The path is being
+   taken from an additional map file: mapname_path1.map, where "_path1"
+   is the path of the respective arc #1, "_path2" of arc #2 and so forth.
+   Map files that contain paths, can contain multiple seperated paths.
+   Each one will be used by the respective arc.
+5. Added "p_reverse" option for path extrusion mode. Activating it (1)
+   will reverse the direction of a path.
+6. Added "p_cornerfix" option for grid path extrusion mode ("type 2").
+   When activated (1) it will fix overlapping meshes of "inside corners".
+7. Added World-to-Face alignment conversion on map load.
+8. Fixed minor texture misalignment issues.
+9. Added "ramptex" setting to control texture alignment on ramps.
+10.Added "p_split" setting to control whether a path object is split
+   up into many smaller pieces or left in one piece on export.
+
+2019-03-26
+v0.2a
+1. Added Drag and Drop for map and txt files. When dropping map files,
+   defaults.txt will always be used for settings if it exists. Otherwise
+   internal defaults will be used.
+2. Added Solid Entity Support. Point Entities are still being ignored
+   at the moment, but might be considered in a future update.
+3. Added Custom Height command "height", which is being added to each section.
+4. Added round coordinates command "round" (0/1).
+5. Added "ramp" as an addition to "height". Usable with linear (1) and
+   smooth (2) slope.
+6. Added Triangulation "tri" (0/1) for 6 sided Brushes only (Cuboids).
+   Neccessary for ramp generation.
+7. Fixed settings file issue.
+8. Fixed invalid Brush issue.
+
+2019-03-15
+v0.11a
+1. Fixed WAD detection and file-paths issues.
+2. Drag&Drop works for map files now, too. Settings are then being
+   taken from defaults.txt in Map2Curve root folder, if available.
+3. Added CreateWAD.exe, which will create a text file "wad_custom.txt"
+   from a folder of BMP files. See its README for further information.

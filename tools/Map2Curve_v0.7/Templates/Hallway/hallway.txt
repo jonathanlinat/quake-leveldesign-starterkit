@@ -1,0 +1,50 @@
+
+rad 0
+rad 768
+rad 1536
+
+offset -32
+offset 16
+offset 64
+
+res 16
+res 24
+res 0
+
+type 0
+
+range_start 0
+range_start 25
+range_start 12.5
+
+range_end 25
+range_end 50
+range_end 25
+
+shift 5
+
+height 0
+height 32
+height 0
+
+ramp 0
+ramp 1
+ramp 0
+
+round 0
+round 1
+round 0
+
+bounds 0
+bounds 1
+bounds 0
+
+
+
+
+
+
+
+
+
+

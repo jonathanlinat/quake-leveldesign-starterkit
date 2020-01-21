@@ -1,0 +1,8 @@
+
+
+
+rad 0
+res 24
+tri 1
+
+texmode 1

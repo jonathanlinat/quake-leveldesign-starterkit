@@ -1,0 +1,6 @@
+shift 3
+res 32
+ramp 1
+height 16
+bounds 0
+heightmode 1

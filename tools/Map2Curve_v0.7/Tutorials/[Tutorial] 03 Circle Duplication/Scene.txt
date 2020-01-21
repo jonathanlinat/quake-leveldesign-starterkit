@@ -1,0 +1,9 @@
+rad 0
+res 16
+offset 192
+range_end 35
+bounds 2
+
+flatcircle 1
+d_carve 1
+d_autoassign 1

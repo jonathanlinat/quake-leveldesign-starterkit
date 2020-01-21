@@ -1,0 +1,4 @@
+rad 0
+res 16
+range_end 25
+bounds 2

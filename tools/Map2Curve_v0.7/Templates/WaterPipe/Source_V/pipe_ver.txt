@@ -1,0 +1,22 @@
+
+
+// IMPORTANT NOTE!
+// When transforming certain brushwork into ramps AND using the MAP format for export, it might be a good idea to
+// round the vertices to integer numbers,
+// since the compiler tools really don't like sloped brushes with floating point coordinates, that are furthermore
+// triangulated. They will probably completely mess them up, resulting in holes and other unlovely errors.
+// Snapping everything to grid will avoid this in some situations. Maybe not always though.
+
+rad 0
+
+shift 1
+res 16
+
+offset 256
+
+//round 1 // snapping to grid if output is MAP format is advised
+
+ramp 1
+height 32
+
+bounds 0

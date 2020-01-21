@@ -17,9 +17,9 @@ It includes:
 
 Extras:
 
-* Quake Tools 1.0.0, Joshua Skelton [[Link](https://joshua.itch.io/quake-tools)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)]
+* Quake Tools 1.2.1, Joshua Skelton [[Link](https://joshua.itch.io/quake-tools)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)]
 * TexMex 3.4, Mike Jackman [[Link](https://quakewiki.org/wiki/TexMex)]
-* Map2Curve 0.5, ToTac [[Link](http://gibshooter.com/map2curve)]
+* Map2Curve 0.7, ToTac [[Link](http://gibshooter.com/map2curve)]
 * Original Quake maps, John Romero [[Link](https://rome.ro/news/2016/2/14/quake-map-sources-released)]
 * Original Quake textures [[Link](https://www.quaddicted.com)]
 * Prototype WAD textures 1.2, Aleksander "Khreathor" Marhall [[Link](http://khreathor.xyz/site/prototype)]

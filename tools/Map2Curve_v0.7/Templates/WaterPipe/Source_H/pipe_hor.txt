@@ -1,0 +1,6 @@
+rad 0
+
+shift 1
+res 16
+offset 256
+range_end 25

@@ -1,0 +1,8 @@
+splinefile "Templates\XenAlley\Source\spline.map"
+rad 0
+type 2
+shift 1
+p_reverse 1
+p_split 1
+heightmode 2
+ramp 1

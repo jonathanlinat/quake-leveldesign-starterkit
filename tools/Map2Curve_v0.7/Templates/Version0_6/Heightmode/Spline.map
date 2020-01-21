@@ -1,0 +1,108 @@
+{
+"classname" "worldspawn"
+"sounds" "1"
+"MaxRange" "4096"
+"mapversion" "220"
+"wad" "\steamlibrary\steamapps\common\half-life\valve\decals.wad;\steamlibrary\steamapps\common\half-life\valve\halflife.wad;\steamlibrary\steamapps\common\half-life\valve\liquids.wad;\steamlibrary\steamapps\common\half-life\valve\xeno.wad;\steamlibrary\steamapps\common\half-life\valve\zhlt.wad"
+}
+{
+"classname" "path_corner"
+"origin" "0 0 0"
+"targetname" "test"
+"target" "test01"
+}
+{
+"classname" "path_corner"
+"origin" "128 0 16"
+"targetname" "test01"
+"target" "test02"
+}
+{
+"classname" "path_corner"
+"origin" "208 0 32"
+"targetname" "test02"
+"target" "test03"
+}
+{
+"classname" "path_corner"
+"origin" "272 0 64"
+"targetname" "test03"
+"target" "test04"
+}
+{
+"classname" "path_corner"
+"origin" "320 0 160"
+"targetname" "test04"
+"target" "test05"
+}
+{
+"classname" "path_corner"
+"origin" "352 0 288"
+"targetname" "test05"
+"target" "test06"
+}
+{
+"classname" "path_corner"
+"origin" "368 0 336"
+"targetname" "test06"
+"target" "test07"
+}
+{
+"classname" "path_corner"
+"origin" "400 0 368"
+"targetname" "test07"
+"target" "test08"
+}
+{
+"classname" "path_corner"
+"origin" "448 0 384"
+"targetname" "test08"
+"target" "test09"
+}
+{
+"classname" "path_corner"
+"origin" "560 0 384"
+"targetname" "test09"
+"target" "test10"
+}
+{
+"classname" "path_corner"
+"origin" "640 0 368"
+"targetname" "test10"
+"target" "test11"
+}
+{
+"classname" "path_corner"
+"origin" "704 0 336"
+"targetname" "test11"
+"target" "test12"
+}
+{
+"classname" "path_corner"
+"origin" "816 0 224"
+"targetname" "test12"
+"target" "test13"
+}
+{
+"classname" "path_corner"
+"origin" "928 0 80"
+"targetname" "test13"
+"target" "test14"
+}
+{
+"classname" "path_corner"
+"origin" "992 0 32"
+"targetname" "test14"
+"target" "test15"
+}
+{
+"classname" "path_corner"
+"origin" "1104 0 0"
+"targetname" "test15"
+"target" "test16"
+}
+{
+"classname" "path_corner"
+"origin" "1296 0 0"
+"targetname" "test16"
+}

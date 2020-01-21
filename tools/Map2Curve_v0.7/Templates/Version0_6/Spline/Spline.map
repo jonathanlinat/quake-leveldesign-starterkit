@@ -1,0 +1,150 @@
+{
+"classname" "worldspawn"
+"sounds" "1"
+"MaxRange" "4096"
+"mapversion" "220"
+"wad" "\steamlibrary\steamapps\common\half-life\valve\decals.wad;\steamlibrary\steamapps\common\half-life\valve\halflife.wad;\steamlibrary\steamapps\common\half-life\valve\liquids.wad;\steamlibrary\steamapps\common\half-life\valve\xeno.wad;\steamlibrary\steamapps\common\half-life\valve\zhlt.wad"
+}
+{
+"classname" "path_corner"
+"origin" "-336 624 -352"
+"targetname" "spline"
+"target" "spline01"
+}
+{
+"classname" "path_corner"
+"origin" "-80 624 -352"
+"targetname" "spline01"
+"target" "spline02"
+}
+{
+"classname" "path_corner"
+"origin" "336 592 -352"
+"targetname" "spline02"
+"target" "spline03"
+}
+{
+"classname" "path_corner"
+"origin" "672 496 -352"
+"targetname" "spline03"
+"target" "spline04"
+}
+{
+"classname" "path_corner"
+"origin" "944 304 -352"
+"targetname" "spline04"
+"target" "spline05"
+}
+{
+"classname" "path_corner"
+"origin" "1120 16 -352"
+"targetname" "spline05"
+"target" "spline06"
+}
+{
+"classname" "path_corner"
+"origin" "1152 -368 -352"
+"targetname" "spline06"
+"target" "spline07"
+}
+{
+"classname" "path_corner"
+"origin" "1120 -640 -352"
+"targetname" "spline07"
+"target" "spline08"
+}
+{
+"classname" "path_corner"
+"origin" "976 -816 -352"
+"targetname" "spline08"
+"target" "spline09"
+}
+{
+"classname" "path_corner"
+"origin" "784 -944 -352"
+"targetname" "spline09"
+"target" "spline10"
+}
+{
+"classname" "path_corner"
+"origin" "576 -960 -352"
+"targetname" "spline10"
+"target" "spline11"
+}
+{
+"classname" "path_corner"
+"origin" "384 -928 -352"
+"targetname" "spline11"
+"target" "spline12"
+}
+{
+"classname" "path_corner"
+"origin" "272 -832 -352"
+"targetname" "spline12"
+"target" "spline13"
+}
+{
+"classname" "path_corner"
+"origin" "-144 -112 -352"
+"targetname" "spline13"
+"target" "spline14"
+}
+{
+"classname" "path_corner"
+"origin" "-256 16 -352"
+"targetname" "spline14"
+"target" "spline15"
+}
+{
+"classname" "path_corner"
+"origin" "-384 112 -352"
+"targetname" "spline15"
+"target" "spline16"
+}
+{
+"classname" "path_corner"
+"origin" "-576 160 -352"
+"targetname" "spline16"
+"target" "spline17"
+}
+{
+"classname" "path_corner"
+"origin" "-704 240 -352"
+"targetname" "spline17"
+"target" "spline18"
+}
+{
+"classname" "path_corner"
+"origin" "-768 352 -352"
+"targetname" "spline18"
+"target" "spline19"
+}
+{
+"classname" "path_corner"
+"origin" "-784 464 -352"
+"targetname" "spline19"
+"target" "spline20"
+}
+{
+"classname" "path_corner"
+"origin" "-752 560 -352"
+"targetname" "spline20"
+"target" "spline21"
+}
+{
+"classname" "path_corner"
+"origin" "-672 608 -352"
+"targetname" "spline21"
+"target" "spline22"
+}
+{
+"classname" "path_corner"
+"origin" "-544 624 -352"
+"targetname" "spline22"
+"target" "spline23"
+}
+{
+"classname" "path_corner"
+"origin" "-336 624 -352"
+"targetname" "spline23"
+}

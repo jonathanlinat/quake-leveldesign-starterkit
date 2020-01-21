@@ -1,0 +1,22 @@
+{
+"classname" "worldspawn"
+"classname" "worldspawn"
+"sounds" "1"
+"MaxRange" "4096"
+"mapversion" "220"
+"mapversion" "220"
+"wad" "\steamlibrary\steamapps\common\half-life\valve\decals.wad;\steamlibrary\steamapps\common\half-life\valve\halflife.wad;\steamlibrary\steamapps\common\half-life\valve\liquids.wad;\steamlibrary\steamapps\common\half-life\valve\xeno.wad;\steamlibrary\steamapps\common\half-life\valve\zhlt.wad"
+}
+{
+"classname" "func_detail"
+"zhlt_detaillevel" "1"
+"zhlt_clipnodedetaillevel" "1"
+{
+( -256.00000000 256.00000000 64.00000000 ) ( -256.00000000 384.00000000 64.00000000 ) ( -128.00000000 384.00000000 64.00000000 ) CA1X_SUP6B [ 6.12303e-017 -1 0 80 ] [ -1 -6.12303e-017 0 -32 ] 90 1 1 
+( -256.00000000 384.00000000 0.00000000 ) ( -256.00000000 256.00000000 0.00000000 ) ( -128.00000000 256.00000000 0.00000000 ) NULL [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1 
+( -256.00000000 256.00000000 0.00000000 ) ( -256.00000000 384.00000000 0.00000000 ) ( -256.00000000 384.00000000 64.00000000 ) NULL [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1 
+( -128.00000000 384.00000000 0.00000000 ) ( -128.00000000 256.00000000 0.00000000 ) ( -128.00000000 256.00000000 64.00000000 ) NULL [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1 
+( -256.00000000 384.00000000 0.00000000 ) ( -128.00000000 384.00000000 0.00000000 ) ( -128.00000000 384.00000000 64.00000000 ) NULL [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1 
+( -128.00000000 256.00000000 0.00000000 ) ( -256.00000000 256.00000000 0.00000000 ) ( -256.00000000 256.00000000 64.00000000 ) NULL [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1 
+}
+}

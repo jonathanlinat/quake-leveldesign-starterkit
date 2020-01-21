@@ -1,0 +1,19 @@
+
+
+splinefile Templates\Version0_6\Spline\Spline.map
+source Templates\Version0_6\Spline\Bevel.map
+
+rad 0
+rad 0
+
+type 3
+
+d_enable 0
+d_enable 1
+
+c_enable 1
+c_enable 0
+
+p_evenout 0
+p_evenout 1
+
