@@ -10,8 +10,8 @@ _Note: Only for Microsoft Windows users._
 
 It includes:
 
-* Quakespasm 0.93.1, Fitzgibbons & Journeymen [[Link](http://www.quakespasm.sourceforge.net)]
-* TrenchBroom 2019.6, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
+* Quakespasm 0.93.2, Fitzgibbons & Journeymen [[Link](http://www.quakespasm.sourceforge.net)]
+* TrenchBroom 2020.1, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
 * ericw-tools 0.18.1, Eric Wasylishen [[Link](https://ericwa.github.io/ericw-tools)]
 * ne_q1spCompilingGui 1.0.3, C. Jones [[Link](https://shoresofnis.wordpress.com/utilities/ne_q1spcompilinggui)]
 
@@ -28,9 +28,10 @@ Extras:
 
 You need:
 
-* Git [[Link](https://git-scm.com/)]
+* Microsoft Windows: Vista, 7, 8, 10
 * A legal copy of Quake [[Steam](https://store.steampowered.com/app/2310)] [[Good Old Games](https://www.gog.com/game/quake_the_offering)]
-* Microsoft Visual C++ Redistributable for Visual Studio 2017 [[x86](https://download.microsoft.com/download/e/6/6/e66c5871-7afe-4640-a454-786eabe8aae8/vc_redist.x86.exe)] [[x64](https://download.microsoft.com/download/7/2/5/72572684-052f-4aa9-9170-9d40813a87be/vc_redist.x64.exe)]
+* Git [[Link](https://git-scm.com/)]
+* Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019 [[x86](https://aka.ms/vs/16/release/vc_redist.x86.exe))]
 
 ## Installation
 
@@ -38,20 +39,26 @@ You need:
 
 You have two options:
 
-* Download the [latest available ZIP release](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases) and extract its content into a folder called `quake-leveldesign-starterkit`.
-* Open a Terminal session and clone this Git repository.
+* Download the [latest available ZIP release](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases) and extract its content into a directory called `quake-leveldesign-starterkit`.
+* Open a Terminal session and clone this Git repository:
+
+```bash
+cd <path/to/desired/directory/>
+git clone https://github.com/jonathanlinat/quake-leveldesign-starterkit.git
+cd quake-leveldesign-starterkit/
+```
 
 ### Configuration
 
-Locate and open `quake-leveldesign-starterkit` folder in Windows Explorer.
+Locate and open `quake-leveldesign-starterkit` directory in Windows Explorer.
 
-Create three new folders:
+Create three new directories:
 
 * The first one called `working`, located at the root directory. It'll remain empty until `ne_q1spCompilingGui` tool is used.
 * The second one called `id1`, also located at the root directory.
-* And the last one called `maps` into the `id1` folder. This is the folder used to save the compiled maps.
+* And the last one called `maps` into the `id1` directory. This is the directory used to save the compiled maps.
 
-Last but not least, copy and paste into `id1` folder the original `pak0.pak` and `pak1.pak` files from your Quake game copy location. These are required in order to be able to test your map using `Quakespasm`.
+Last but not least, copy and paste into `id1` directory the original `pak0.pak` and `pak1.pak` files from your Quake game copy location. These are required in order to be able to test your map using `Quakespasm`.
 
 ## Usage and Quickstart
 
