@@ -1,0 +1,238 @@
+QuakeSpasm-Spiked
+
+  ---------
+  1.  About
+
+  QuakeSpasm-Spiked <http://fte.triptohell.info/moodles/qss/> is an
+  even more modern Quake 1 engine based on everyone else's hard work
+  that I stole, as well as some of my own stuff from FTE.
+  (It's still GPLed guys!)
+
+  It includes networking fixes and improvements, which means you can
+  actually stand a chance of being able to use this thing as a server.
+  It also includes a whole load of QuakeC extensions so that
+  modders are no longer limited to what is essentially crippleware.
+  If the way I explain that grates on you, then you're probably part of
+  the reason why I got annoyed enough to spend my time on this.
+
+  -------------
+  2.  Downloads
+
+  Sourcecode for this branch is available from:
+  https://github.com/Shpoike/Quakespasm
+
+  Windows builds are available from:
+  http://fte.triptohell.info/moodles/qss/
+
+  Linux and Mac builds are not currently available. These users will need
+  to build their own from source.
+  You may be able to find third-party versions prebuilt by other people.
+
+  Users familiar with Quakespasm shouldn't have any issues. This thing
+  will still feel like QuakeSpasm, except for the optional additions,
+  so the Quakespasm readme is included, its pretty much all still valid.
+
+  The included dlls are identical to the versions from an equivelent
+  copy of regular QuakeSpasm, you should be able to have both installed in 
+  the same game directory without issue - on the condition that they're
+  both win32 or both win64, not a mix.
+  Note that advanced users can use the -basedir argument in order to install
+  engines within sub-dirs/where-ever in order to avoid conflicts be they
+  win32 vs win64, qs vs qss, or even qss vs any other engine - this argument
+  should exist in ALL quake engines, and thus it need not be just qss that
+  is given it. However, this will not prevent other sorts of conflicts.
+
+  -------------
+  3.  New Toys!
+      (This is all relative to the regular QuakeSpasm at the time of writing)
+
+  ----------------------
+  3.1.  Protocol Changes
+
+  o  host_maxfps now caps all networking to 72 automatically.
+     This means that you can FINALLY uncap framerates without flooding servers
+     and without physics glitches.
+     Note that to uncap framerates, set host_maxfps to 0.
+     You may wish to disable sys_throttle too, if you care more about framerates 
+     or benchmarking than electricity.
+
+  o  VOIP. Yes, voip is a thing.
+     +voip or cl_voip_send 1 to use.
+     cl_voip_test 1 will let you listen to yourself (*sigh*) to
+     get volume levels acceptable.
+     WARNING: vanilla quakespasm distributes a libopus-0.dll that lacks encoding.
+     This results in opus playback but not transmission, transmission will instead
+     fall back on the much-simpler-but-inferor PCM-A codec, which is built-in.
+     FIXME: QSS still provides the same broken opus version. I need to compile my own.
+
+  o  Split signons. Maps are no longer limited by the number of
+     baselines or static ents etc. Go crazy if you dare.
+
+  o  Decent deltas (using FTE's network protocol).
+	You can have 5000+ ents visible at a time.
+     They won't randomly disappear any more.
+     Gracefully downgrades for old clients like QS or MarkV.
+
+  o  More accurate view angles compatible with ProQuake.
+
+  o  Rcon support compatible with most other NQ engines.
+     rcon_password empty leaves this disabled.
+
+  o  Single-Socket-Servers. You no longer need to re-route every single
+     port to the QuakeSpasm Server. If you're hosting a public server,
+     you simply need to (identity-)route a single port, as determined by 
+     the port cvar.
+
+  o  IPv6. Future ready! Even Windows 2000 had support for it...
+     IPv6 was finalised 20 years ago, and its still not even
+     available in most of the world.
+     So lets change that!
+
+  o  Master server support. Servers will be advertised globally. Set
+     sv_public 0 to disable this.
+     You can also view other people's servers too. Vital feature.
+
+  o  File download support. No more hunting for maps!
+
+  o  BJP3 protocol support. In case anyone ever cares.
+
+  o  Partial clientside compatibility with DarkPlaces Protocol 7.
+     No prediction, no csqc, a few other omissions.
+
+  ----------------------
+  3.2.  Modding features
+
+  o  Support for custom huds (or even menus) via Simple CSQC.
+     Check the devkit for an example.
+
+  o  Supports md3 (no shaders, no tags).
+
+  o  Raised limits for the mdl format (much rewritten, vertex limit is somewhere north of 32k, which should be enough...).
+
+  o  Fixed sprite framegroups (vanilla bug).
+
+  o  Support for .spr32, although its a bit of a poo format.
+
+  o  Supports .pk3 archives (ie: renamed zips) common with large mods.
+
+  o  Package wildcard support.
+     -nowildpaks on the commandline to disable, if desired.
+
+  o  Particle system, for custom effects, explosions, blood, decals!
+     Ripped from FTE.
+     Supports both FTE-style particles as well as DP-style ones.
+     Docs for each style are elsewhere.
+
+  o  Supports .png textures. Not just for saving screenshots!
+
+  o  set and seta console commands. No more crappy configs.
+
+  o  Custom binds can be added to the binds menu.
+     Because noone reads readmes.
+     ... I seriously don't know why I'm bothering to write this.
+
+  o  Late precaches. Because why not.
+
+  o  Increased runaway limit, so that people may flee in terror.
+
+  o  Player limit raised to 255. In case I ever get any friends.
+
+  o  Lots of QC extensions.
+     Not as many as FTE of course...
+     Use pr_dumpplatform to see the new builtins/toys.
+     If you're called Scrooge, you can block these from mods by setting
+     pr_checkextension 0.
+
+  o  Runs a range of new mods that will just fail in regular QS.
+
+  ----------------------
+  3.3.  Mapping features
+
+  o  Raised limits:
+     Static Entities     (limit removed)
+     Static Sounds       (limit destroyed)
+     Baseline Limits     (limit annihilated)
+     Visible Entities    (limit nuked from orbit)
+     Lightmap Data       (limit obliterated)
+     Max Lightmaps       (limit amputated)
+     Max Lightstyles     (now 255 - bsp2 format limit).
+     Lightmap Dimensions (now 256, for surface dimensions up to 4080qu)
+
+  o  BSPX support.
+     Lits can be embedded now, for fewer files to distribute.
+
+  o  Lightmap scaling, for higher res lightmaps (or possibly lower).
+     Requires tyrutils-ericw to use (_lmscale field).
+
+  o  Autodetects watervis on a per-surface-type basis.
+     Opaque lava and transparent water works fine.
+
+  o  Doesn't bug out from tyrutils-ericw's -notex argument, which
+     can help with certain copyright issues by not distributing textures.
+
+  o  Doesn't crash from qbsp run with the -noclip argument.
+
+  o  Understands the hexen2 bsp format, but don't expect it to work
+     without rampant palette issues.
+     (Use replacement textures. Also requires mod support.)
+
+  o  Particle system, for rain or random custom effects!
+     Emit from textures, or see below.
+
+  o  Special fields that can be used on any entity without QC changes:
+     "emiteffect" field - to specify a constantly emitting effect.
+	"traileffect" field - for particles any time the entity moves.
+
+  --------
+  4.  Todo
+
+  o  opus voip encoder library
+
+  o  improve dev kit, with proper docs (ahahaha!).
+
+  o  IQM, maybe, some time (mdl sucks).
+
+  o  remove hull size limitation.
+
+  o  either menuqc or disconnected-csqc (for menus). otherwise known as cvar hell, so mods can avoid quake's clunky nightmare.
+
+  o  rgb9e5 lighting.
+
+  -----------
+  5.  Copyright And License
+
+  o  Quake and Quakespasm are released under the GNU GENERAL PUBLIC
+     LICENSE Version 2: http://www.gnu.org/licenses/gpl-2.0.html
+
+  o  stb_image component is labeled as public domain.
+
+  o  Additional code and binaries are released under the same license.
+
+  o  The public linux build statically links against various common libraries
+     in order to reduce version conflicts (compiled on a Debian 8/Jessie system).
+     For system integration, it still requires the SDL 1.2 package from your distro.
+
+     . libjpeg 9b
+     . libz 1.2.11
+     . libpng 1.6.34
+     . lobogg 1.3.3
+     . libvorbis[file] 1.3.5
+     . libopus 1.3-beta
+     . libopusfile 0.9
+     . libmad 0.15.1b
+
+  -------------------
+  6.  Links / Contact
+
+  Homepage: http://fte.triptohell.info/moodles/qss/
+
+  Source + Issue tracker: https://github.com/Shpoike/Quakespasm
+
+  Forum: http://www.celephais.net/board/view_thread.php?id=61351
+
+  ------------
+  7.  Footnote
+
+  Wow, you actually read this far? dude, you must be bored.
+  Go play a computer game or something. Go now!
+
