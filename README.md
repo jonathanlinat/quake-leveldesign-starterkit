@@ -22,7 +22,7 @@ Extras:
 * Map2Curve 0.7, ToTac [[Link](http://gibshooter.com/map2curve)]
 * Original Quake maps, John Romero [[Link](https://rome.ro/news/2016/2/14/quake-map-sources-released)]
 * Original Quake textures [[Link](https://www.quaddicted.com)]
-* Prototype WAD textures 1.2, Aleksander "Khreathor" Marhall [[Link](http://khreathor.xyz/site/prototype)]
+* Prototype WAD textures 1.3, Aleksander "Khreathor" Marhall [[Link](http://khreathor.xyz/site/prototype)]
 
 ## Prerequisites
 
