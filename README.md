@@ -11,7 +11,7 @@ _Note: Only for Microsoft Windows users._
 It includes:
 
 * Quakespasm Spiked 0.93.2ish, Spoike [[Link](https://triptohell.info/moodles/qss/)]
-* TrenchBroom 2020.2, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
+* TrenchBroom 2021.1, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
 * ericw-tools 0.18.1, Eric Wasylishen [[Link](https://ericwa.github.io/ericw-tools)]
 * ne_q1spCompilingGui 1.0.3, C. Jones [[Link](https://shoresofnis.wordpress.com/utilities/ne_q1spcompilinggui)]
 
