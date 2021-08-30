@@ -4,14 +4,14 @@
 
 This **Starter Kit** is mainly based on files / directory structure and set of tools recommended by [dumptruck_ds](https://twitter.com/david_spell).
 
-_Note: Only for Microsoft Windows users._
+_Note: Only for Microsoft Windows (x86-64) users._
 
 ## Features
 
 It includes:
 
-* Quakespasm Spiked 0.93.2ish, Spoike [[Link](https://triptohell.info/moodles/qss/)]
-* TrenchBroom 2020.2, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
+* Quakespasm Spiked 0.93.2ish (2021-July-08), Spoike [[Link](https://triptohell.info/moodles/qss/)]
+* TrenchBroom 2021.1, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
 * ericw-tools 0.18.1, Eric Wasylishen [[Link](https://ericwa.github.io/ericw-tools)]
 * ne_q1spCompilingGui 1.0.3, C. Jones [[Link](https://shoresofnis.wordpress.com/utilities/ne_q1spcompilinggui)]
 
@@ -22,7 +22,7 @@ Extras:
 * Map2Curve 0.7, ToTac [[Link](http://gibshooter.com/map2curve)]
 * Original Quake maps, John Romero [[Link](https://rome.ro/news/2016/2/14/quake-map-sources-released)]
 * Original Quake textures [[Link](https://www.quaddicted.com)]
-* Prototype WAD textures 1.2, Aleksander "Khreathor" Marhall [[Link](http://khreathor.xyz/site/prototype)]
+* Prototype WAD textures 1.3, Aleksander "Khreathor" Marhall [[Link](http://khreathor.xyz/site/prototype)]
 
 ## Prerequisites
 
