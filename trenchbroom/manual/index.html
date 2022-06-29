@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="pandoc">
-<meta name="author" content="Kristian Duske"><title>TrenchBroom 2021.1 Reference Manual</title>
+<meta name="author" content="Kristian Duske"><title>TrenchBroom 2022.1 Reference Manual</title>
 <link rel="icon" href="images/icon.png">
 <link rel="stylesheet" href="_reset.css">
 <link rel="stylesheet" href="_variables.css">
@@ -13,24 +13,36 @@
 <link rel="stylesheet" href="_responsive.css">
 <script src="shortcuts.js"></script>
 <script src="shortcuts_helper.js"></script>
+<script>(() => {
+  window.addEventListener('DOMContentLoaded', () => {
+    const tocToggledClass = 'toc_toggled';
+
+    document.body.querySelector('div#toc_toggler .toc_toggler_button').addEventListener('click', (event) => {
+      event.preventDefault();
+      document.body.classList.toggle(tocToggledClass);
+    });
+
+    document.body.querySelectorAll('a').forEach((element) => {
+      element.addEventListener('click', (event) => {
+        document.body.classList.remove(tocToggledClass);
+      });
+    });
+  });
+})()</script>
 </head>
 <body>
 <div id="toc_toggler">
 <img src="images/icon.png" alt="TrenchBroom Icon">
-<a href="#toc" title="Open Table of Contents"><span>&#9776;</span></a>
+<button class="toc_toggler_button" title="Open Table of Contents"><span>&#9776;</span></button>
 <a href="#" title="Back to top"><span>&#8657;</span></a>
 </div>
 <nav id="toc">
 <div id="toc_inner">
-<header id="toc_inner_header">
-<img src="images/icon.png" alt="TrenchBroom Icon">
-<h2>Table of Contents</h2>
-</header>
 <ul>
 <li><a href="#introduction">Introduction</a>
 <ul>
 <li><a href="#features">Features</a></li>
-<li><a href="#about-this-document">About This Document</a></li>
+<li><a href="#about-this-document">About this Document</a></li>
 </ul></li>
 <li><a href="#getting_started">Getting Started</a>
 <ul>
@@ -49,7 +61,7 @@
 <li><a href="#editing">Editing</a>
 <ul>
 <li><a href="#map-setup">Map Setup</a></li>
-<li><a href="#interacting-with-the-editor">Interacting With the Editor</a></li>
+<li><a href="#interacting-with-the-editor">Interacting with the Editor</a></li>
 <li><a href="#creating-objects">Creating Objects</a></li>
 <li><a href="#editing-objects">Editing Objects</a></li>
 <li><a href="#shaping-brushes">Shaping Brushes</a></li>
@@ -64,6 +76,7 @@
 <li><a href="#hiding-and-isolation">Hiding and Isolation</a></li>
 <li><a href="#locking">Locking</a></li>
 <li><a href="#groups">Groups</a></li>
+<li><a href="#linked_groups">Linked Groups</a></li>
 <li><a href="#layers">Layers</a></li>
 </ul></li>
 <li><a href="#preferences">Preferences</a>
@@ -98,8 +111,11 @@
 <main id="content">
 <aside id="content_version">
 <div id="content_version_details">
-<span id="content_version_heading">TrenchBroom 2021.1 Reference Manual</span>
-<span><strong>Build:</strong> v2021.1 Release</span>
+<img src="images/icon.png" alt="TrenchBroom Icon">
+<div>
+<span id="content_version_heading">TrenchBroom 2022.1 Reference Manual</span>
+<span><strong>Build:</strong> v2022.1 Release</span>
+</div>
 </div>
 <div id="content_version_links">
 <span><a href="https://trenchbroom.github.io/" target="_blank" rel="noopener noreferrer">Official website</a> - <a href="https://discord.com/invite/XaAuJVz" target="_blank" rel="noopener noreferrer">Keep in touch on Discord</a></span>
@@ -117,6 +133,7 @@
 <li>High performance renderer with support for huge maps</li>
 <li>Unlimited Undo and Redo</li>
 <li>Macro-like command repetition</li>
+<li>Linked groups</li>
 <li>Issue browser with automatic quick fixes</li>
 <li>Run external compilers and launch game engines</li>
 <li>Point file support</li>
@@ -144,7 +161,7 @@
 <li>Smart entity property editors</li>
 </ul></li>
 </ul>
-<h2 id="about-this-document">About This Document</h2>
+<h2 id="about-this-document">About this Document</h2>
 <p>This document is intended to help you learn to use the TrenchBroom editor. It is not intended to teach you how to map, and it isn’t a tutorial either. If you are having technical problems with your maps, or need information on how to create particular effects or setups for the particular game you are mapping for, you should ask other mappers for help (see <a href="#references_and_links">References and Links</a> to find mapping communities and such). This document will only teach you how to use this editor.</p>
 <h1 id="getting_started">Getting Started</h1>
 <p>This section starts off with a small introduction to the most important technical terms related to mapping for brush-based engines. Additionally, we introduce some concepts on which TrenchBroom is built. Afterwards, we introduce the welcome window, the game selection dialog, we give an overview of the main window and explain the camera navigation in the 3D and 2D views.</p>
@@ -180,7 +197,7 @@
 p1*--v1---&gt;*p3</code></pre>
 <p>The normal of the plane is in the direction of the cross product of v1 and v2. In the diagram above, the plane normal points towards you. Together with its normal, the plane divides three dimensional space into two half spaces: The upper half space above the plane, and the lower half space below the plane. In this interpretation, the volume of the brush is the intersection of the lower half spaces defined by the face planes. This way of defining brushes has the advantage that all brushes are automatically convex. However, this representation of brushes does not directly contain any other geometric information of the brush, particularly its vertices, edges, and facets, which must be computed from the plane representation. In TrenchBroom, the vertices, edges, and facets are called the <strong>brush geometry</strong>. TrenchBroom uses the same method as the BSP compilers to compute the brush geometry. Having the brush geometry is necessary mainly for two things: Rendering and vertex editing.</p>
 <h3 id="entity_definitions">Entity Definitions</h3>
-<p>To TrenchBroom, entities are just a sequence of properties (key value pairs), most of which are without any special meaning. In particular, the entity properties do not specify which model TrenchBroom should display for the entity in its viewports. Addtionally, some property values have specific types, such as color, angle, or position. But these types cannot be hardcoded into the editor, because depending on the game, mod, or entity, a property called “angle” may have a different meaning. To give TrenchBroom more information on how to interpret a particular entity and its properties, an entity definition is necessary. Entity definitions specify the spawnflags of an entity, the names and types of its properties, the model to display in the editor, and other things. They are usually specified in a separate file that you can <a href="#entity_definition_setup">load into the editor</a>.</p>
+<p>To TrenchBroom, entities are just a sequence of properties (key value pairs), most of which are without any special meaning. In particular, the entity properties do not specify which model TrenchBroom should display for the entity in its viewports. Additionally, some property values have specific types, such as color, angle, or position. But these types cannot be hardcoded into the editor, because depending on the game, mod, or entity, a property called “angle” may have a different meaning. To give TrenchBroom more information on how to interpret a particular entity and its properties, an entity definition is necessary. Entity definitions specify the spawnflags of an entity, the names and types of its properties, the model to display in the editor, and other things. They are usually specified in a separate file that you can <a href="#entity_definition_setup">load into the editor</a>.</p>
 <h3 id="mods">Mods</h3>
 <p>A mod (short for game modification) is a way of extending a Quake-engine based game with custom gameplay and assets. Custom assets include models, sounds, and textures. From the perspective of the game, a mod is a subdirectory in the game directory where the additional assets reside in the form of loose files or archives such as pak files. As far as TrenchBroom is concerned, a mod just provides assets, some of which replace existing assets from the game and some of which are new. For example, a mod might provide a new model for an entity, or it provides an entirely new entity. In order to make these new entities usable in TrenchBroom, two things are required: First, TrenchBroom needs an entity definition for these entities, and TrenchBroom needs to know where it should look for the models to display in the viewports. The first issue can be addressed by pointing TrenchBroom to an alternate <a href="#entity_definitions">entity definition file</a>, and the second issue can be addressed by <a href="#mod_setup">adding a mod directory</a> for the current map.</p>
 <p>Every game has a default mod which is always loaded by TrenchBroom. As an example, the default mod for Quake is <em>id1</em>, which is the directory that contains all game content. TrenchBroom supports multiple mods, and in the case of multiple mods, there has to be a policy for resolving name conflicts between resources. For example, a mod might provide an entity model for an entity defined in the default mod in order to replace the default model with a more detailed one. To do this, the mod provides an entity model with the same name as the one it wants to replace. To resolve such name conflicts, TrenchBroom assigns priorities for mods, and if a name conflict occurs between different mods, the mod with the highest priority wins. Note that the default mod always has the lowest priority.</p>
@@ -207,7 +224,7 @@ p1*--v1---&gt;*p3</code></pre>
 </figure>
 <p>The sizes of the editing area, the inspector and the info bar can be changed by dragging the dividers with the mouse. This applies to some of the dividers in the inspector as well. If a divider is 2 pixels thick, it can be dragged with the mouse. The positions of the dividers and the size of the editing window are saved when you close a window. The following subsections introduce the most important parts of the main window: the editing area, the inspector, and the info bar. The toolbar and the menu will be explained in more detail in later sections.</p>
 <h3 id="the-editing-area">The Editing Area</h3>
-<p>The editing area is divided in two sections: The context sensitive info bar at the top and the viewports below. The info bar contains different controls depending on which tool is currently activated. You can switch between tools such as the rotate tool and the vertex tool using the toolbar buttons, the menu or with the respective keyboard shortcuts. The context sensitive controls allow you to perform certain actions that are relevant to the current tool such as setting the rotation center when in the rotate tool or moving objects by a given delta when in the default move tool. Additonally, there is a button labeled “View Options” on the right of the info bar. Clicking on this button unfolds a dropdown containing controls to <a href="#filtering_rendering_options">filter out</a> certain objects in the viewports or to change how the viewport <a href="#filtering_rendering_options">renders its contents</a>.</p>
+<p>The editing area is divided in two sections: The context sensitive info bar at the top and the viewports below. The info bar contains different controls depending on which tool is currently activated. You can switch between tools such as the rotate tool and the vertex tool using the toolbar buttons, the menu or with the respective keyboard shortcuts. The context sensitive controls allow you to perform certain actions that are relevant to the current tool such as setting the rotation center when in the rotate tool or moving objects by a given delta when in the default move tool. Additionally, there is a button labeled “View Options” on the right of the info bar. Clicking on this button unfolds a dropdown containing controls to <a href="#filtering_rendering_options">filter out</a> certain objects in the viewports or to change how the viewport <a href="#filtering_rendering_options">renders its contents</a>.</p>
 <figure>
 <img src="images/ViewDropdown.png" alt="The info bar with view dropdown (Windows 10)" /><figcaption aria-hidden="true">The info bar with view dropdown (Windows 10)</figcaption>
 </figure>
@@ -285,7 +302,7 @@ p1*--v1---&gt;*p3</code></pre>
 <figure>
 <img src="images/CTF1Bounds.png" alt="McKinley Base and Quake map bounds" /><figcaption aria-hidden="true">McKinley Base and Quake map bounds</figcaption>
 </figure>
-<p>Game engines often impose a limit on the usable/playable volume of space. Trenchbroom can display this limit as a guide to use when creating your map. Such bounds will appear as an orange square or rectangle in the 2D viewports. For example, the image above shows the Quake map McKinley Base (ctf1 from Threewave CTF) within the normal bounds for a Quake map.</p>
+<p>Game engines often impose a limit on the usable/playable volume of space. TrenchBroom can display this limit as a guide to use when creating your map. Such bounds will appear as an orange square or rectangle in the 2D viewports. For example, the image above shows the Quake map McKinley Base (ctf1 from Threewave CTF) within the normal bounds for a Quake map.</p>
 <p><img src="images/SoftBounds.png" alt="Map Properties (Ubuntu Linux)" /> If bounds are configured for a game, they will usually represent the limits observed by the last official release or patch of a particular game engine. Those bounds may not be correct for your situation, so you can disable or modify the displayed bounds using the Map Properties portion of the Map Inspector, as shown here. (More about the Map Inspector in the next section below.)</p>
 <p>In Quake-engine games, these bounds represent a limit on the volume that can contain players, items, or other entities. Static geometry (plain brushes) can extend further, which is why these limits are often called “soft bounds”. As far as TrenchBroom is concerned however, it is just drawing orange lines at whatever coordinates are indicated in the <a href="#game_configuration_files">game configuration file</a>… if this is a non-Quake-engine game then the bounds could represent something else.</p>
 <p>In any case, keep in mind that the displayed bounds are just a guide that you should use to help yourself stay within the limits of your target game engine. Changing the bounds in TrenchBroom will not change the behavior in the game!</p>
@@ -346,7 +363,7 @@ p1*--v1---&gt;*p3</code></pre>
 <figure>
 <img src="images/Linked2DViewports.gif" alt="Linked YZ and XZ viewports" /><figcaption aria-hidden="true">Linked YZ and XZ viewports</figcaption>
 </figure>
-<p>Navigating the 2D viewports is naturally a lot simpler than navigating the 3D viewport. You can pan the viewport by holding and dragging either the middle or the right mouse button, and you can use the scroll wheel to adjust the zoom. Note that if you have set your viewport layout to show more than one 2D viewport, then the 2D viewportss are linked. Specifically, the zoom factor is linked so that you always have a consistent zoom level across all 2D viewports, and the viewports are panned simultaneously along the same axes. This means that if you pan the XY viewport along the X axis, the XZ viewport gets panned along the X axis, too, so that you don’t have to pan both viewports manually. Also note that zooming always keeps the coordinates under the mouse pointer invariant, that is, you can focus on a particular object or area by hovering the mouse over it and zooming in or out.</p>
+<p>Navigating the 2D viewports is naturally a lot simpler than navigating the 3D viewport. You can pan the viewport by holding and dragging either the middle or the right mouse button, and you can use the scroll wheel to adjust the zoom. Note that if you have set your viewport layout to show more than one 2D viewport, then the 2D viewports are linked. Specifically, the zoom factor is linked so that you always have a consistent zoom level across all 2D viewports, and the viewports are panned simultaneously along the same axes. This means that if you pan the XY viewport along the X axis, the XZ viewport gets panned along the X axis, too, so that you don’t have to pan both viewports manually. Also note that zooming always keeps the coordinates under the mouse pointer invariant, that is, you can focus on a particular object or area by hovering the mouse over it and zooming in or out.</p>
 <h2 id="fov-and-zoom">FOV and Zoom</h2>
 <p>For the 3D view, the camera FOV (field of vision) can be adjusted in the <a href="#view_layout_and_rendering">view preferences</a> by dragging the slider. This is a permanent setting.</p>
 <p>To temporarily adjust the camera’s zoom, hold <script>print_key("Shift");</script> and scroll the mouse wheel. To reset the zoom factor, hit <script>print_action("Controls/Map view/Reset camera zoom");</script>.</p>
@@ -364,12 +381,12 @@ p1*--v1---&gt;*p3</code></pre>
 </figure>
 <p>In a 2D viewport, you can also left click an object to select it. But unlike in the 3D viewport, this will not necessarily select the frontmost object. Instead, TrenchBroom will analyze the objects under the mouse, specifically the faces under the mouse, and it will find the one with the smallest visible area. Having found such a face, it will select the object to which this face belongs. Since entities don’t necessarily have faces, the faces of their bounding boxes will be considered instead. The advantage of this technique is that it allows you to easily select occluded objects in the 2D viewports.</p>
 <p>You may also think of left click selection like this: In both the 3D viewport or a 2D viewport, TrenchBroom first compiles a set of candidate objects. These are all objects under the mouse. Then, it must choose an object to be selected from these candidates. In the 3D viewport, the frontmost object always wins (unless you’re using the scroll wheel to drill the selection), and in a 2D view, the object with the smallest visible area wins. Other than that, selection behaves exactly the same in both viewports, that is, you can hold <script>print_key("Ctrl");</script> to select multiple objects and so on.</p>
-<p>Sometimes, selecting objects manually is too tedious. To select all currently editable objects, you can choose <script>print_menu_item("Menu/Edit/Select All");</script> from the menu. Note that hidden and locked objects are excluded, so this command is particularly useful in conjunction with those features. Another option to select multiple objects at once is to use <em>selection brushes</em>. Just create one or more new brushes that enclose or touch all the objects you wish to select. These brushes are called a selection brushes. Select all of these newly created selection brushes, and choose <script>print_menu_item("Menu/Edit/Select Touching");</script> to select every object touched by the selection brushes, or choose <script>print_menu_item("Menu/Edit/Select Inside");</script> to select every object enclosed inside them.</p>
+<p>Sometimes, selecting objects manually is too tedious. To select all currently editable objects, you can choose <script>print_menu_item("Menu/Edit/Select All");</script> from the menu. Note that hidden and locked objects are excluded, so this command is particularly useful in conjunction with those features. Another option to select multiple objects at once is to use <em>selection brushes</em>. Just create one or more new brushes that enclose or touch all the objects you wish to select. These brushes are called selection brushes. Select all of these newly created selection brushes, and choose <script>print_menu_item("Menu/Edit/Select Touching");</script> to select every object touched by the selection brushes, or choose <script>print_menu_item("Menu/Edit/Select Inside");</script> to select every object enclosed inside them. Note that selection brushes will disappear after they were made use of.</p>
 <figure>
 <img src="images/SelectTouching.gif" alt="Using a selection brush" /><figcaption aria-hidden="true">Using a selection brush</figcaption>
 </figure>
 <p>A similar operation can be found under <script>print_menu_item("Menu/Edit/Select Tall");</script>, but this particular operation is only available when a 2D view has focus. It projects the selection brushes onto the view plane of the currently focused 2D viewport, which results in a 2D polygon, and then selects every object that is contained entirely within that polygon. You can think of this as a cheap lasso selection tool that works like <script>print_menu_item("Menu/Edit/Select Inside");</script>, but without having to adjust the distance and thickness of the selection brushes.</p>
-<p>If you have selected a single brush that belongs to an entity or group, and you wish to select every other object belonging to that entity or group, you can choose <script>print_menu_item("Menu/Edit/Select Siblings");</script>. The same effect can be achieved by left double clicking on a brush that belongs to an entity or group. The menu command <script>print_menu_item("Menu/Edit/Select by Line Number");</script> is useful for diagnostic purposes. If an external program such as a map compiler presents you with an error message and a line number indicating where in the map file that error occured, you can use this menu command to have TrenchBroom select the offending object for you.</p>
+<p>If you have selected a single brush that belongs to an entity or group, and you wish to select every other object belonging to that entity or group, you can choose <script>print_menu_item("Menu/Edit/Select Siblings");</script>. The same effect can be achieved by left double clicking on a brush that belongs to an entity or group. The menu command <script>print_menu_item("Menu/Edit/Select by Line Number");</script> is useful for diagnostic purposes. If an external program such as a map compiler presents you with an error message and a line number indicating where in the map file that error occurred, you can use this menu command to have TrenchBroom select the offending object for you.</p>
 <p>Choose <script>print_menu_item("Menu/Edit/Select Inverse");</script> from the menu to invert the selection, i.e. select everything that is currently unselected (excluding hidden and locked objects).</p>
 <p>Finally, you can deselect everything by left clicking in the void, or by choosing <script>print_menu_item("Menu/Edit/Select None");</script>.</p>
 <h2 id="selecting-brush-faces">Selecting Brush Faces</h2>
@@ -387,8 +404,8 @@ p1*--v1---&gt;*p3</code></pre>
 <p>The order of the enabled mods is important because it defines the <a href="#mods">priorities for loading resources</a>. You can change the priority of enabled mods by reordering them in the list. For this, you can select an enabled mod and use the small triangles below the list of enabled mods to push it up or down.</p>
 <p>Mods are stored in a worldspawn property called "_tb_mod".</p>
 <h3 id="entity_definition_setup">Loading Entity Definitions</h3>
-<p><img src="images/EntityDefinitionEditor.png" alt="Entity definition editor" /> Entity definitions are text files containing information about <a href="#entity_definitions">the meaning of entities and their properties</a>. Depending on the game and mod you are mapping for, you might want to load different entity definitions into the editor. To load an entity definition file into TrenchBroom, switch to the entity inspector and unfold the entity definition browser at the bottom of the inspector. The entity definition browser is horizontally divided into two areas. The upper area contains a list of <em>builtin</em> entity definition files. These are the entity definition files that came with TrenchBroom for the game you are currently working on. You can select one of these builtin files by clicking on it. TrenchBroom will load the file and update its resources accordingly. Alternatively, you may want to load an external entity definition file of your own. To do this, click the button labeled “Browse” in the lower area of the entity definition browser and choose the file you wish to load. Currently, TrenchBroom supports Radiant DEF files and ENT files as well as <a href="http://developer.valvesoftware.com/wiki/FGD">Valve FGD</a> files. To reload the entity definitions (as well as the referenced models) from the currently loaded external file, you can click the button labeled “Reload” at the bottom or use <script>print_menu_item("Menu/File/Reload Entity Definitions");</script>. This may be useful if you’re editing an entity definition file for a mod you’re working on.</p>
-<p>Note that FGD and ENT files contain much more information than DEF files and are generally preferrable. While TrenchBroom supports all of these file types, its support for FGD and for ENT is better and more comprehensive. Unfortunately, DEF files are still relevant because Radiant style editors require them, so TrenchBroom allows you to use them, too.</p>
+<p><img src="images/EntityDefinitionEditor.png" alt="Entity definition editor" /> Entity definitions are text files containing information about <a href="#entity_definitions">the meaning of entities and their properties</a>. Depending on the game and mod you are mapping for, you might want to load different entity definitions into the editor. To load an entity definition file into TrenchBroom, switch to the entity inspector and unfold the entity definition browser at the bottom of the inspector. The entity definition browser is horizontally divided into two areas. The upper area contains a list of <em>builtin</em> entity definition files. These are the entity definition files that came with TrenchBroom for the game you are currently working on. You can select one of these builtin files by clicking on it. TrenchBroom will load the file and update its resources accordingly. Alternatively, you may want to load an external entity definition file of your own. To do this, click the button labeled “Browse” in the lower area of the entity definition browser and choose the file you wish to load. Currently, TrenchBroom supports Radiant DEF files and ENT files as well as <a href="https://developer.valvesoftware.com/wiki/FGD">Valve FGD</a> files. To reload the entity definitions (as well as the referenced models) from the currently loaded external file, you can click the button labeled “Reload” at the bottom or use <script>print_menu_item("Menu/File/Reload Entity Definitions");</script>. This may be useful if you’re editing an entity definition file for a mod you’re working on.</p>
+<p>Note that FGD and ENT files contain much more information than DEF files and are generally preferable. While TrenchBroom supports all of these file types, its support for FGD and for ENT is better and more comprehensive. Unfortunately, DEF files are still relevant because Radiant style editors require them, so TrenchBroom allows you to use them, too.</p>
 <p>The path of an external entity definition file is stored in a worldspawn property called "_tb_def".</p>
 <h3 id="texture_management">Managing Textures</h3>
 <p><a href="#textures">Texture collections</a> can be managed in the texture collection editor, which can be found at the bottom of the face inspector. There are two types of texture collections: file archives such as WAD files and directories containing loose textures such as WAL files. Depending on whether the game you are editing comes with internal textures or not, the texture collection editor looks and works differently.</p>
@@ -427,8 +444,8 @@ p1*--v1---&gt;*p3</code></pre>
 </tr>
 </tbody>
 </table>
-<h2 id="interacting-with-the-editor">Interacting With the Editor</h2>
-<p>Before we delve into specific editing operations such as creating new objects, you should learn some basics about how to interact with the editor itself. In particular, it is import to understand the concept of tools in TrenchBroom and how mouse input is mapped to 3D coordinates.</p>
+<h2 id="interacting-with-the-editor">Interacting with the Editor</h2>
+<p>Before we delve into specific editing operations such as creating new objects, you should learn some basics about how to interact with the editor itself. In particular, it is important to understand the concept of tools in TrenchBroom and how mouse input is mapped to 3D coordinates.</p>
 <h3 id="working-with-tools">Working with Tools</h3>
 <p>All editing functionality in TrenchBroom is provided by tools. There are two types of tools in TrenchBroom: Permanently active tools and modal tools. Modal tools are tools which have to be activated or deactivated manually by the user. Permanently active tools are tools which are always available, unless they are deactivated by a modal tool. The following table lists all tools with a short description:</p>
 <table>
@@ -551,9 +568,9 @@ p1*--v1---&gt;*p3</code></pre>
 </tbody>
 </table>
 <p><img src="images/ToolbarTools.png" alt="Tool buttons" /> Additionally, tools can be toggled by using the buttons on the left of the toolbar. In the image, the first button is active, however, this particular button does not represent any of the modal tools listed in the table above. Rather, it indicates that no modal tool is currently active, and therefore all permanent tools are available. The buttons icon indicates that objects can be moved, which is only possible if no modal tool is active. The second button represents the convex brush tool, the third button toggles the clip tool, the fourth button is used to toggle the vertex tool and the fifth button toggles the rotate tool.</p>
-<p>You can learn more about these tools in later sections. But before you can learn about the tools in detail, you should undertand how TrenchBroom processes mouse input, which is what the following two sections will explain.</p>
-<h3 id="cancelling">Cancelling Operations and Tools</h3>
-<p>To cancel a mouse drag by hitting <script>print_action("Controls/Map view/Cancel");</script>. The operation will be undone immediately. The same keyboard shortcut can be used to cancel all kinds of things in the editor. The following table lists the effects of cancelling depending on the current state of the editor.</p>
+<p>You can learn more about these tools in later sections. But before you can learn about the tools in detail, you should understand how TrenchBroom processes mouse input, which is what the following two sections will explain.</p>
+<h3 id="canceling">Canceling Operations and Tools</h3>
+<p>To cancel a mouse drag, hit <script>print_action("Controls/Map view/Cancel");</script>. The operation will be undone immediately. The same keyboard shortcut can be used to cancel all kinds of things in the editor. The following table lists the effects of canceling depending on the current state of the editor.</p>
 <table>
 <thead>
 <tr class="header">
@@ -584,7 +601,7 @@ p1*--v1---&gt;*p3</code></pre>
 <p>In addition, you can hit <script>print_action("Controls/Map view/Deactivate current tool");</script> to directly deactivate the current tool regardless of what state the tool is in.</p>
 <h3 id="mouse-input-in-3d">Mouse Input in 3D</h3>
 <p>It is very important that you understand how mouse input is mapped to 3D coordinates when editing objects in TrenchBroom’s 3D viewport. Since the mouse is a 2D input device, you cannot directly control all three dimensions when you edit objects with the mouse. For example, if you want to move a brush around, you can only move it in two directions by dragging it. Because of this, TrenchBroom maps mouse input to the horizontal XY plane. This means that you can only move things around horizontally by default. To move an object vertically, you need to hold <script>print_key("Alt");</script> during editing. This applies to moving objects and vertices, for the most part.</p>
-<p>But this is not always true, since some editing operations are spacially restricted. For example, when resizing a brush, you drag one of its faces along its normal, so the editing operation is restricted to that normal vector. In fact, the mouse pointer’s position must be mapped to a one-dimensional value that represents the distance by which the brush face has been dragged. Whenever mouse input has to be mapped to one or two dimensions, TrenchBroom does this mapping automatically and no additional thought is required. But if mouse input must be mapped to three dimensions, TrenchBroom does so by employing the editing plane metaphor explained before.</p>
+<p>But this is not always true, since some editing operations are spatially restricted. For example, when resizing a brush, you drag one of its faces along its normal, so the editing operation is restricted to that normal vector. In fact, the mouse pointer’s position must be mapped to a one-dimensional value that represents the distance by which the brush face has been dragged. Whenever mouse input has to be mapped to one or two dimensions, TrenchBroom does this mapping automatically and no additional thought is required. But if mouse input must be mapped to three dimensions, TrenchBroom does so by employing the editing plane metaphor explained before.</p>
 <h3 id="mouse-input-in-2d">Mouse Input in 2D</h3>
 <p>Mapping mouse input to 3D coordinates is much simpler in the 2D viewports, because the first and second dimension is given by the fixed viewport axes, and the third dimension (the depth) is usually taken from the context of the editing operation. For example, if you move an object by left dragging it in the XY viewport, then the mouse input is mapped to the X and Y axes, and the object’s Z coordinates remain unchanged. When creating new objects, the depth is usually computed from the bounds of the most recently selected objects. So if you create a new brush by left dragging in the XY view, its distance and its height is determined by the most recently selected objects, while its X/Y extents are determined by the mouse drag.</p>
 <h3 id="axis_restriction">Axis Restriction</h3>
@@ -594,7 +611,7 @@ p1*--v1---&gt;*p3</code></pre>
 </figure>
 <p>Note that TrenchBroom draws a trace line for you when you move objects with the mouse. The trace line helps to move objects in straight lines and as a visual feedback for your move. When an axis restriction is active, the trace line is rendered thicker.</p>
 <h3 id="the-grid">The Grid</h3>
-<p>TrenchBroom provides you with a static grid to align your objects to each other. The grid size can be 1, 2, 4, 8, 16, etc. up to 256. If grid snapping is enabled, then most editing operations will be snapped to the grid. For example, you can only move objects by the current grid size if grid snapping is enabled. In the 3D viewport, the grid is projected onto the brush faces. Therefore the grid may appear distorted if a brush face is not axis aligned. In the 2D viewports, the grid is just drawn in the background. You can change the brightness of the grid lines in the preferences.</p>
+<p>TrenchBroom provides you with a static grid to align your objects to each other. The grid size can be 1, 2, 4, 8, 16, etc. up to 256. It is also possible to set the grid size to a value smaller than 1, more precisely to 0.5, 0.25 or 0.125. If grid snapping is enabled, then most editing operations will be snapped to the grid. For example, you can only move objects by the current grid size if grid snapping is enabled. In the 3D viewport, the grid is projected onto the brush faces. Therefore the grid may appear distorted if a brush face is not axis aligned. In the 2D viewports, the grid is just drawn in the background. You can change the brightness of the grid lines in the preferences.</p>
 <p>The grid size can be set via the menu, or by scrolling the mouse wheel while holding both <script>print_key("Alt");</script> and <script>print_key("Ctrl");</script>.</p>
 <h3 id="map_view_context_menu">Map View Context Menu</h3>
 <p>Right clicking in a map view gives the following context menu:</p>
@@ -647,7 +664,7 @@ p1*--v1---&gt;*p3</code></pre>
 <img src="images/CreateSimpleBrush.gif" alt="Creating a cuboid in the 3D viewport" /><figcaption aria-hidden="true">Creating a cuboid in the 3D viewport</figcaption>
 </figure>
 <p>If, on the other hand, you draw a brush in a 2D viewport, you only control its extents on whatever axes the 2D view is set to display. So if you are drawing a brush in the XZ view, you control the X/Z extents with the mouse, and there’s no way to change the Y extents directly, which is always fixed to the Y extents of the most recently selected objects. This of course applies to all of the different 2D viewports in the same way.</p>
-<p>In either case, the texture assigned to the newly created brush is the <em>current texture</em>. The current nexture is set by chooseing a texture in the <a href="#texture_browser">texture browser</a> or by selecting a face that already has a texture. This concept applies to other ways of creating new brushes, too.</p>
+<p>In either case, the texture assigned to the newly created brush is the <em>current texture</em>. The current texture is set by choosing a texture in the <a href="#texture_browser">texture browser</a> or by selecting a face that already has a texture. This concept applies to other ways of creating new brushes, too.</p>
 <p>This way of creating brushes only allows you to create cuboids. In the next section, you will learn how to create more complex brush shapes with the complex brush tool.</p>
 <h3 id="creating-complex-brushes">Creating Complex Brushes</h3>
 <p><img src="images/CreateBrushByDuplicatingPolygon.gif" alt="Drawing a rectangle and duplicating it" /> If you want to create a brush that is not a simple, axis-aligned cuboid, you can use the brush tool. The brush tool allows you to define a set of points and create the convex hull of these points. A convex hull is the smallest convex volume that contains all the points. The points become the vertices of the new brush, unless they are placed within the brush, in which case they are discarded. Accordingly, the brush tool gives you several ways to place points, but there are two limitations: First, you can only place points in the 3D viewport, and second, you can only place points by using other brushes as reference.</p>
@@ -664,17 +681,17 @@ p1*--v1---&gt;*p3</code></pre>
 <p><img src="images/EntityBrowser.png" alt="Entity browser" /> Secondly, you can create new point entities by dragging them from the entity browser. The entity browser can be found in the entity inspector page. At the bottom of the entity browser, you can find a number of controls to change the sort order and to filter the entities displayed in the browser.</p>
 <p>The leftmost dropdown list allows you to change the sort order. Entities can be sorted by name or by their usage count, with the most used entities at the top. The “Group” button toggles grouping the entities by their category, which is derived from the first part of the entity name. For example, all entities starting with “key_” are put into a category called “key”. The button labeled “Used” toggles all unused entities, when it is pressed, only those entities which are used in the map are shown in the browser. To filter entities by name, enter some text in the search box on the right. Only entities containing the search text will be shown in the browser.</p>
 <p>To create a new entity, simply drag it out of the browser and onto the 3D or a 2D viewport. If you drag it onto the 3D viewport, the entity will be positioned on the brush under the mouse, with its bounding box snapped to the grid. If you drag the entity onto a 2D viewport, its position is determined by the far end of the most recently selected object.</p>
-<p>Finally, you can create specific entities by assigning a keyboard shorcut in the <a href="#keyboard_shortcuts">preferences</a>. This is useful for entities that are used very often such as lights. The entity will be created under the mouse cursor; its position will be computed in the same way as if the context menu was used.</p>
+<p>Finally, you can create specific entities by assigning a keyboard shortcut in the <a href="#keyboard_shortcuts">preferences</a>. This is useful for entities that are used very often such as lights. The entity will be created under the mouse cursor; its position will be computed in the same way as if the context menu was used.</p>
 <h4 id="brush_entities">Brush Entities</h4>
 <p><img src="images/MoveBrushesToEntity.png" alt="Moving brushes to brush entities" /> Creating brush entities is also done using the context menu. Select a couple of brushes and right click on them, then select the desired brush entity from the menu. To move brushes from one brush entity to another, select the brushes you wish to move and right click on a brush belonging to the brush entity to which you want to move the brushes, and select “Move brushes to Entity ENTITY”, where “ENTITY” is the name of the target brush entity, for example “func_door” in the picture on the left. If the brush entity containing the brushes to be moved becomes empty, it will be automatically deleted. To move brushes from a brush entity back into the world and clear content flags, select the brushes, right click and select “Make Structural”.</p>
-<p>Additionally, you can also assign a keyboard shorcut to create a specific brush entity in the <a href="#keyboard_shortcuts">preferences</a>.</p>
+<p>Additionally, you can also assign a keyboard shortcut to create a specific brush entity in the <a href="#keyboard_shortcuts">preferences</a>.</p>
 <p>Often, it is much quicker to create new objects by duplicating existing ones. Objects can be duplicated using dedicated functions in TrenchBroom, or just by copying and pasting them.</p>
 <h3 id="duplicating_objects">Duplicating Objects</h3>
 <p>The currently selected objects can be duplicated by choosing <script>print_menu_item("Menu/Edit/Duplicate");</script>. This will duplicate the objects in place, that is, the duplicates retain the exact position of the original objects. To give visual feedback, the duplicated objects are flashed in white really quickly. In the following short clip, you can see that the selected brush gets duplicated. After that, the duplicated brush is moved upwards.</p>
 <figure>
 <img src="images/DuplicateInPlace.gif" alt="Duplicating a brush in place" /><figcaption aria-hidden="true">Duplicating a brush in place</figcaption>
 </figure>
-<p>Very often, you will want to duplicate objects and move them to a different position immediately afterwards, because having duplicates retain the same position as their originals is very seldomly useful. That’s why you can also duplicate and move objects at once without having to perform two separate actions. To duplicate and move objects, you can use the following keyboard shortcuts:</p>
+<p>Very often, you will want to duplicate objects and move them to a different position immediately afterwards, because having duplicates retain the same position as their originals is very seldom useful. That’s why you can also duplicate and move objects at once without having to perform two separate actions. To duplicate and move objects, you can use the following keyboard shortcuts:</p>
 <table>
 <thead>
 <tr class="header">
@@ -727,7 +744,7 @@ p1*--v1---&gt;*p3</code></pre>
 <figure>
 <img src="images/PastePositioning3D.gif" alt="Pasting objects in the 3D viewport" /><figcaption aria-hidden="true">Pasting objects in the 3D viewport</figcaption>
 </figure>
-<p>Positioning of objects pasted into a 2D viewport attempts to achieve a similar effect by positiong the pasted objects such that they line up with the far end of the bounds of the most recently selected objects while keeping them under the mouse, with their center snapped to the grid.</p>
+<p>Positioning of objects pasted into a 2D viewport attempts to achieve a similar effect by positioning the pasted objects such that they line up with the far end of the bounds of the most recently selected objects while keeping them under the mouse, with their center snapped to the grid.</p>
 <h2 id="editing-objects">Editing Objects</h2>
 <p>The following section is divided into several sub sections: First, we introduce editing operations that can be applied to all objects, such as moving, rotating, or deleting them. Then we proceed with the tools to shape brushes, such as the clip tool, the vertex tool, and the CSG operations. Afterwards we explain how you work with textures in TrenchBroom, and then we move on to editing entities and their properties. The final subsection deals with TrenchBroom’s undo and redo capabilities.</p>
 <h3 id="moving_objects">Moving Objects</h3>
@@ -918,35 +935,35 @@ p1*--v1---&gt;*p3</code></pre>
 <h3 id="deleting-objects">Deleting Objects</h3>
 <p>Deleting objects is as simple as selecting them and choosing <script>print_menu_item("Menu/Edit/Delete");</script>. Note that if you delete all remaining brushes of a brush entity, that entity gets deleted automatically. Likewise, if you delete all remaining objects of a group, that group also gets deleted.</p>
 <h2 id="shaping-brushes">Shaping Brushes</h2>
-<p>TrenchBroom offser several tools to change the shapes of brushes. The most powerful of these tools, and also the one that requires the most care, is the vertex tool. Before we discuss this tool, we will introduce the clip tool with which you can chop parts off of brushes. But first, we introduce the resize tool which, as the name suggests, allows you to quickly change the size of brushes. Finally, we explain how you can shape brushes using TrenchBroom’s CSG operatons.</p>
-<h3 id="resizing">Resizing</h3>
-<p>Brushes can be resized using the resize tool by moving their faces along their respective normal vectors with the mouse. To resize a selected brush, hold <script>print_key("Shift");</script> and move your mouse pointer onto or near the face you wish to move. You will notice that one of the brush’s faces is highlighted with a yellow outline. Drag with your left mouse button while still holding <script>print_key("Shift");</script> to move the highlighted face along its normal. Note that you can also move brush faces which are behind the brush as long as these faces have an edge that is visible from the camera.</p>
+<p>TrenchBroom offers several tools to change the shapes of brushes. The most powerful of these tools, and also the one that requires the most care, is the vertex tool. Before we discuss this tool, we will introduce the clip tool with which you can chop parts off of brushes. But first, we introduce the extrude tool which, as the name suggests, allows you to quickly change the size of brushes. Finally, we explain how you can shape brushes using TrenchBroom’s CSG operations.</p>
+<h3 id="extrusion">Extrusion</h3>
+<p>Brushes can be extruded using the extrude tool by moving their faces along their respective normal vectors with the mouse. To extrude a selected brush, hold <script>print_key("Shift");</script> and move your mouse pointer onto or near the face you wish to move. You will notice that one of the brush’s faces is highlighted with a yellow outline. Drag with your left mouse button while still holding <script>print_key("Shift");</script> to move the highlighted face along its normal. Note that you can also move brush faces which are behind the brush as long as these faces have an edge that is visible from the camera.</p>
 <figure>
-<img src="images/ResizeTool3D.gif" alt="Resizing a brush in the 3D viewport" /><figcaption aria-hidden="true">Resizing a brush in the 3D viewport</figcaption>
+<img src="images/ExtrudeTool3D.gif" alt="Extruding a brush in the 3D viewport" /><figcaption aria-hidden="true">Extruding a brush in the 3D viewport</figcaption>
 </figure>
-<p>Note that you cannot change the number of faces of a brush by with the resize tool. This means that you cannot push a face back into a brush indefinitely. TrenchBroom will refuse to move it further as soon as that movement would make other faces disappear. The same applies to pulling a face out of a brush, which can make that face disappear. This is disallowed as well.</p>
-<p>If you hold <script>print_key("Ctrl");</script> when you start dragging, the brush will not be resized. Instead, a new brush will be created. Both of the original and the new brush together will have the same shape that the original would have had if you had just resized it without holding <script>print_key("Ctrl");</script>, and the two brushes are split where the face you were dragging originally sat.</p>
+<p>Note that you cannot change the number of faces of a brush by with the extrude tool. This means that you cannot push a face back into a brush indefinitely. TrenchBroom will refuse to move it further as soon as that movement would make other faces disappear. The same applies to pulling a face out of a brush, which can make that face disappear. This is disallowed as well.</p>
+<p>If you hold <script>print_key("Ctrl");</script> when you start dragging, the brush will not be extruded. Instead, a new brush will be created. Both of the original and the new brush together will have the same shape that the original would have had if you had just extruded it without holding <script>print_key("Ctrl");</script>, and the two brushes are split where the face you were dragging originally sat.</p>
 <figure>
-<img src="images/ResizeTool3DSplitMode.gif" alt="Splitting a brush in the 3D viewport" /><figcaption aria-hidden="true">Splitting a brush in the 3D viewport</figcaption>
+<img src="images/ExtrudeTool3DSplitMode.gif" alt="Splitting a brush in the 3D viewport" /><figcaption aria-hidden="true">Splitting a brush in the 3D viewport</figcaption>
 </figure>
 <p>When starting a drag with <script>print_key("Ctrl");</script> you can also drag inward to split the original brush:</p>
 <figure>
-<img src="images/ResizeTool3DSplitInwardMode.gif" alt="Splitting a brush inward in the 3D viewport" /><figcaption aria-hidden="true">Splitting a brush inward in the 3D viewport</figcaption>
+<img src="images/ExtrudeTool3DSplitInwardMode.gif" alt="Splitting a brush inward in the 3D viewport" /><figcaption aria-hidden="true">Splitting a brush inward in the 3D viewport</figcaption>
 </figure>
-<p>You can also resize several brushes at the same time by moving their faces using the resize tool, but only if these faces line up perfectly. As the following animation illustrates, it’s not enough that the faces are parallel - they have to be identical.</p>
+<p>You can also extrude several brushes at the same time by moving their faces using the extrude tool, but only if these faces line up perfectly. As the following animation illustrates, it’s not enough that the faces are parallel - they have to be identical.</p>
 <figure>
-<img src="images/ResizeTool3DMultipleBrushes.gif" alt="Resizing multiple brushes" /><figcaption aria-hidden="true">Resizing multiple brushes</figcaption>
+<img src="images/ExtrudeTool3DMultipleBrushes.gif" alt="Extruding multiple brushes" /><figcaption aria-hidden="true">Extruding multiple brushes</figcaption>
 </figure>
-<p>The resize tool also works in the 2D viewports, of course, but the ability to move faces which are behind the selected brush is absent there. In both cases, TrenchBroom uses two methods to determine how to snap the distance by which you drag the face:</p>
+<p>The extrude tool also works in the 2D viewports, of course, but the ability to move faces which are behind the selected brush is absent there. In both cases, TrenchBroom uses two methods to determine how to snap the distance by which you drag the face:</p>
 <ul>
 <li>The distance is snapped to the current grid size, i.e., if you drag a face by 17.5 units along its normal, it will be moved by 16.0 units if the current grid size is 16. This is useful if you are resizing brushes which are part of a curve because their faces will line up after the drag.</li>
 <li>The vertices of the dragged faces are snapped to the grid planes, i.e., whenever at least one vertex component (X,Y, or Z) is a multiple of the current grid size, the face is snapped to that vertex. This makes it easy to align a face to other adjacent faces.</li>
 </ul>
 <p>Both snap modes are used simultaneously. There may be situations when you have to move the camera closer to a face in order to have sufficient precision when dragging the face.</p>
-<h4 id="moving_faces">Moving Faces Instead of Resizing</h4>
-<p>The brush resize tool offers a quick way to move an individual face of a brush in 2D views. Hold <script>print_key("Alt");</script> in addition to <script>print_key("Shift");</script> when starting to drag a face in a 2D view to enable this mode. You will notice that a face is highlighted as usual, but when you start dragging the mouse, the face will just be moved in the direction you are dragging. The move is not restricted by the face normal, and other faces will be affected as well.</p>
+<h4 id="moving_faces">Moving Faces Instead of Extruding</h4>
+<p>The brush extrude tool offers a quick way to move an individual face of a brush in 2D views. Hold <script>print_key("Alt");</script> in addition to <script>print_key("Shift");</script> when starting to drag a face in a 2D view to enable this mode. You will notice that a face is highlighted as usual, but when you start dragging the mouse, the face will just be moved in the direction you are dragging. The move is not restricted by the face normal, and other faces will be affected as well.</p>
 <figure>
-<img src="images/ResizeTool2DFaceMoving.gif" alt="Moving faces" /><figcaption aria-hidden="true">Moving faces</figcaption>
+<img src="images/ExtrudeTool2DFaceMoving.gif" alt="Moving faces" /><figcaption aria-hidden="true">Moving faces</figcaption>
 </figure>
 <p>The distance is snapped to the current grid size. Moving multiple faces is possible if the faces lie on the same plane. The <a href="#uv_lock">UV Lock</a> setting controls whether texture lock is used when dragging faces using this mode.</p>
 <h3 id="clipping">Clipping</h3>
@@ -979,9 +996,9 @@ p1*--v1---&gt;*p3</code></pre>
 <p>If you wish to snap a vertex onto another vertex quickly without performing a drag, you can just click on the target vertex while holding <script>print_key("Shift");</script><script>print_key("Alt");</script>.</p>
 <p><br clear="all" /></p>
 <p><img src="images/VertexToolSplitting.gif" alt="Splitting" /> Besides moving, fusing and deleting vertices, you can also add new vertices to a brush with the vertex tool. Hold <script>print_key("Shift");</script> and move your mouse over the position on the grid where you wish to add a vertex. Notice that a new vertex handle is shown when your mouse pointer is close to that point. Click and drag the handle to add a new vertex.</p>
-<p>Additionally, you can delete the selected vertices, edges, and faces from brushes by choosing <script>print_menu_item("Menu/Edit/Delete");</script>. Note that this will only succeed if none of the currently selected brushes becomes invalid by the deletions, that is, you can only delete vertices, edges, or faces if all of the selected brushes remain threedimensional after the deletions. If that is not the case, TrenchBroom will refuse the entire operation.</p>
+<p>Additionally, you can delete the selected vertices, edges, and faces from brushes by choosing <script>print_menu_item("Menu/Edit/Delete");</script>. Note that this will only succeed if none of the currently selected brushes becomes invalid by the deletions, that is, you can only delete vertices, edges, or faces if all of the selected brushes remain three-dimensional after the deletions. If that is not the case, TrenchBroom will refuse the entire operation.</p>
 <p><br clear="all" /></p>
-<p><img src="images/VertexToolVertexClumping.gif" alt="Vertex clumping" /> Vertex editing is not limited to working with single brushes. Selecting more than one brush and activating the vertex tool will cause vertex handles to appear for all brushes in the selection. This is more useful when working on organic brushwork such as terrain. You can build a large group of brushes and modify them all at once without having to change the selection. Trenchbroom will recognize when vertices of multiple brushes share the same position. In this case, when trying to move a vertex, Trenchbroom will move all those vertices together, making editing terrain much quicker and easier. In the following animation, the vertices under the cursor were moved with a single drag operation because they share the same position.</p>
+<p><img src="images/VertexToolVertexClumping.gif" alt="Vertex clumping" /> Vertex editing is not limited to working with single brushes. Selecting more than one brush and activating the vertex tool will cause vertex handles to appear for all brushes in the selection. This is more useful when working on organic brushwork such as terrain. You can build a large group of brushes and modify them all at once without having to change the selection. TrenchBroom will recognize when vertices of multiple brushes share the same position. In this case, when trying to move a vertex, TrenchBroom will move all those vertices together, making editing terrain much quicker and easier. In the following animation, the vertices under the cursor were moved with a single drag operation because they share the same position.</p>
 <p><br clear="all" /></p>
 <p>The vertex tool also provides some keyboard shortcuts to move vertices. These are listed in the following table.</p>
 <table>
@@ -1051,7 +1068,7 @@ p1*--v1---&gt;*p3</code></pre>
 <li>Detail might also result in PVS leaves too much information, better to turn some detail into actual brushes to force vis to break a room into several PVS leaves. Or use hint brushes to force vis to add more leaves.</li>
 </ul>
 <h4 id="uv_lock">UV Lock</h4>
-<p>The regular Texture Lock prefence doesn’t apply to vertex editing - instead, there is a separate preference called UV Lock toggled with <script>print_menu_item("Menu/Edit/UV Lock");</script> or the UV Lock toolbar button:</p>
+<p>The regular Texture Lock preference doesn’t apply to vertex editing - instead, there is a separate preference called UV Lock toggled with <script>print_menu_item("Menu/Edit/UV Lock");</script> or the UV Lock toolbar button:</p>
 <figure>
 <img src="images/UVLock.png" alt="UV Lock toolbar button" /><figcaption aria-hidden="true">UV Lock toolbar button</figcaption>
 </figure>
@@ -1323,7 +1340,7 @@ p1*--v1---&gt;*p3</code></pre>
 <p>The entity property editor is split into two separate areas. At the top, there is a tabular representation of the properties of the currently selected entities and, if applicable, the defaults for those properties which are not present in the selected entities. The default properties are shown in <em>italics</em> below the actual properties of the selected entities. To hide the default properties, you can uncheck the checkbox at the bottom of the table.</p>
 <h3 id="editing-properties">Editing Properties</h3>
 <p>To select an entity property, just click in the row that represents that property in the table. The clicked field will be highlighted, indicating that it has focus. The highlight indicates that you can change the field by entering text. In the screenshot above, the “mangle” property has been selected, and its value has focus, indicating that it is ready to be changed.</p>
-<p>If you are changing a lot of properties, you may wish to navigate quickly through the table. You can use the cursor keys to move focus around in the table. Alternatively, you can hit <script>print_key("Tab");</script> to move field by field. If the focus is on a key of some property, hitting tab will move the cursor the value field of that property, and hitting tab again will move it to the key field of the next property, and so on until you reach the end of the table. You can also move in the opposite direction by hittin <script>print_key("Shift");</script><script>print_key("Tab");</script>. <script>print_key("Return");</script> moves vertically through the list, meaning that if focus is on a property key and you hit enter, focus will move to the key of the next property in the list. Use this navigation method to mass rename property keys, for example.</p>
+<p>If you are changing a lot of properties, you may wish to navigate quickly through the table. You can use the cursor keys to move focus around in the table. Alternatively, you can hit <script>print_key("Tab");</script> to move field by field. If the focus is on a key of some property, hitting tab will move the cursor the value field of that property, and hitting tab again will move it to the key field of the next property, and so on until you reach the end of the table. You can also move in the opposite direction by hitting <script>print_key("Shift");</script><script>print_key("Tab");</script>. <script>print_key("Return");</script> moves vertically through the list, meaning that if focus is on a property key and you hit enter, focus will move to the key of the next property in the list. Use this navigation method to mass rename property keys, for example.</p>
 <p>To change the key or the value of a property, set the focus to the appropriate field in the table. If you enter some text now, that text will replace the key of the property. An alternative way to change a field is to click on it while its property is already selected. This will show an actual text field in which you can enter the text.</p>
 <p>There are several ways to add a property to an entity. First, you can click on the button with the “+” label at the bottom of the table. This will insert a new property with a default name and no value into the table. Second, you can hit <script>print_key("Ctrl");</script><script>print_key("Return");</script> to add a new property. In both cases, the new property will be selected so that you can start editing its key and value right away as described above. Finally, you can add a property by changing the value of a default property. This will promote the default property to an actual property of the entity.</p>
 <p>To remove entity properties, you should click the rows in the table that represent them and hit the button labeled “-” at the bottom of the table.</p>
@@ -1331,7 +1348,7 @@ p1*--v1---&gt;*p3</code></pre>
 <p><img src="images/EntityPropertyEditorMultiSelection.png" alt="Multiple Entity Selections" /> If multiple entities are selected, the table will show the union of all their properties and not just those properties which all of the selected entities have in common. Properties which are not present in all of the selected entities have their names grayed out, and properties which have different values in those entities that actually have those properties are displayed with an empty value. In the screenshot, there are three light entities selected. Consequentially, the “classname” property is present in all of them and has the same value everywhere. Likewise, the “origin” property is present in all of these entities, but it has different values in each of them, so it is shown without a value. The “light”, “wait”, “angle”, and “mangle” properties on the other hand are only present in some of the selected entities, but they do have the same values in each of the entities that have them.</p>
 <p>If you change an entity property when multiple entities are selected, the change gets applied to all of the selected entities, even if that requires adding that property. So if you were to change the value of the “light” property in the example above to 200, each of the selected entities will subsequently have a “light” property with the value 200, even if only a subset of the selected entities had that property before.</p>
 <h3 id="smart-entity-property-editors">Smart Entity Property Editors</h3>
-<p>TrenchBroom provides special editors for the following entity properties: spawnflags, colors, and choices. These special editors are callled <em>smart property editors</em> and are displayed below the entity property table if you select an entity property for which such an editor exists.</p>
+<p>TrenchBroom provides special editors for the following entity properties: spawnflags, colors, and choices. These special editors are called <em>smart property editors</em> and are displayed below the entity property table if you select an entity property for which such an editor exists.</p>
 <table>
 <thead>
 <tr class="header">
@@ -1359,7 +1376,7 @@ p1*--v1---&gt;*p3</code></pre>
 </tbody>
 </table>
 <h3 id="linking-entities">Linking Entities</h3>
-<p>Entities can be linked using special link properties. Each link has a source and a target entity. The target entity has a property called “targetname”, and the value of that property is some arbitrary string. The souce entity has a “target” or a “killtarget” property, and the value of that property is the value of the target entity’s “targetname” property. To create an entity link, you have to manually set these properties to the proper values. Currently, the names of the link properties are hardcoded into TrenchBroom, but in the future they will be read from the FGD file if appropriate. The following section explains how entity links are visualized in the editor.</p>
+<p>Entities can be linked using special link properties. Each link has a source and a target entity. The target entity has a property called “targetname”, and the value of that property is some arbitrary string. The source entity has a “target” or a “killtarget” property, and the value of that property is the value of the target entity’s “targetname” property. To create an entity link, you have to manually set these properties to the proper values. Currently, the names of the link properties are hardcoded into TrenchBroom, but in the future they will be read from the FGD file if appropriate. The following section explains how entity links are visualized in the editor.</p>
 <h3 id="entity-link-visualization">Entity Link Visualization</h3>
 <p>Entity Links are rendered as lines in the 3D and 2D viewports. TrenchBroom provides you with for modes for entity link visualization. You can switch between these modes in the dropdown menu that is displayed when you click on the “View” button at the right of the info bar. The following table explains the four different modes.</p>
 <table>
@@ -1423,8 +1440,182 @@ p1*--v1---&gt;*p3</code></pre>
 <p>Objects can be locked either if you are editing an open group or if you set a layer to locked (see below). You cannot lock objects individually.</p>
 <h2 id="groups">Groups</h2>
 <p>Groups allow you to treat several objects as one and to give them a name. A group can contain the following types of objects: entities, brushes, and more groups. The fact that a group can contain groups induces a hierarchy - but in practice, you will rarely create such nested groups. In the viewports, groups have their bounding box rendered in blue, and their name is displayed above them.</p>
-<p>To create a group, make sure that no tool is currently active and select some objects and choose <script>print_menu_item("Menu/Edit/Group");</script>. The editor will ask you for a name. Group names need not be unique, so you can have several groups with the same name. To select a group, you can click on any of the objects contained in it. This will not select the individual object, but the entire group, which is why you can only editor all objects within a group as one. If you want to edit individual objects in a group, you have to open the group by double clicking on it with the left mouse button. This will lock every other object in the map (locked objects are not editable and rendered in blue). Once the group is opened, you can edit the individual objects in it, or you can create new objects within the group in the usual ways. Once you are done editing the group, you can close it again by left double clicking anywhere outside of the group. Finally, you can remove a group by selecting it and choosing <script>print_menu_item("Menu/Edit/Ungroup");</script>. Note that removing a group does not remove the objects in the group from the map, the objects are merely ungrouped.</p>
+<p>To create a group, make sure that no tool is currently active and select some objects and choose <script>print_menu_item("Menu/Edit/Group");</script>. The editor will ask you for a name. Group names need not be unique, so you can have several groups with the same name. To select a group, you can click on any of the objects contained in it. This will not select the individual object, but the entire group, which is why you can only edit all objects within a group as one. If you want to edit individual objects in a group, you have to open the group by double clicking on it with the left mouse button. This will lock every other object in the map (locked objects are not editable and rendered in blue). Once the group is opened, you can edit the individual objects in it, or you can create new objects within the group in the usual ways. Once you are done editing the group, you can close it again by left double clicking anywhere outside of the group. Finally, you can remove a group by selecting it and choosing <script>print_menu_item("Menu/Edit/Ungroup");</script>. Note that removing a group does not remove the objects in the group from the map, the objects are merely ungrouped.</p>
 <p>To add objects to an existing group, select the objects you wish to add to the group, then right click on an object already existing to that group and select “Add Objects to GROUPNAME”, where GROUPNAME is the name of the group. Likewise, you can remove objects from a group by opening that group, selecting the objects you wish to remove from the group, and selecting “Remove Objects from GROUPNAME” from the <a href="#map_view_context_menu">map view context menu</a>. The removed objects are added to the current layer. If you remove all objects from a group, the group is deleted automatically.</p>
+<h2 id="linked_groups">Linked Groups</h2>
+<p>Groups can also be linked together to allow a form of instancing. Linked groups contain the same objects, but can be transformed into different positions and shapes as a whole. Changing one of the linked groups will update all the other linked groups. Linked groups are useful to build reusable structures such as doorways that you want to keep in sync. The workflow for linked groups is always the same:</p>
+<ul>
+<li>Create some objects that form a reusable structure, e.g. a doorway.</li>
+<li>Group the objects.</li>
+<li>Select the group and create a linked duplicate via the context menu or by choosing <script>print_menu_item("Menu/Edit/Create Linked Duplicate");</script> from the menu.</li>
+<li>Move the duplicate to its intended position and apply further transformations to it (e.g. rotation).</li>
+<li>Create more linked duplicates by duplicating a linked group in the usual way.</li>
+<li>At any time, open any of the linked groups and change its contents. These changes will then be replicated into the other linked groups.</li>
+</ul>
+<p>You can apply various transformations to linked groups such as translation, rotation, scaling, or flipping. Groups and linked groups can be nested arbitrarily, so a linked group can contain a group, or a group can contain a linked group, and linked groups can even contain linked groups.</p>
+<p>It is important not to think of linked groups as instancing. In TrenchBroom, there is no fixed “primary” version of the linked group that you create instances of. Indeed, linked groups are much simpler under the hood: When you change a linked group, that group will temporarily become the “primary” version and all of its contents are copied into all of its linked siblings, independent of whether or not the contained objects were changed. With this in mind, you may think of TrenchBroom performing a manual updating process automatically for you.</p>
+<p>You can add objects to linked groups or remove objects from linked groups in the usual way, and the change is reflected in the linked groups immediately. To edit an object in a linked group, open the group as usual and perform your changes. Again, the changes are reflected in the linked groups immediately.</p>
+<p>Consider the following example where you have two linked groups, each containing a brush and an entity.</p>
+<pre><code>Group A
+- Brush A
+- Entity A
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;angle&quot; &quot;90&quot;
+  - &quot;origin&quot; &quot;0 0 0&quot;
+
+Group B (translated by 128 0 0)
+- Brush B
+- Entity B
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;angle&quot; &quot;90&quot;
+  - &quot;origin&quot; &quot;128 0 0&quot;</code></pre>
+<p><code>Group B</code> is structurally identical to <code>Group A</code>, but it’s translated by 128 units on the X axis. Suppose you change <code>Brush A</code> by moving one of its vertices. Then all contents of <code>Group A</code> are copied, translated by 128 on the X axis, and added to <code>Group B</code>, replacing its existing content. Or let’s say you set <code>Entity B</code>’s spawnflags to <code>1</code>, then the same process happens, but this time <code>Group B</code>s content is copied, translated by -128 on the X axis, and finally <code>Group A</code>’s contents are replaced by the copies. The result would look as follows:</p>
+<pre><code>Group A
+- Brush A
+- Entity A
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;angle&quot; &quot;90&quot;
+  - &quot;origin&quot; &quot;0 0 0&quot;
+  - &quot;spawnflags&quot; &quot;1&quot;
+
+Group B (translated by 128 0 0)
+- Brush B
+- Entity B
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;angle&quot; &quot;90&quot;
+  - &quot;origin&quot; &quot;128 0 0&quot;
+  - &quot;spawnflags&quot; &quot;1&quot;</code></pre>
+<p>There are some situations in which you might not want all of your changes to be reflected in all linked groups. For example, when building a door, you will usually hook the door brushes to a trigger brush using <code>target</code> and <code>targetname</code> properties. But of course, you want to use different names for different doors so that all doors don’t open at once when one of them opens in the game. To allow these properties to have different values in different linked groups, you can protect entity properties against changes from their counterparts in a linked group.</p>
+<h3 id="protected_entity_properties">Protected Entity Properties</h3>
+<p>Marking an entity property as protected blocks any changes to this property from the corresponding entity in a linked group. Furthermore, any changes to a protected entity property are not reflected in the corresponding entities in linked groups. Let’s consider an example again.</p>
+<pre><code>Group A
+- Entity A
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;angle&quot; &quot;90&quot;
+  - &quot;origin&quot; &quot;0 0 0&quot;
+  - &quot;spawnflags&quot; &quot;1&quot;
+
+Group B (translated by 128 0 0)
+- Entity B
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;angle&quot; &quot;90&quot;
+  - &quot;origin&quot; &quot;128 0 0&quot;
+  - &quot;spawnflags&quot; &quot;1&quot;</code></pre>
+<p>Let’s assume you want to change <code>Entity B</code>’s angle, but you don’t want this change to affect <code>Entity A</code>. In this case, you can set the <code>angle</code> property of <code>Entity B</code> to protected before changing its value to <code>180</code>. The result will look as follows.</p>
+<pre><code>Group A
+- Entity A
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;angle&quot; &quot;90&quot;
+  - &quot;origin&quot; &quot;0 0 0&quot;
+  - &quot;spawnflags&quot; &quot;1&quot;
+
+Group B (translated by 128 0 0)
+- Entity B
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;angle&quot; &quot;180&quot; (protected)
+  - &quot;origin&quot; &quot;128 0 0&quot;
+  - &quot;spawnflags&quot; &quot;1&quot;</code></pre>
+<p>Note that <code>Entity A</code>’s <code>angle</code> property still has a value of 90. If you now change <code>Entity A</code>’s <code>angle</code> property, this change will not be reflected in <code>Entity B</code> either.</p>
+<p>You can use the entity property editor in the entity inspector to protect entity properties. When editing an entity inside of a linked group, a new column with checkboxes appears like in the following screenshot.</p>
+<figure>
+<img src="images/ProtectedProperties.png" alt="Protected Entity Properties (macOS)" /><figcaption aria-hidden="true">Protected Entity Properties (macOS)</figcaption>
+</figure>
+<p>To set a property to protected, click on its checkbox. To remove the protection, click on the checkbox again. When you set a property to unprotected, its value will be reset to the value of the corresponding unprotected properties in the other entities. In our example from above, Setting <code>Entity B</code>’s <code>angle</code> property to unprotected will reset its value to <code>90</code>, which is the value from <code>Entity A</code>’s unprotected <code>angle</code> property.</p>
+<p>To set all properties of one or multiple entities to unprotected, select the entities (or their containing groups) and choose <script>print_menu_item("Menu/Edit/Clear Protected Properties");</script>.</p>
+<p>Since all changes you make to a linked group are immediately replicated into the other linked groups, newly added properties show up in the linked groups right away. If you want to add a property without replicating it, you can add it as protected by clicking on the shielded <code>+</code> icon in the toolbar below the entity property editor (see previous screenshot). Conversely, if you want to suppress a property in a linked group, that is, you don’t want it to be created when adding it to another linked group, you can add it as a protected property and immediately delete it again. It will still be shown in the property editor until you remove its protected checkmark, but the name will be in italics, so it will look like a default property.</p>
+<p>To illustrate the value of these deleted protected properties, consider the following example.</p>
+<pre><code>Group A
+- Entity A
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;origin&quot; &quot;0 0 0&quot;
+
+Group B (translated by 128 0 0)
+- Entity B
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;origin&quot; &quot;128 0 0&quot;
+
+Group C (translated by 0 64 0)
+- Entity C
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;origin&quot; &quot;0 64 0&quot;</code></pre>
+<p>Suppose you want to set an angle for all of the <code>monster_army</code> entities except for <code>Entity A</code>. In this case, you would first add the <code>angle</code> property to <code>Entity A</code> as a protected property, and then delete it again from <code>Entity A</code>. Then you would add the <code>angle</code> property to <code>Entity B</code> and give it a value. This property would be replicated into <code>Entity C</code>, but not <code>Entity A</code> because there it is protected, even though the property isn’t even present. In the following screenshot, the <code>angle</code> property has been set to protected and was then subsequently deleted. If you click its checkbox to remove the protection, the property will no longer show up in the entity property editor.</p>
+<figure>
+<img src="images/ProtectedProperties.png" alt="Protected Deleted Entity Properties (macOS)" /><figcaption aria-hidden="true">Protected Deleted Entity Properties (macOS)</figcaption>
+</figure>
+<h3 id="separating_linked_groups">Unlinking and Separating Linked Groups</h3>
+<p>To unlink a linked group, select the group and choose <script>print_menu_item("Menu/Edit/Separate Linked Groups");</script>. This will turn the linked group into a regular group again. If you select multiple linked groups from a set of mutually linked groups, the selected groups will not be turned into regular groups, but rather they will become a separate set of linked groups. This separate set of linked groups is still mutually linked to each other, but they are no longer linked to the other, unselected members of the set.</p>
+<p>Note that if you remove all members of a set of linked groups, either by separation or by deleting them, the single remaining member of the set will become a regular group.</p>
+<h3 id="linked_group_visualization">Visualization</h3>
+<figure>
+<img src="images/LinkedGroups.png" alt="Linked Groups in 3D view (macOS)" /><figcaption aria-hidden="true">Linked Groups in 3D view (macOS)</figcaption>
+</figure>
+<p>Linked groups are rendered with a different color than regular linked groups. If you select a linked group, the editor will render arrows emanating from the selected group and ending in the other linked groups to indicate which groups will be updated when the selected group changes. These arrows are still shown if you open a linked group.</p>
+<h3 id="linked_groups_map_file">Linked Groups in the Map File</h3>
+<p>Like regular groups, linked groups are stored in the map file using <code>func_group</code> entities with additional, TrenchBroom specific properties. If you edit a map file with linked groups in another editor than TrenchBroom and you change objects belonging to a linked group, then that linked group is out of sync with its linked counterparts. TrenchBroom will load such groups without issue and you can keep editing them as usual. However, if you change one of the linked groups, then this group will overwrite the contents of all other linked groups, so afterwards they will be in sync again. So if you purposefully changed one of the linked groups in an external editor, and want to replicate these changes into the linked groups, just open this specific group in the editor, make change to it, and close the group again. This will update all of the linked groups and they will be in sync again.</p>
+<p>Consider the following linked groups:</p>
+<pre><code>Group A
+- Brush A
+- Entity A
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;origin&quot; &quot;0 0 0&quot;
+
+Group B (translated by 128 0 0)
+- Brush B
+- Entity B
+  - &quot;classname&quot; &quot;monster_army&quot;
+  - &quot;origin&quot; &quot;128 0 0&quot;</code></pre>
+<p>In the map file, these groups would be stored as follows. Refer to the comments for information about the TrenchBroom specific properties for linked groups.</p>
+<pre><code>// entity 0
+{
+&quot;classname&quot; &quot;func_group&quot;
+&quot;_tb_type&quot; &quot;_tb_group&quot;
+&quot;_tb_name&quot; &quot;group&quot;
+&quot;_tb_id&quot; &quot;1&quot;
+
+// The following property is the ID of a set of linked groups.
+// All groups with this linked group ID will be mutually linked.
+&quot;_tb_linked_group_id&quot; &quot;{38b3b39d-a165-4999-985d-d40563ce51c1}&quot;
+
+// The transformation that has been applied to the group as a whole. 
+// This will get updated when you transform a group by moving, rotating or scaling it.
+&quot;_tb_transformation&quot; &quot;1 0 0 128 0 1 0 0 0 0 1 0 0 0 0 1&quot;
+
+// brush 0
+{
+// faces omitted
+}
+}
+// entity 1
+{
+&quot;classname&quot; &quot;monster_army&quot;
+&quot;origin&quot; &quot;128 0 0&quot;
+&quot;_tb_group&quot; &quot;1&quot;
+}
+// entity 2
+{
+&quot;classname&quot; &quot;func_group&quot;
+&quot;_tb_type&quot; &quot;_tb_group&quot;
+&quot;_tb_name&quot; &quot;group&quot;
+&quot;_tb_id&quot; &quot;2&quot;
+
+// This group entity has the same linked group ID as the previous one, 
+// so they will be linked.
+&quot;_tb_linked_group_id&quot; &quot;{38b3b39d-a165-4999-985d-d40563ce51c1}&quot;
+
+&quot;_tb_transformation&quot; &quot;1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1&quot;
+// brush 0
+{
+// faces omitted
+}
+}
+// entity 3
+{
+&quot;classname&quot; &quot;monster_army&quot;
+&quot;origin&quot; &quot;0 0 0&quot;
+&quot;angle&quot; &quot;90&quot;
+&quot;_tb_group&quot; &quot;2&quot;
+&quot;_tb_protected_properties&quot; &quot;angle&quot;
+}</code></pre>
 <h2 id="layers">Layers</h2>
 <p>Layers decompose your map into several parts. For example, you might create a layer for separate rooms or areas. Layers can contain groups, entities, or brushes, and each of these objects can belong to one layer only. Each layer has a name and can be set to hidden or locked, or omitted from exported maps. Every map contains a “Default Layer” that cannot be removed.</p>
 <figure>
@@ -1461,21 +1652,24 @@ p1*--v1---&gt;*p3</code></pre>
 <p>The preferences dialog allows you to set the game configurations, to change the view layout and control the rendering, and to customize the mouse and the keyboard shortcuts. You can open the preferences dialog by choosing <script>print_menu_item("Menu/File/Preferences…");</script>. The dialog is split into four panes, each of which we will review in the following sections. Note that on Windows and Linux, the changes are only applied if you click the “OK” or “Apply” button at the bottom of the dialog, whereas on Mac OS X, the changes are applied immediately.</p>
 <h2 id="game_configuration">Game Configuration</h2>
 <figure>
-<img src="images/GamePreferences.png" alt="Game Configuration Dialog (Ubuntu Linux)" /><figcaption aria-hidden="true">Game Configuration Dialog (Ubuntu Linux)</figcaption>
+<img src="images/GamePreferences.png" alt="Game Configuration Dialog (Mac OS X)" /><figcaption aria-hidden="true">Game Configuration Dialog (Mac OS X)</figcaption>
 </figure>
 <p>The game configuration preference pane is where you set up the paths to the games that TrenchBroom supports. For each game, you can set the game path by clicking on the “…” button and selecting the folder in which the game is stored on your hard drive. Alternatively, you can enter a path manually in the text box, but you have to hit <script>print_key("Return");</script> to apply the change.</p>
 <p>Additionally, you can configure the game engines for the selected game by clicking on the ‘Configure engines…’ button.</p>
+<p>Clicking the folder icon below the game list opens the folder that contains custom game configurations in a file browser.</p>
 <figure>
 <img src="images/GameEngineDialog.png" alt="Game Engine Configuration Dialog (Mac OS X)" /><figcaption aria-hidden="true">Game Engine Configuration Dialog (Mac OS X)</figcaption>
 </figure>
 <p>In this dialog, you can add a game engine profile by clicking on the ‘+’ button below the profile list on the left, and you can delete the selected profile by clicking on the ‘-’ button. To the right of the list, you can edit the details of the selected game engine profile, specifically its name and path. Similar to the game path, if you edit the engine path manually, you have to apply the changes by pressing <script>print_key("Return");</script> while in the path text box. Click <a href="#launching_game_engines">here</a> to find out how to launch game engines from within TrenchBroom.</p>
-<p>For some game configurations (such as for Quake, shown above) you can also optionally enter paths for a set of compilation tools. If you do, then the name shown to the left of the path can be used as a variable in your <a href="#compiling_maps">compilation profiles</a> for this game. Wherever that variable occurs, the path specified here will be used. For example if your path to the <code>qbsp</code> tool is <code>C:\mapping\ericw-tools-v0.18.1-win64\bin\qbsp.exe</code>, and you set that path here… then in your compilation profiles you can enter <code>${qbsp}</code> wherever you need to refer to that whole qbsp.exe path.</p>
+<p>For some game configurations (such as for Quake, shown above) you can also optionally enter paths for a set of compilation tools. If it’s not clear what you should be specifying a path to here, then hovering over the path entry box may give you a tooltip with additional info about that compilation tool.</p>
+<p>If you do enter a path here, then the name shown to the left of the path can be used as a variable in your <a href="#compiling_maps">compilation profiles</a> for this game. Wherever that variable occurs, the path specified here will be used. For example if your path to the <code>qbsp</code> tool is <code>C:\mapping\ericw-tools-v0.18.1-win64\bin\qbsp.exe</code>, and you set that path here… then in your compilation profiles you can enter <code>${qbsp}</code> wherever you need to refer to that whole qbsp.exe path.</p>
 <p>The benefits of specifying your tool paths here (if the game configuration allows) are:</p>
 <ul>
 <li>It will be easier to create, edit, and share your compilation profiles.</li>
 <li>If your tool paths need to be changed, you only have to change them here.</li>
 </ul>
 <p>So in the example above, if you wanted to try a later version of ericw-tools that are located in a different folder like <code>C:\mapping\ericw-tools-v0.19-win64\bin</code>, then you would only need to change the paths in this dialog. You wouldn’t need to edit all of your compilation profiles.</p>
+<p>You can also add <a href="#game_configuration_files">custom game configurations</a> to suit a particular setup (such as an engine supporting formats that TrenchBroom supports, but does not expect with that game).</p>
 <h2 id="view_layout_and_rendering">View Layout and Rendering</h2>
 <figure>
 <img src="images/ViewPreferences.png" alt="View Preferences (macOS)" /><figcaption aria-hidden="true">View Preferences (macOS)</figcaption>
@@ -1582,7 +1776,7 @@ p1*--v1---&gt;*p3</code></pre>
 <figure>
 <img src="images/KeyboardPreferences.png" alt="Keyboard Configuration Dialog (Ubuntu Linux)" /><figcaption aria-hidden="true">Keyboard Configuration Dialog (Ubuntu Linux)</figcaption>
 </figure>
-<p>In this preference pane, you can change the keybaord shortcuts used in TrenchBroom. The table lists all available shortcuts, their context, and the description. To change a keyboard shortcut, click twice (do not double click) on the shortcut in the first column of the table and enter the new shortcut. The context determines when this shortcut is available, for example, the PgDn key triggers different actions depending on whether the rotate tool is active or not. Finally, the desription column explains what a shortcut does in a particular context. Sometimes a shortcut triggers different actions depending on whether the viewport in which it was used is a 3D or a 2D viewport. For example, the PgDn key can move objects backward (away from the camera) in a 2D viewport or down along the Z axis in the 3D viewport. These different actions are listed together in the description column, but they are separated with a semicolon.</p>
+<p>In this preference pane, you can change the keyboard shortcuts used in TrenchBroom. The table lists all available shortcuts, their context, and the description. To change a keyboard shortcut, click twice (do not double click) on the shortcut in the first column of the table and enter the new shortcut. The context determines when this shortcut is available, for example, the PgDn key triggers different actions depending on whether the rotate tool is active or not. Finally, the description column explains what a shortcut does in a particular context. Sometimes a shortcut triggers different actions depending on whether the viewport in which it was used is a 3D or a 2D viewport. For example, the PgDn key can move objects backward (away from the camera) in a 2D viewport or down along the Z axis in the 3D viewport. These different actions are listed together in the description column, but they are separated with a semicolon.</p>
 <p>If you open the preference dialog when a map is currently opened, the list of shortcuts will contain additional entries depending on the loaded entity configuration file and the game configuration file. For each entity and special brush or face types, the following keyboard shortcuts are available.</p>
 <ul>
 <li><strong>Entity</strong>
@@ -1791,7 +1985,7 @@ p1*--v1---&gt;*p3</code></pre>
 </tr>
 </tbody>
 </table>
-<p>The <code>MODS</code> variable is useful to pass a parameter to the engine to choose a mod. Usually, this will be the last mod in the mods for the current map. Since the <code>MODS</code> variable is an array that contains all mods for the map, its individual entries are accessed using teh subscript operator (see below). To access the last entry in the array, you can use the expression <code>$MODS[-1]</code>.</p>
+<p>The <code>MODS</code> variable is useful to pass a parameter to the engine to choose a mod. Usually, this will be the last mod in the mods for the current map. Since the <code>MODS</code> variable is an array that contains all mods for the map, its individual entries are accessed using the subscript operator (see below). To access the last entry in the array, you can use the expression <code>$MODS[-1]</code>.</p>
 <p>Note that the parameters are stored with the game engine profile.</p>
 <h2 id="expression_language">Expression Language</h2>
 <p>TrenchBroom contains a simple expression language that can be used to easily embed variables and more complex expressions into strings. Currently, the language is mainly used in the Compilation dialog and the Launch Engine dialog. In the following, we will introduce the syntax and the semantics of the expression language.</p>
@@ -2027,7 +2221,7 @@ AutoRange      = &quot;..&quot; Expression | Expression &quot;..&quot;</code></p
 </tr>
 <tr class="even">
 <td><code>Array</code></td>
-<td>Returns a string containing the characters at the specified indizes. Assumes that all elements of the array are convertible to <code>Number</code>. Indizes that are out of bounds are ignored, but negative indices are allowed.</td>
+<td>Returns a string containing the characters at the specified indices. Assumes that all elements of the array are convertible to <code>Number</code>. Indices that are out of bounds are ignored, but negative indices are allowed.</td>
 </tr>
 </tbody>
 </table>
@@ -2065,7 +2259,7 @@ AutoRange      = &quot;..&quot; Expression | Expression &quot;..&quot;</code></p
 </tr>
 <tr class="even">
 <td><code>Array</code></td>
-<td>Returns an array containing the values at the specified indizes. Assumes that all elements of the indexing array are convertible to <code>Number</code>. If the indexing array contains an index that is out of bounds, an error is thrown. Negative indices are allowed.</td>
+<td>Returns an array containing the values at the specified indices. Assumes that all elements of the indexing array are convertible to <code>Number</code>. If the indexing array contains an index that is out of bounds, an error is thrown. Negative indices are allowed.</td>
 </tr>
 </tbody>
 </table>
@@ -2082,7 +2276,7 @@ arr[3..4]       // [ &quot;test&quot;, [ 10, 11, 12 ] ]</code></pre>
 <p>You can even use multiple range expressions in a subscript, and you can combine range expressions and single indices, too.</p>
 <pre><code>arr[0..1, 3..4] // [ 7, 8, &quot;test&quot;, [ 10, 11, 12 ] ]
 arr[0..3, 4]    // [ 7, 8, 9, &quot;test&quot;, [ 10, 11, 12 ] ]</code></pre>
-<p>Negative indices can be used to extract an array suffix. Note that the index value <code>-1</code> accesses the last element of the array, the value <code>-2</code> accesses the last but one element, and so on. Assuming that the array that is being subscripted has a length of <code>7</code>, then the value <code>-7</code> accesses the arrays’s first element.</p>
+<p>Negative indices can be used to extract an array suffix. Note that the index value <code>-1</code> accesses the last element of the array, the value <code>-2</code> accesses the last but one element, and so on. Assuming that the array that is being subscripted has a length of <code>7</code>, then the value <code>-7</code> accesses the array’s first element.</p>
 <pre><code>arr[-2]     // &quot;test&quot;
 arr[-2..-1] // [ &quot;test&quot;, [ 10, 11, 12 ] ]</code></pre>
 <p>You can even reverse arrays using subscripts and ranges.</p>
@@ -2579,7 +2773,7 @@ null &lt; &quot;asdf&quot;
 [ 1, 2, 3 ] &lt;  [ 2, 2, 3 ]
 [ 1, 2 ]    &lt;  [ 1, 2, 3 ]</code></pre>
 <h4 id="case-term">Case Term</h4>
-<p>The case operator allows for conditional evaluation of expressions. This is usally most useful in combination with the switch operator, which is explained in the next subsection.</p>
+<p>The case operator allows for conditional evaluation of expressions. This is usually most useful in combination with the switch operator, which is explained in the next subsection.</p>
 <pre><code> Case = SimpleTerm &quot;-&gt;&quot; Expression</code></pre>
 <p>In a case expression, the part before the <code>-&gt;</code> operator is called the <em>premise</em> and the part after it is called the <em>conclusion</em>. The case operator is evaluated as follows:</p>
 <ul>
@@ -2746,7 +2940,7 @@ false  -&gt; true   // undefined
 <p>If the builtin precedence does not reflect your intention, you can use parentheses to force an operator to be evaluated first.</p>
 <pre><code>2 * (3 + 4) // 14</code></pre>
 <h3 id="terminals">Terminals</h3>
-<p>In EBNF, terminal rules are those which only contain terminal symbols on the right hand side. A symbol is terminal if it is enclosed in double quotes. Note that for the <code>Char</code> rule, we have chosen to not enumate all actual ASCII characters and have used a placeholder string instead.</p>
+<p>In EBNF, terminal rules are those which only contain terminal symbols on the right hand side. A symbol is terminal if it is enclosed in double quotes. Note that for the <code>Char</code> rule, we have chosen to not enumerate all actual ASCII characters and have used a placeholder string instead.</p>
 <pre><code>Alpha          = &quot;a&quot; | &quot;b&quot; | ... &quot;z&quot; | &quot;A&quot; | &quot;B&quot; | ... &quot;Z&quot;
 Numeric        = &quot;0&quot; | &quot;1&quot; | ... &quot;9&quot;
 Char           = Any ASCII character</code></pre>
@@ -2755,7 +2949,7 @@ Char           = Any ASCII character</code></pre>
 <p>This section contains some information about what you can do if you run into problems when using TrenchBroom.</p>
 <h3 id="automatic-backups">Automatic Backups</h3>
 <p>TrenchBroom automatically creates backups of your work. As a prerequisite, you have to work on a saved file, that is, a file that exists somewhere on your computer. So when you create a new file, you should save it as soon as you decide that you want to keep it. At that point, TrenchBroom will create its automatic backups. These backups are stored in a folder called “autosave” within the folder where your map file is located. It will create a new backup every ten minutes after the last backup, unless the map file has not been changed since then. To prevent the autosaving from interrupting your workflow, TrenchBroom will only create an autosave you are not interacting with it, however. In total, TrenchBroom will create up to 50 backups. After that, it will delete the oldest backup when it creates a new one so that the total number of backups does not exceed 50. The backups have the same name as the map file you are editing, but with the backup number added to the name just before the extension.</p>
-<p>You can use these backups to go back to previous versions of you map if problems arise. This may help you when you are fixing bugs or if your map file gets corrupted somehow.</p>
+<p>You can use these backups to go back to previous versions of your map if problems arise. This may help you when you are fixing bugs or if your map file gets corrupted somehow.</p>
 <h2 id="display-models-for-entities">Display Models for Entities</h2>
 <p>TrenchBroom can show models for point entities in the 3D and 2D viewports. For this to work, the display models have to be set up in the <a href="#entity_definitions">entity definition</a> file, and the game path has to be set up correctly in the <a href="#game_configuration">game configuration</a>. For most of the included entity definition files, the models have already been set up for you, but if you wish to create an entity definition file for a mod that works well in TrenchBroom, you have to add these model definitions yourself. You will learn how to do this for FGD and DEF files in this section.</p>
 <h3 id="general-model-syntax">General Model Syntax</h3>
@@ -2767,9 +2961,10 @@ Char           = Any ASCII character</code></pre>
 <pre><code>{
     &quot;path&quot; : MODEL,
     &quot;skin&quot; : SKIN,
-    &quot;frame&quot;: FRAME
+    &quot;frame&quot;: FRAME,
+    &quot;scale&quot;: SCALE_EXPRESSION
 }</code></pre>
-<p>The placeholders <code>MODEL</code>, <code>SKIN</code>, and <code>FRAME</code> have the following meaning</p>
+<p>The placeholders <code>MODEL</code>, <code>SKIN</code>, <code>FRAME</code> and <code>SCALE_EXPRESSION</code> have the following meaning</p>
 <table>
 <thead>
 <tr class="header">
@@ -2790,12 +2985,17 @@ Char           = Any ASCII character</code></pre>
 <td><code>FRAME</code></td>
 <td>The 0-based index of the frame to display. Optional, defaults to 0.</td>
 </tr>
+<tr class="even">
+<td><code>SCALE_EXPRESSION</code></td>
+<td>An expression that is evaluated against an entities’ properties to determine the model scale.</td>
+</tr>
 </tbody>
 </table>
 <p>If the expression evaluates to a value of type string, then that is interpreted as a map containing only a <code>path</code> key with the string as its value. In other words, if the expression evaluates to a string, then that value is interpreted as the path to a model. Think of such expressions as shorthands that allow you to define a simple model like so:</p>
 <pre><code>model(&quot;path/to/model&quot;)</code></pre>
 <p>instead of having to write</p>
 <pre><code>model({ &quot;path&quot;: &quot;path/to/model&quot; })</code></pre>
+<p>If the model expression has a scale expression, then its result is used as the scale value for the model. If the expression cannot be evaluated, or if no such expression is given, then the default scale expression from the game configuration is evaluated instead. Refer to <a href="#game_configuration_files_entities">this section</a> for more information about <code>SCALE_EXPRESSION</code> and the default scale expression.</p>
 <h4 id="basic-examples">Basic Examples</h4>
 <p>So a valid model definitions might look like this:</p>
 <pre><code>// use the model found at the given path with skin 0 and frame 0
@@ -2812,8 +3012,14 @@ model({
     &quot;path&quot; : &quot;progs/armor&quot;,
     &quot;skin&quot; : 1,
     &quot;frame&quot;: 3
+})
+
+// set a fixed uniform model scale factor 2
+model({
+    &quot;path&quot; : &quot;progs/armor&quot;,
+    &quot;scale&quot; : 2
 })</code></pre>
-<p>Sometimes, the actual model that is displayed in game depends on the value of an entity property. TrenchBroom allows you to mimick this behavior by using conditional expressions using the switch and case operators and by referring to the entity properties as variables in the expressions. Let’s look at an example where we combine several model definitions using a literal value.</p>
+<p>Sometimes, the actual model that is displayed in game depends on the value of an entity property. TrenchBroom allows you to mimic this behavior by using conditional expressions using the switch and case operators and by referring to the entity properties as variables in the expressions. Let’s look at an example where we combine several model definitions using a literal value.</p>
 <pre><code>model({{
     dangle == &quot;1&quot; -&gt; { &quot;path&quot;: &quot;progs/voreling.mdl&quot;, &quot;skin&quot;: 0, &quot;frame&quot;: 13 },
                      { &quot;path&quot;: &quot;progs/voreling.mdl&quot; }
@@ -2948,7 +3154,7 @@ one point per second
 </tbody>
 </table>
 <p>The folder <code>&lt;ResourcePath&gt;/games</code> contains a <code>.cfg</code> file for each supported game, and additional folders which can contain additional resources related to the game such as icons, palettes or entity definition files.</p>
-<p>It is not recommended to change these builtin game configurations, as they will be overwritten when an update is installed. To modify the existing game configrations or to add new configurations, you can place them in the folder <code>&lt;UserDataPath&gt;/games</code>, where the value of <code>&lt;UserDataPath&gt;</code> is again platform dependent.</p>
+<p>It is not recommended to change these builtin game configurations, as they will be overwritten when an update is installed. To modify the existing game configurations or to add new configurations, you can place them in the folder <code>&lt;UserDataPath&gt;/games</code>, where the value of <code>&lt;UserDataPath&gt;</code> is again platform dependent.</p>
 <table>
 <thead>
 <tr class="header">
@@ -2972,6 +3178,7 @@ one point per second
 </tbody>
 </table>
 <p>To add a new game configuration to TrenchBroom, place it into a folder under <code>&lt;UserDataPath&gt;/games</code> – note that you might need to create that folder if it does not exist. You will need to write your own <code>GameConfig.cfg</code> file, or you can copy one of the builtin files and base your game configuration on that. Additionally, you can place additional resources in the folder you created. As an example, suppose you want to add a game configuration for a game called “Example”. For this, you would create a new folder <code>&lt;UserDataPath&gt;/games/Example</code>, and within that folder, you would create a game configuration file called <code>GameConfig.cfg</code>. If you need additional resource such as an icon or entity definition files, you would place those files into this newly created folder as well.</p>
+<p>You can also access this directory using the folder icon button below the game list in the <a href="#game_configuration">game configuration dialog</a>.</p>
 <p>To override a builtin game configuration file, copy the folder containing the builtin file and place it in <code>&lt;UserDataPath&gt;/games</code>. TrenchBroom will prioritize your custom game configurations over the builtin files, but you can still access the resources in the game’s resource sub folder without problems. If you wish, you can also override some of these resources by placing a file of the same name in your game resource sub directory.</p>
 <p>As an example, consider the case where you want to override the builtin Quake game configuration and the builtin entity definition file for Quake. Copy the file <code>&lt;ResourcePath&gt;/games/Quake/GameConfig.cfg</code> to <code>&lt;UserDataPath&gt;/games/Quake</code> and modify it as needed. Then copy the file <code>&lt;ResourcePath&gt;/games/Quake/Quake.fgd</code> to <code>&lt;UserDataPath&gt;/games/Quake</code> and modify it, too. When you load the game configuration in TrenchBroom, the editor will pick up the modified files instead of the builtin ones.</p>
 <h3 id="game-configuration-file-syntax">Game Configuration File Syntax</h3>
@@ -2993,6 +3200,7 @@ one point per second
 <li>The builtin <strong>entity definition files</strong></li>
 <li>The <strong>default color</strong> to use in the UI</li>
 <li>The supported <strong>model formats</strong>, e.g. mdl</li>
+<li>A default <strong>model scale expression</strong></li>
 </ul></li>
 <li><strong>Tags</strong> to attach additional information to faces or brushes in the editor, e.g. whether a face is detail or hint. (optional)</li>
 <li><strong>Face attributes</strong> to specify which additional attributes to allow on brush faces (optional)</li>
@@ -3021,7 +3229,8 @@ one point per second
     &quot;entities&quot;: { // the builtin entity definition files for this game
         &quot;definitions&quot;: [ &quot;Quake2.fgd&quot; ],
         &quot;defaultcolor&quot;: &quot;0.6 0.6 0.6 1.0&quot;,
-        &quot;modelformats&quot;: [ &quot;md2&quot; ]
+        &quot;modelformats&quot;: [ &quot;md2&quot; ],
+        &quot;scale&quot;: [ modelscale, modelscale_vec ]
     },
     &quot;tags&quot;: { // &quot;smart tags&quot; select or modify a brush/face based on its characteristics
         &quot;brush&quot;: [
@@ -3088,9 +3297,9 @@ one point per second
     },
     &quot;softMapBounds&quot;:&quot;-4096 -4096 -4096 4096 4096 4096&quot;,
     &quot;compilationTools&quot;: [
-        { &quot;name&quot;: &quot;qbsp&quot; },
+        { &quot;name&quot;: &quot;bsp&quot; },
         { &quot;name&quot;: &quot;vis&quot; },
-        { &quot;name&quot;: &quot;light&quot; }
+        { &quot;name&quot;: &quot;rad&quot; }
     ]
 }</code></pre>
 <h4 id="versions">Versions</h4>
@@ -3290,7 +3499,7 @@ one point per second
 </tr>
 </tbody>
 </table>
-<p>The <code>image</code> format can be used to load a wide array of image formats such as tga, pcx, jpeg, and so on. TrenchBroom uses the <a href="http://freeimage.sourceforge.net/">FreeImage Library</a> to load these images and supports any file type supported by this library.</p>
+<p>The <code>image</code> format can be used to load a wide array of image formats such as tga, pcx, jpeg, and so on. TrenchBroom uses the <a href="https://freeimage.sourceforge.io/">FreeImage Library</a> to load these images and supports any file type supported by this library.</p>
 <p>Optionally, you can specify a palette. The value of the <code>palette</code> key specifies a path, relative to the file system, where TrenchBroom will look for a palette file that comes with the game’s assets.</p>
 <p>The <code>attribute</code> key specifies the name of a worldspawn property where TrenchBroom will store the list of selected texture collections in the map file.</p>
 <p>The optional <code>excludes</code> key specifies a list of patterns matched against texture names which will be ignored and not displayed in the <a href="#texture_browser">texture browser</a>. Wildcards <code>*</code> and <code>?</code> are allowed. Use backslashes to escape literal <code>*</code> and <code>?</code> chars.</p>
@@ -3300,12 +3509,13 @@ one point per second
     &quot;attribute&quot;: &quot;_tb_textures&quot;,
     &quot;excludes&quot;: [ &quot;*_norm&quot;, &quot;*_gloss&quot; ]
 },</code></pre>
-<h4 id="entity-configuration">Entity Configuration</h4>
-<p>In the entity configuration section, you can specify which entity definition files come with your game configuration, which model formats are supported for rendering the entity models in the editor, and a default color for entities.</p>
+<h4 id="game_configuration_files_entities">Entity Configuration</h4>
+<p>In the entity configuration section, you can specify which entity definition files come with your game configuration, which model formats are supported for rendering the entity models in the editor, a default color for entities and an expression that yields a default scale when evaluated against an entities’ properties.</p>
 <pre><code>&quot;entities&quot;: { // the builtin entity definition files for this game
     &quot;definitions&quot;: [ &quot;Quake2/Quake2.fgd&quot; ],
     &quot;defaultcolor&quot;: &quot;0.6 0.6 0.6 1.0&quot;,
-    &quot;modelformats&quot;: [ &quot;md2&quot; ]
+    &quot;modelformats&quot;: [ &quot;md2&quot; ],
+    &quot;scale&quot;: [ modelscale, modelscale_vec ]
 },</code></pre>
 <p>The <code>definitions</code> key provides a list of entity definition files. These files are specified by a path that is relative to the <code>games</code> directory where TrenchBroom searches for the game configurations.</p>
 <p>The <code>modelformats</code> key has a list of model formats used by this game. The following model formats are supported.</p>
@@ -3339,6 +3549,34 @@ one point per second
 </tr>
 </tbody>
 </table>
+<p>The <code>scale</code> key has an expression that is evaluated against an entities’ properties to determine the model scale. This expression can refer to any of the entities’ properties, or it can provide fixed values.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>"scale": 2</code></td>
+<td>A fixed uniform scale factor of <code>2</code>.</td>
+</tr>
+<tr class="even">
+<td><code>"scale": "1 2 3"</code></td>
+<td>A fixed non-uniform scale factor scaling X by 1, Y by 2 and Z by 3.</td>
+</tr>
+<tr class="odd">
+<td><code>"scale": modelscale</code></td>
+<td>Use the value of the entities’ <code>modelscale</code> property.</td>
+</tr>
+<tr class="even">
+<td><code>"scale": [ modelscale, modelscale_vec ]</code></td>
+<td>Try the individual values in the array until we find one that doesn’t evaluate to <code>Undefined</code> or <code>Null</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Of course, you could use the switch and case operators for more complicated cases.</p>
 <h4 id="game_configuration_files_tags">Tags</h4>
 <p>TrenchBroom can recognize certain special brush or face types. An example would be clip faces or trigger brushes. But since the details can be game dependent, these special types are defined in the game configuration. For greater flexibility and future enhancements, a general “smart tags” system is used to realize this functionality.</p>
 <p>TrenchBroom uses these tag definitions to automatically apply attributes to matching brushes/faces — for example to render trigger brushes partially transparent — and to populate the filtering options available in the <a href="#filtering_rendering_options">View menu</a>.</p>
@@ -3510,17 +3748,16 @@ one point per second
 <pre><code>&quot;softMapBounds&quot;:&quot;-4096 -4096 -4096 4096 4096 4096&quot;,</code></pre>
 <h4 id="compilation-tools">Compilation Tools</h4>
 <p>The optional <code>compilationTools</code> list identifies tool names that will appear in the <a href="#game_configuration">game configuration dialog</a>, allowing the user to associate these names with paths to tool executables. Such a name can be used as a variable in this game’s <a href="#compiling_maps">compilation profiles</a> to represent the associated path.</p>
-<p>Each element in the list is just an object with a <code>name</code> key. An example from the Quake game configuration that defines three compilation tools:</p>
+<p>Each element in the list is an object that must have a <code>name</code> key and may optionally have a <code>description</code> key (used for tooltips). An example from the Quake 3 game configuration that defines two tools:</p>
 <pre><code>&quot;compilationTools&quot;: [
-    { &quot;name&quot;: &quot;qbsp&quot;},
-    { &quot;name&quot;: &quot;vis&quot;},
-    { &quot;name&quot;: &quot;light&quot;}
+    { &quot;name&quot;: &quot;q3map2&quot;, &quot;description&quot;: &quot;Path to your q3map2 executable, which performs the main bsp/vis/light compilation phases&quot; },
+    { &quot;name&quot;: &quot;bspc&quot;, &quot;description&quot;: &quot;Path to your bspc or mbspc executable, which creates .aas files for bot support&quot; }
 ]</code></pre>
 <h1 id="getting-involved">Getting Involved</h1>
 <h2 id="suggesting-a-feature">Suggesting a Feature</h2>
-<p>If you have an idea for a nice feature that you’re missing in TrenchBroom, then you can submit a request at the <a href="http://github.com/TrenchBroom/TrenchBroom/issues/">TrenchBroom issue tracker</a>. Try to describe your feature, but don’t go into too much detail. If it gets picked up, we will hash out the details together.</p>
+<p>If you have an idea for a nice feature that you’re missing in TrenchBroom, then you can submit a request at the <a href="https://github.com/TrenchBroom/TrenchBroom/issues/">TrenchBroom issue tracker</a>. Try to describe your feature, but don’t go into too much detail. If it gets picked up, we will hash out the details together.</p>
 <h2 id="reporting_bugs">Reporting Bugs</h2>
-<p>You can submit bug reports at the <a href="http://github.com/TrenchBroom/TrenchBroom/issues/">TrenchBroom issue tracker</a>. Be sure to include the the following information:</p>
+<p>You can submit bug reports at the <a href="https://github.com/TrenchBroom/TrenchBroom/issues/">TrenchBroom issue tracker</a>. Be sure to include the the following information:</p>
 <ul>
 <li><em>TrenchBroom version</em>: e.g., "*“Version 2.0.0 f335082 D” see below</li>
 <li><em>Operation system and version</em>: e.g. “Windows 7 64bit”</li>
@@ -3536,10 +3773,10 @@ one point per second
 </ul>
 <h1 id="references_and_links">References and Links</h1>
 <ul>
-<li><a href="http://github.com/TrenchBroom/TrenchBroom/">TrenchBroom on GitHub</a> - TrenchBroom’s GitHub page</li>
-<li><a href="http://celephais.net/board/">func_msgboard</a> - Quake Mapping Forum</li>
+<li><a href="https://github.com/TrenchBroom/TrenchBroom/">TrenchBroom on GitHub</a> - TrenchBroom’s GitHub page</li>
+<li><a href="https://celephais.net/board/">func_msgboard</a> - Quake Mapping Forum</li>
 <li><a href="https://joshua.itch.io/quake-tools">Quake Tools</a> - Quake tools by Joshua Skelton</li>
-<li><a href="https://www.youtube.com/watch?v=gONePWocbqA">Tutorials by dumptruck_ds</a> - Video Tutorial Series</li>
+<li><a href="https://www.youtube.com/playlist?list=PLgDKRPte5Y0AZ_K_PZbWbgBAEt5xf74aE">Tutorials by dumptruck_ds</a> - Video Tutorial Series</li>
 <li><a href="https://github.com/jonathanlinat/quake-leveldesign-starterkit">Quake Level Design Starter Kit</a> - Ready-to-Use Starter Kit</li>
 <li><a href="https://discordapp.com/invite/f5Y99aM">Quake Mapping Discord</a> - Quake Mapping Discord</li>
 <li><a href="https://tomeofpreach.wordpress.com/">Tome of Preach</a> - Quake Map Hacks and QuakeC Hacks</li>
