@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="pandoc">
-<meta name="author" content="Kristian Duske"><title>TrenchBroom 2022.1 Reference Manual</title>
+<meta name="author" content="Kristian Duske"><title>TrenchBroom 2022.2 Reference Manual</title>
 <link rel="icon" href="images/icon.png">
 <link rel="stylesheet" href="_reset.css">
 <link rel="stylesheet" href="_variables.css">
@@ -113,8 +113,8 @@
 <div id="content_version_details">
 <img src="images/icon.png" alt="TrenchBroom Icon">
 <div>
-<span id="content_version_heading">TrenchBroom 2022.1 Reference Manual</span>
-<span><strong>Build:</strong> v2022.1 Release</span>
+<span id="content_version_heading">TrenchBroom 2022.2 Reference Manual</span>
+<span><strong>Build:</strong> v2022.2-RC3 Release</span>
 </div>
 </div>
 <div id="content_version_links">
@@ -3199,7 +3199,6 @@ one point per second
 <ul>
 <li>The builtin <strong>entity definition files</strong></li>
 <li>The <strong>default color</strong> to use in the UI</li>
-<li>The supported <strong>model formats</strong>, e.g. mdl</li>
 <li>A default <strong>model scale expression</strong></li>
 </ul></li>
 <li><strong>Tags</strong> to attach additional information to faces or brushes in the editor, e.g. whether a face is detail or hint. (optional)</li>
@@ -3229,7 +3228,6 @@ one point per second
     &quot;entities&quot;: { // the builtin entity definition files for this game
         &quot;definitions&quot;: [ &quot;Quake2.fgd&quot; ],
         &quot;defaultcolor&quot;: &quot;0.6 0.6 0.6 1.0&quot;,
-        &quot;modelformats&quot;: [ &quot;md2&quot; ],
         &quot;scale&quot;: [ modelscale, modelscale_vec ]
     },
     &quot;tags&quot;: { // &quot;smart tags&quot; select or modify a brush/face based on its characteristics
@@ -3510,45 +3508,13 @@ one point per second
     &quot;excludes&quot;: [ &quot;*_norm&quot;, &quot;*_gloss&quot; ]
 },</code></pre>
 <h4 id="game_configuration_files_entities">Entity Configuration</h4>
-<p>In the entity configuration section, you can specify which entity definition files come with your game configuration, which model formats are supported for rendering the entity models in the editor, a default color for entities and an expression that yields a default scale when evaluated against an entities’ properties.</p>
+<p>In the entity configuration section, you can specify which entity definition files come with your game configuration, a default color for entities and an expression that yields a default scale when evaluated against an entities’ properties.</p>
 <pre><code>&quot;entities&quot;: { // the builtin entity definition files for this game
     &quot;definitions&quot;: [ &quot;Quake2/Quake2.fgd&quot; ],
     &quot;defaultcolor&quot;: &quot;0.6 0.6 0.6 1.0&quot;,
-    &quot;modelformats&quot;: [ &quot;md2&quot; ],
-    &quot;scale&quot;: [ modelscale, modelscale_vec ]
+  &quot;scale&quot;: [ modelscale, modelscale_vec ]
 },</code></pre>
 <p>The <code>definitions</code> key provides a list of entity definition files. These files are specified by a path that is relative to the <code>games</code> directory where TrenchBroom searches for the game configurations.</p>
-<p>The <code>modelformats</code> key has a list of model formats used by this game. The following model formats are supported.</p>
-<table>
-<thead>
-<tr class="header">
-<th>Format</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>mdl</td>
-<td>Quake model format</td>
-</tr>
-<tr class="even">
-<td>md2</td>
-<td>Quake 2 model format</td>
-</tr>
-<tr class="odd">
-<td>md3</td>
-<td>Quake 3 model format</td>
-</tr>
-<tr class="even">
-<td>bsp</td>
-<td>Compiled brush model, used by Quake and Hexen 2</td>
-</tr>
-<tr class="odd">
-<td>dkm</td>
-<td>Daikatana model format</td>
-</tr>
-</tbody>
-</table>
 <p>The <code>scale</code> key has an expression that is evaluated against an entities’ properties to determine the model scale. This expression can refer to any of the entities’ properties, or it can provide fixed values.</p>
 <table>
 <thead>
