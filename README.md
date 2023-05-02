@@ -2,16 +2,16 @@
 
 ![](https://image.ibb.co/cofyte/quakeleveldesignstarterkit_logo.png)
 
-This **Starter Kit** is mainly based on files / directory structure and set of tools recommended by [dumptruck_ds](https://twitter.com/david_spell).
+This **Starter Kit** primarily consists of files, directory structure, and tools recommended by [dumptruck_ds](https://twitter.com/david_spell).
 
-_Note: Only for Microsoft Windows (x86-64) users._
+_Note: For Microsoft Windows (x86-64) users only._
 
 ## Features
 
-It includes:
+Included:
 
 * Quakespasm Spiked 0.94.7 x86-64 (2022-August-11), Spoike [[Link](https://triptohell.info/moodles/qss/)]
-* TrenchBroom 2022.2, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
+* TrenchBroom 2023.1, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)]
 * ericw-tools 0.18.1, Eric Wasylishen [[Link](https://ericwa.github.io/ericw-tools)]
 * ne_q1spCompilingGui 1.0.3, C. Jones [[Link](https://shoresofnis.wordpress.com/utilities/ne_q1spcompilinggui)]
 
@@ -24,12 +24,28 @@ Extras:
 * Original Quake textures [[Link](https://www.quaddicted.com)]
 * Prototype WAD textures 1.3, Aleksander "Khreathor" Marhall [[Link](http://khreathor.xyz/site/prototype)]
 
-## Prerequisites
+## Project Structure
 
-You need:
+```shell
+.
+├── quakespasm                # Quakespasm executable files
+├── source                    # Original Quake map files
+├── tools/
+│   ├── ericw-tools           # ericw-tools executable files
+│   ├── Map2Curve_v0.7        # Map2Curve executable files
+│   ├── ne_q1spCompilingGui   # ne_q1spCompilingGui executable files
+│   ├── quake-tools           # Quake Tools executable files
+│   └── texmex                # TexMex executable files
+├── trenchbroom               # TrenchBroom executable files
+└── wads                      # Original Quake texture files + Prototype WAD texture files
+```
+
+## Software Requirements
+
+Necessary:
 
 * Microsoft Windows: Vista, 7, 8, 10
-* A legal copy of Quake [[Steam](https://store.steampowered.com/app/2310)] [[Good Old Games](https://www.gog.com/game/quake_the_offering)]
+* A legitimate copy of Quake [[Steam](https://store.steampowered.com/app/2310)] [[Good Old Games](https://www.gog.com/game/quake_the_offering)]
 * Git [[Link](https://git-scm.com/)]
 * Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019 [[x86](https://aka.ms/vs/16/release/vc_redist.x86.exe)] [[x64](https://aka.ms/vs/16/release/vc_redist.x64.exe)]
 
@@ -37,35 +53,37 @@ You need:
 
 ### Download
 
-You have two options:
+Choose one of the following:
 
-* Download the [latest available ZIP release](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases) and extract its content into a directory called `quake-leveldesign-starterkit`.
+* Download the [latest ZIP release](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases) and extract its content to a directory named `quake-leveldesign-starterkit`.
 * Open a Terminal session and clone this Git repository:
 
 ```bash
 cd <path/to/desired/directory/>
+
 git clone https://github.com/jonathanlinat/quake-leveldesign-starterkit.git
+
 cd quake-leveldesign-starterkit/
 ```
 
 ### Configuration
 
-Locate and open `quake-leveldesign-starterkit` directory in Windows Explorer.
+Find and open the `quake-leveldesign-starterkit` directory in Windows Explorer.
 
 Create three new directories:
 
-* The first one called `working`, located at the root directory. It'll remain empty until `ne_q1spCompilingGui` tool is used.
-* The second one called `id1`, also located at the root directory.
-* And the last one called `maps` into the `id1` directory. This is the directory used to save the compiled maps.
+* A `working` directory at the root, which will remain empty until the `ne_q1spCompilingGui` tool is utilized.
+* An `id1` directory within the `quakespasm-spiked` directory.
+* A `maps` directory inside the `id1` directory for saving compiled maps.
 
-Last but not least, copy and paste into `id1` directory the original `pak0.pak` and `pak1.pak` files from your Quake game copy location. These are required in order to be able to test your map using `Quakespasm`.
+Lastly, copy and paste the original `pak0.pak` and `pak1.pak` files from your Quake game copy location into the `id1` directory. These files are necessary to test your map using `Quakespasm`.
 
-## Usage and Quickstart
+## Getting Started
 
 [![Video](http://img.youtube.com/vi/gONePWocbqA/0.jpg)](http://www.youtube.com/watch?v=gONePWocbqA)
 
-This video tutorial is part of an awesome series created by [dumptruck_ds](https://twitter.com/david_spell). Please, [check it out](https://www.youtube.com/playlist?list=PLgDKRPte5Y0AZ_K_PZbWbgBAEt5xf74aE)!
+This video tutorial is part of a fantastic series by [dumptruck_ds](https://twitter.com/david_spell). Don't forget to [explore it](https://www.youtube.com/playlist?list=PLgDKRPte5Y0AZ_K_PZbWbgBAEt5xf74aE)!
 
-## Credits
+## Acknowledgments
 
-[Image](https://i.imgur.com/p0E4SuR.png) used to create the Starter Kit illustration.
+The [image](https://i.imgur.com/p0E4SuR.png) utilized to create the Starter Kit illustration.
