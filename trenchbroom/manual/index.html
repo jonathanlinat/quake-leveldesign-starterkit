@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="pandoc">
-<meta name="author" content="Kristian Duske"><title>TrenchBroom 2022.2 Reference Manual</title>
+<meta name="author" content="Kristian Duske"><title>TrenchBroom 2023.1 Reference Manual</title>
 <link rel="icon" href="images/icon.png">
 <link rel="stylesheet" href="_reset.css">
 <link rel="stylesheet" href="_variables.css">
@@ -113,8 +113,8 @@
 <div id="content_version_details">
 <img src="images/icon.png" alt="TrenchBroom Icon">
 <div>
-<span id="content_version_heading">TrenchBroom 2022.2 Reference Manual</span>
-<span><strong>Build:</strong> v2022.2-RC3 Release</span>
+<span id="content_version_heading">TrenchBroom 2023.1 Reference Manual</span>
+<span><strong>Build:</strong> v2023.1 Release</span>
 </div>
 </div>
 <div id="content_version_links">
@@ -865,6 +865,10 @@ p1*--v1---&gt;*p3</code></pre>
 <li>If the point entity’s bounding box is not centered in the XY plane (e.g. Quake’s misc_explobox), attempts to rotate the entity in TrenchBroom will be blocked. This is done to prevent the model from being rotated out of the collision box, which doesn’t rotate in Quake.</li>
 </ul>
 <p>Finally, if TrenchBroom has found a property that contains the rotation angle of the entity, it adapts the value of that property according to the rotation being performed by the user. These rules are quite complicated because sadly, the entity definitions do not contain information about how rotations should be applied to entities. But in practice, they should just perform as expected when you work with the rotate tool in the editor.</p>
+<figure>
+<img src="images/UpdateAnglePropertyAfterTransform.png" alt="Checkbox" /><figcaption aria-hidden="true">Checkbox</figcaption>
+</figure>
+<p>This behavior can be disabled temporarily by toggling the checkbox to the right of the “Apply” button when the rotate tool is active. If the checkmark is removed, TrenchBroom will not update any entity properties except for the origin when an entity is rotated either by the rotate tool or by a shortcut.</p>
 <h3 id="flipping_objects">Flipping Objects</h3>
 <p>Flipping has the effect of mirroring the selected objects, the mirror being a plane which is defined by the center of the bounding box of the selected objects, snapped to the grid, and by a normal vector. The normal vector of the plane depends on the actual flipping command and the viewing direction of the camera in the 3D viewport or the view plane of the focused 2D viewport. The following table explains how the normal vector is derived from this information.</p>
 <table>
@@ -1337,7 +1341,19 @@ p1*--v1---&gt;*p3</code></pre>
 <figure>
 <img src="images/EntityPropertyEditor.png" alt="Entity Property Editor" /><figcaption aria-hidden="true">Entity Property Editor</figcaption>
 </figure>
-<p>The entity property editor is split into two separate areas. At the top, there is a tabular representation of the properties of the currently selected entities and, if applicable, the defaults for those properties which are not present in the selected entities. The default properties are shown in <em>italics</em> below the actual properties of the selected entities. To hide the default properties, you can uncheck the checkbox at the bottom of the table.</p>
+<p>The entity property editor is split into two separate areas. At the top, there is a tabular representation of the properties of the currently selected entities and, if applicable, the defaults for those properties which are not present in the selected entities.</p>
+<h3 id="entity_properties_defaults">Default Entity Properties</h3>
+<p>The default properties are shown in <em>italics</em> below the actual properties of the selected entities. To hide the default properties, you can uncheck the checkbox at the bottom of the table. Default entity properties are defined in an entity definition file such as an FGD file, and their meaning depends on the game. Some games, like Quake, have builtin default values for entity properties, and the default entity properties reflect these defaults (if set up correctly in the entity definition file).</p>
+<p>Other games such as Half Life don’t provide default values for entity properties, and expect the defaults to be set explicitly for every entity. If configured in the <a href="#game_configuration_files_entities">game configuration</a>, then TrenchBroom will automatically instantiate the default entity properties (with default values) when a new entity is created. Note that not every default property will be instantiated by TrenchBroom - only those properties which have a default value configured in the entity definition file can be instantiated by TrenchBroom.</p>
+<figure>
+<img src="images/SetDefaultPropertiesMenu.png" alt="Setting Default Entity Properties" /><figcaption aria-hidden="true">Setting Default Entity Properties</figcaption>
+</figure>
+<p>Below the entity property editor, there is a small button which pops up a menu when pressed. This menu has three entries:</p>
+<ul>
+<li><strong>Set existing default properties</strong>: This resets all entity properties to their default values if they have one. No entity property is added or removed, and no entity property is changed unless it has a default value.</li>
+<li><strong>Set missing default properties</strong>: This adds all default entity properties that aren’t set. Only adds new entity properties. No entity property is removed and no existing entity property is changed.</li>
+<li><strong>Set all default properties</strong>: This is a combination of the above. Every entity property having a default value is set to its default, regardless of its current value. Missing default properties are added. No entity properties are removed, and only default entity properties are changed.</li>
+</ul>
 <h3 id="editing-properties">Editing Properties</h3>
 <p>To select an entity property, just click in the row that represents that property in the table. The clicked field will be highlighted, indicating that it has focus. The highlight indicates that you can change the field by entering text. In the screenshot above, the “mangle” property has been selected, and its value has focus, indicating that it is ready to be changed.</p>
 <p>If you are changing a lot of properties, you may wish to navigate quickly through the table. You can use the cursor keys to move focus around in the table. Alternatively, you can hit <script>print_key("Tab");</script> to move field by field. If the focus is on a key of some property, hitting tab will move the cursor the value field of that property, and hitting tab again will move it to the key field of the next property, and so on until you reach the end of the table. You can also move in the opposite direction by hitting <script>print_key("Shift");</script><script>print_key("Tab");</script>. <script>print_key("Return");</script> moves vertically through the list, meaning that if focus is on a property key and you hit enter, focus will move to the key of the next property in the list. Use this navigation method to mass rename property keys, for example.</p>
@@ -1888,6 +1904,44 @@ Group B (translated by 128 0 0)
 </tbody>
 </table>
 </dd>
+<dt>Rename File</dt>
+<dd><p>Renames or moves one file.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Source</td>
+<td>The file to rename or move. Wildcards are not supported. Variables are allowed.</td>
+</tr>
+<tr class="even">
+<td>Target</td>
+<td>The new path for the file. The path must end in a filename. The containing directory is recursively created if it does not exist. Existing files are overwritten without prompt. Variables are allowed.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Delete Files</dt>
+<dd><p>Deletes one or more files.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Target</td>
+<td>The file(s) to delete. To specify more than one file, you can use wildcards (*,?) in the filename. Variables are allowed.</td>
+</tr>
+</tbody>
+</table>
+</dd>
 </dl>
 <p>You can use <a href="#expression_language">expressions</a> when specifying the working directory of a profile and also for the task parameters. The following table lists the available variables, their scopes, and their meaning. A scope of ‘Tool’ indicates that the variable is available when specifying tool parameters. A scope of ‘Workdir’ indicates that the variable is only available when specifying the working directory. Note that TrenchBroom helps you to enter variables by popping up an autocompletion list.</p>
 <table>
@@ -2334,9 +2388,9 @@ BinaryNegation  = &quot;~&quot; SimpleTerm</code></pre>
 <p>The following table explains the effects of applying the unary operators to values depending on the type of the values.</p>
 <table style="width:100%;">
 <colgroup>
-<col style="width: 20%" />
+<col style="width: 19%" />
 <col style="width: 18%" />
-<col style="width: 9%" />
+<col style="width: 13%" />
 <col style="width: 13%" />
 <col style="width: 8%" />
 <col style="width: 8%" />
@@ -2347,72 +2401,75 @@ BinaryNegation  = &quot;~&quot; SimpleTerm</code></pre>
 <thead>
 <tr class="header">
 <th>Operator</th>
-<th><code>Boolean</code></th>
-<th><code>String</code></th>
-<th><code>Number</code></th>
-<th><code>Array</code></th>
-<th><code>Map</code></th>
-<th><code>Range</code></th>
-<th><code>Null</code></th>
-<th><code>Undefined</code></th>
+<th style="text-align: right;"><code>Boolean</code></th>
+<th style="text-align: right;"><code>String</code></th>
+<th style="text-align: right;"><code>Number</code></th>
+<th style="text-align: right;"><code>Array</code></th>
+<th style="text-align: right;"><code>Map</code></th>
+<th style="text-align: right;"><code>Range</code></th>
+<th style="text-align: right;"><code>Null</code></th>
+<th style="text-align: right;"><code>Undefined</code></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td><code>Plus</code></td>
-<td>convert to number</td>
-<td>error</td>
-<td>no effect</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
+<td style="text-align: right;">convert to number</td>
+<td style="text-align: right;">see below</td>
+<td style="text-align: right;">no effect</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
 </tr>
 <tr class="even">
 <td><code>Minus</code></td>
-<td>convert to number and negate value</td>
-<td>error</td>
-<td>negate value</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
+<td style="text-align: right;">convert to number and negate value</td>
+<td style="text-align: right;">see below</td>
+<td style="text-align: right;">negate value</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
 </tr>
 <tr class="odd">
 <td><code>LogicalNegation</code></td>
-<td>invert value</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
+<td style="text-align: right;">invert value</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
 </tr>
 <tr class="even">
 <td><code>BinaryNegation</code></td>
-<td>error</td>
-<td>error</td>
-<td>invert bits</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
-<td>error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">see below</td>
+<td style="text-align: right;">invert bits</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
+<td style="text-align: right;">error</td>
 </tr>
 </tbody>
 </table>
+<p>Note on using applying a unary operator to a value of type <code>String</code>: Every operator except <code>LogicalNegation</code> will try to convert a value of type <code>String</code> to a number if possible.</p>
 <p>Some examples of using unary operators follow.</p>
 <pre><code>+1.0   //  1.0
 -1.0   // -1.0
+-&#39;1&#39;   // -1.0
 +true  //  1.0
 -true  // -1.0
 !true  // false
 !false // true
 ~1     // -2
-~-2    // 1</code></pre>
+~-2    // 1
+~&#39;-2&#39;  // 1</code></pre>
 <h3 id="binary-operator-terms">Binary Operator Terms</h3>
 <p>A binary operator is an operator that takes two operands. Binary operators are specified in infix notation, that is, the first operator is specified first, then the operator symbol, and finally the second operator. Note that in the following EBNF notation for binary operators, the second operator is always an expression.</p>
 <h4 id="algebraic-terms">Algebraic Terms</h4>
@@ -2423,6 +2480,10 @@ Multiplication = SimpleTerm &quot;*&quot; Expression
 Division       = SimpleTerm &quot;/&quot; Expression
 Modulus        = SimpleTerm &quot;%&quot; Expression</code></pre>
 <p>All of these operators can be applied to operands of type <code>Boolean</code> or <code>Number</code>. If an operand is of type <code>Boolean</code>, it is converted to type <code>Number</code> before the operation is applied.</p>
+<p>If one of the operators is of type <code>Boolean</code> or <code>Number</code> and the other operand is of type <code>String</code>, and its value can be converted to a number, then the operand can be applied, and the operand of type <code>String</code> is also converted to type <code>Number</code>.</p>
+<pre><code>&quot;1.23&quot; + 1 // 2.23
+1.23 + &quot;1&quot; // 2.23
+&quot;1&quot; + &quot;2&quot;  // 12, see below</code></pre>
 <p>In addition, the <code>+</code> operator can be applied if both operands are of type <code>String</code>, if both are of type <code>Array</code>, or if both are of type <code>Map</code>.</p>
 <pre><code>&quot;This is&quot; + &quot; &quot; + &quot;test.&quot; // &quot;This is a test.&quot;
 [ 1, 2, 3 ] + [ 3, 4, 5 ] // [ 1, 2, 3, 3, 4, 5 ]</code></pre>
@@ -2471,7 +2532,7 @@ LogicalOr     = SimpleTerm &quot;||&quot; Expression</code></pre>
 </tbody>
 </table>
 <h4 id="binary-terms">Binary Terms</h4>
-<p>Binary terms manipulate the bit representation of operands of type <code>Number</code>. Note that, since manipulating the bit representation of a floating point number does not make much sense, the operands are converted to an integer representation first by omitting their fractional portion. If one of the operands is not of type <code>Number</code>, the operand is converted to type <code>Number</code> according to the <a href="#el_type_conversion">type conversion rules</a>.</p>
+<p>Binary terms manipulate the bit representation of operands of type <code>Number</code>. Note that, since manipulating the bit representation of a floating point number does not make much sense, the operands are converted to an integer representation first by omitting their fractional portion. If either of the operands is not of type <code>Number</code>, the operand is converted to type <code>Number</code> according to the <a href="#el_type_conversion">type conversion rules</a>.</p>
 <pre><code>BinaryAnd        = SimpleTerm &quot;&amp;&quot; SimpleTerm
 BinaryXor        = SimpleTerm &quot;|&quot; SimpleTerm
 BinaryOr         = SimpleTerm &quot;^&quot; SimpleTerm
@@ -3200,6 +3261,7 @@ one point per second
 <li>The builtin <strong>entity definition files</strong></li>
 <li>The <strong>default color</strong> to use in the UI</li>
 <li>A default <strong>model scale expression</strong></li>
+<li>Whether to automatically set default entity properties</li>
 </ul></li>
 <li><strong>Tags</strong> to attach additional information to faces or brushes in the editor, e.g. whether a face is detail or hint. (optional)</li>
 <li><strong>Face attributes</strong> to specify which additional attributes to allow on brush faces (optional)</li>
@@ -3303,12 +3365,24 @@ one point per second
 <h4 id="versions">Versions</h4>
 <p>The game configuration files are versioned. Whenever a breaking change to the game configuration format is introduced, the version number will increase and TrenchBroom will reject the old format with an error message.</p>
 <p><strong>Current Versions</strong></p>
-<p>TrenchBroom currently supports game config versions 3 and 4. Version 4 has the following changes from version 3:</p>
+<p>TrenchBroom currently supports game config versions 3 through 6.</p>
+<p><strong>Version History</strong></p>
 <ul>
-<li>Version 4 adds support for the <code>unused</code> key in surface flags and content flags; this key does not exist in version 3.</li>
-<li>Version 4 adds support for specifying a list of values for the <code>pattern</code> key in surfaceparm-type smart tags; in version 3 only a single value is allowed.</li>
-<li>Version 4 adds the optional <code>softMapBounds</code> key.</li>
-<li>Version 4 adds the optional <code>compilationTools</code> key.</li>
+<li>Version 6
+<ul>
+<li>Adds the optional <code>setDefaultProperties</code> key to the entity configuration.</li>
+</ul></li>
+<li>Version 5
+<ul>
+<li>Makes the model format whitelist optional. If a whitelist is still present in a config file, it is ignored.</li>
+</ul></li>
+<li>Version 4
+<ul>
+<li>Adds support for the <code>unused</code> key in surface flags and content flags; this key does not exist in version 3.</li>
+<li>Adds support for specifying a list of values for the <code>pattern</code> key in surfaceparm-type smart tags; in version 3 only a single value is allowed.</li>
+<li>Adds the optional <code>softMapBounds</code> key.</li>
+<li>Adds the optional <code>compilationTools</code> key.</li>
+</ul></li>
 </ul>
 <p><strong>Migrating from Version 2</strong></p>
 <p>Version 3 deprecated the <code>brushtypes</code> key in favor of the <code>tags</code> key, but the contents are very similar. The value of the <code>brushtypes</code> key is an array of type matchers. The following brush type matchers are supported in version 2:</p>
@@ -3448,7 +3522,7 @@ one point per second
 <tbody>
 <tr class="odd">
 <td>wad2</td>
-<td>wad file, used by Quake, Quake 2, Hexen 2</td>
+<td>wad file, used by Quake and Hexen 2</td>
 </tr>
 <tr class="even">
 <td>wad3</td>
@@ -3512,7 +3586,8 @@ one point per second
 <pre><code>&quot;entities&quot;: { // the builtin entity definition files for this game
     &quot;definitions&quot;: [ &quot;Quake2/Quake2.fgd&quot; ],
     &quot;defaultcolor&quot;: &quot;0.6 0.6 0.6 1.0&quot;,
-  &quot;scale&quot;: [ modelscale, modelscale_vec ]
+  &quot;scale&quot;: [ modelscale, modelscale_vec ],
+  &quot;setDefaultProperties&quot;: true
 },</code></pre>
 <p>The <code>definitions</code> key provides a list of entity definition files. These files are specified by a path that is relative to the <code>games</code> directory where TrenchBroom searches for the game configurations.</p>
 <p>The <code>scale</code> key has an expression that is evaluated against an entities’ properties to determine the model scale. This expression can refer to any of the entities’ properties, or it can provide fixed values.</p>
@@ -3543,6 +3618,7 @@ one point per second
 </tbody>
 </table>
 <p>Of course, you could use the switch and case operators for more complicated cases.</p>
+<p>The optional <code>setDefaultProperties</code> key controls whether <a href="#entity_properties_defaults">default entity properties</a> are instantiated automatically when TrenchBroom creates a new entity. Defaults to <code>false</code> if not set.</p>
 <h4 id="game_configuration_files_tags">Tags</h4>
 <p>TrenchBroom can recognize certain special brush or face types. An example would be clip faces or trigger brushes. But since the details can be game dependent, these special types are defined in the game configuration. For greater flexibility and future enhancements, a general “smart tags” system is used to realize this functionality.</p>
 <p>TrenchBroom uses these tag definitions to automatically apply attributes to matching brushes/faces — for example to render trigger brushes partially transparent — and to populate the filtering options available in the <a href="#filtering_rendering_options">View menu</a>.</p>
