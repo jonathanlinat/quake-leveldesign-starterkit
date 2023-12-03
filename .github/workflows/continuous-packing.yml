@@ -1,0 +1,274 @@
+name: Continuous Packing
+on:
+  workflow_run:
+    workflows: Continuous Building
+    types: completed
+env:
+  PROJECT_NAME_PREFIX: quake-leveldesign-starterkit
+jobs:
+  pack-binaries:
+    name: Pack the binaries
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2022]
+    steps:
+      # Linux
+      - name: "Linux: Set current packing date"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
+        shell: bash
+      ## ericw-tools
+      - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*linux$
+          workflow: continuous-building.yml
+          skip_unpack: true
+        env:
+          ARTIFACT_NAME: ericw-tools
+          ARTIFACT_DIRECTORY_NAME: ericw-tools
+      - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/
+          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -d ${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/
+        shell: bash
+        env:
+          ARTIFACT_NAME: ericw-tools
+          ARTIFACT_DIRECTORY_NAME: ericw-tools
+      ## Ironwail
+      - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*linux$
+          workflow: continuous-building.yml
+          skip_unpack: true
+        env:
+          ARTIFACT_NAME: Ironwail
+          ARTIFACT_DIRECTORY_NAME: ironwail
+      - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/game/
+          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -d ${{ env.PROJECT_NAME_PREFIX }}-linux/game/
+        shell: bash
+        env:
+          ARTIFACT_NAME: Ironwail
+          ARTIFACT_DIRECTORY_NAME: ironwail
+      ## Quake CLI Tools
+      - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*linux$
+          workflow: continuous-building.yml
+          skip_unpack: true
+        env:
+          ARTIFACT_NAME: Quake CLI Tools
+          ARTIFACT_DIRECTORY_NAME: quake-cli-tools
+      - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/
+          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -d ${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/
+        shell: bash
+        env:
+          ARTIFACT_NAME: Quake CLI Tools
+          ARTIFACT_DIRECTORY_NAME: quake-cli-tools
+      ## TrenchBroom
+      - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*linux$
+          workflow: continuous-building.yml
+          skip_unpack: true
+        env:
+          ARTIFACT_NAME: TrenchBroom
+          ARTIFACT_DIRECTORY_NAME: trenchbroom
+      - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/level-editor/
+          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -d ${{ env.PROJECT_NAME_PREFIX }}-linux/level-editor/
+        shell: bash
+        env:
+          ARTIFACT_NAME: TrenchBroom
+          ARTIFACT_DIRECTORY_NAME: trenchbroom
+      ## Extras
+      - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*$
+          workflow: continuous-building.yml
+          skip_unpack: true
+        env:
+          ARTIFACT_NAME: Extras
+          ARTIFACT_DIRECTORY_NAME: extras
+      - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}/
+          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-files.zip -d ${{ env.PROJECT_NAME_PREFIX }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}/
+        shell: bash
+        env:
+          ARTIFACT_NAME: Extras
+          ARTIFACT_DIRECTORY_NAME: extras
+      - name: "Linux: Pack and upload the artifact"
+        uses: actions/upload-artifact@v3
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        with:
+          path: ${{ env.PROJECT_NAME_PREFIX }}-linux/
+          name: ${{ env.PROJECT_NAME_PREFIX }}-${{ env.CURRENT_DATE }}-linux
+          if-no-files-found: error
+          retention-days: 1
+      # Windows
+      - name: "Windows: Set current packing date"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: echo "CURRENT_DATE=$(Get-Date -Format "yyyyMMdd")" | Out-File -Append -FilePath ${env:GITHUB_ENV}
+        shell: pwsh
+      ## ericw-tools
+      - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*windows$
+          workflow: continuous-building.yml
+          skip_unpack: true
+        env:
+          ARTIFACT_NAME: ericw-tools
+          ARTIFACT_DIRECTORY_NAME: ericw-tools
+      - name: "Windows: Unpack ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: 7z x ${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip -o"${env:PROJECT_NAME_PREFIX}-windows\tools\${env:ARTIFACT_DIRECTORY_NAME}\" -y
+        shell: pwsh
+        env:
+          ARTIFACT_NAME: ericw-tools
+          ARTIFACT_DIRECTORY_NAME: ericw-tools
+      ## Ironwail
+      - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*windows$
+          workflow: continuous-building.yml
+          skip_unpack: true
+        env:
+          ARTIFACT_NAME: Ironwail
+          ARTIFACT_DIRECTORY_NAME: ironwail
+      - name: "Windows: Unpack ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: 7z x ${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip -o"${env:PROJECT_NAME_PREFIX}-windows\game\" -y
+        shell: pwsh
+        env:
+          ARTIFACT_NAME: Ironwail
+          ARTIFACT_DIRECTORY_NAME: ironwail
+      ## Quake CLI Tools
+      - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*windows$
+          workflow: continuous-building.yml
+          skip_unpack: true
+        env:
+          ARTIFACT_NAME: Quake CLI Tools
+          ARTIFACT_DIRECTORY_NAME: quake-cli-tools
+      - name: "Windows: Unpack ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: 7z x ${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip -o"${env:PROJECT_NAME_PREFIX}-windows\tools\${env:ARTIFACT_DIRECTORY_NAME}\" -y
+        shell: pwsh
+        env:
+          ARTIFACT_NAME: Quake CLI Tools
+          ARTIFACT_DIRECTORY_NAME: quake-cli-tools
+      ## TrenchBroom
+      - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*windows$
+          workflow: continuous-building.yml
+          skip_unpack: true
+        env:
+          ARTIFACT_NAME: TrenchBroom
+          ARTIFACT_DIRECTORY_NAME: trenchbroom
+      - name: "Windows: Unpack ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: 7z x ${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip -o"${env:PROJECT_NAME_PREFIX}-windows\level-editor\" -y
+        shell: pwsh
+        env:
+          ARTIFACT_NAME: TrenchBroom
+          ARTIFACT_DIRECTORY_NAME: trenchbroom
+      ## Extras
+      - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*$
+          workflow: continuous-building.yml
+          skip_unpack: true
+        env:
+          ARTIFACT_NAME: Extras
+          ARTIFACT_DIRECTORY_NAME: extras
+      - name: "Windows: Unpack ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: 7z x ${env:ARTIFACT_DIRECTORY_NAME}-files.zip -o"${env:PROJECT_NAME_PREFIX}-windows\${env:ARTIFACT_DIRECTORY_NAME}\" -y
+        shell: pwsh
+        env:
+          ARTIFACT_NAME: Extras
+          ARTIFACT_DIRECTORY_NAME: extras
+      - name: "Windows: Pack and upload the artifact"
+        uses: actions/upload-artifact@v3
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        with:
+          path: ${{ env.PROJECT_NAME_PREFIX }}-windows/
+          name: ${{ env.PROJECT_NAME_PREFIX }}-${{ env.CURRENT_DATE }}-windows
+          if-no-files-found: error
+          retention-days: 1
+  create-release-notes:
+    name: Create the release notes
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set current packing date
+        run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
+        shell: bash
+      - name: Download packed metadata
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^.*-metadata.*$
+          workflow: continuous-building.yml
+          skip_unpack: true
+      - name: Parse the metadata files
+        run: |
+          mkdir -p "${{ env.PROJECT_NAME_PREFIX }}-release-notes/"
+          echo -e "This is a release of [Quake Level Design Starter Kit](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}). For comprehensive details about the project and setup guidance, please [refer to the instructions](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}#readme).\n\n## Features\n\nThe current version of **QLDSK** includes the following set of tools and extras:\n\n### Tools" > "${{ env.PROJECT_NAME_PREFIX }}-release-notes/RELEASE-NOTES.md"
+          IFS=',' read -r -a metadata_files <<< "${{ env.METADATA_FILES }}"
+          for metadata_file in "${metadata_files[@]}"; do
+            unzip -p "$metadata_file-metadata.zip" METADATA.md >> "${{ env.PROJECT_NAME_PREFIX }}-release-notes/RELEASE-NOTES.md"
+          done
+        shell: bash
+        env:
+          METADATA_FILES: ericw-tools,ironwail,quake-cli-tools,trenchbroom,extras
+      - name: Pack and upload the release notes
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.PROJECT_NAME_PREFIX }}-release-notes/
+          name: ${{ env.PROJECT_NAME_PREFIX }}-release-notes-${{ env.CURRENT_DATE }}
+          if-no-files-found: error
+          retention-days: 1

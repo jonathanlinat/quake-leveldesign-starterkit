@@ -1,0 +1,46 @@
+name: Continuous Releasing
+on:
+  workflow_run:
+    workflows: Continuous Packing
+    types: completed
+env:
+  PROJECT_NAME_PREFIX: quake-leveldesign-starterkit
+jobs:
+  release-starter-kit:
+    name: Release the starter kit
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Get the latest commit details
+        run: echo "LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
+        shell: bash
+      - name: Set current release date
+        run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
+        shell: bash
+      - name: Download packed binaries
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^${{ env.PROJECT_NAME_PREFIX }}.*$
+          workflow: continuous-packing.yml
+          skip_unpack: true
+      - name: Download packed release notes
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name_is_regexp: true
+          name: ^${{ env.PROJECT_NAME_PREFIX }}-release-notes.*$
+          workflow: continuous-packing.yml
+          skip_unpack: true
+      - name: Unpack the release notes
+        run: unzip ${{ env.PROJECT_NAME_PREFIX }}-release-notes-*.zip -d ${{ env.PROJECT_NAME_PREFIX }}/
+        shell: bash
+      - name: Release the starter kit
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          makeLatest: true
+          artifacts: ${{ env.PROJECT_NAME_PREFIX }}-*-windows.zip,${{ env.PROJECT_NAME_PREFIX }}-*-linux.zip
+          name: QLDSK v${{ env.CURRENT_DATE }} (${{ env.LAST_COMMIT_SHA_HASH }})
+          tag: v${{ env.CURRENT_DATE }}-${{ env.LAST_COMMIT_SHA_HASH }}
+          bodyFile: ${{ env.PROJECT_NAME_PREFIX }}/RELEASE-NOTES.md

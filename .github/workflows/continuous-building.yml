@@ -1,0 +1,615 @@
+name: Continuous Building
+on:
+  schedule:
+    - cron: 0 0 * * 1
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/**
+jobs:
+  ericw-tools-generate-metadata:
+    name: "ericw-tools: Generate metadata"
+    runs-on: ubuntu-22.04
+    env:
+      ARTIFACT_NAME: ericw-tools
+      ARTIFACT_AUTHOR_NAME: Eric Wasylishen
+      ARTIFACT_DIRECTORY_NAME: ericw-tools
+      ARTIFACT_REPOSITORY: ericwa/ericw-tools
+      ARTIFACT_WEBSITE_URL: https://ericwa.github.io/ericw-tools
+    steps:
+      # Setup
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ARTIFACT_REPOSITORY }}
+          fetch-depth: 0
+          submodules: recursive
+      - name: Get the latest commit details
+        run: |
+          LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
+          LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
+          LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
+          LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
+          LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
+          LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
+          echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
+          echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
+          echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
+          echo "LAST_COMMIT_DATE=$LAST_COMMIT_DATE" >> $GITHUB_ENV
+          echo "LAST_COMMIT_MESSAGE=$LAST_COMMIT_MESSAGE" >> $GITHUB_ENV
+          echo "LAST_COMMIT_SHA_HASH=$LAST_COMMIT_SHA_HASH" >> $GITHUB_ENV
+        shell: bash
+      - name: Create the content
+        run: |
+          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
+          echo "
+          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[GitHub](https://github.com/${{ env.ARTIFACT_REPOSITORY }})] [[Website](${{ env.ARTIFACT_WEBSITE_URL }})]
+
+            > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
+            > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
+            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        shell: bash
+      - name: Pack and upload the metadata
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
+          if-no-files-found: error
+          retention-days: 1
+  ericw-tools-build-binaries:
+    name: "ericw-tools: Build the binaries"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2022]
+        use-asan: [NO]
+        exclude:
+          - os: windows-2022
+            use-asan: YES
+    env:
+      USE_ASAN: ${{ matrix.use-asan }}
+      ARTIFACT_DIRECTORY_NAME: ericw-tools
+      ARTIFACT_REPOSITORY: ericwa/ericw-tools
+    steps:
+      # Setup
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ARTIFACT_REPOSITORY }}
+          fetch-depth: 0
+          submodules: recursive
+      # Linux
+      - name: "Linux: Compile the source code"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: ./build-linux-64.sh
+        shell: bash
+      - name: "Linux: Prepare the artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          unzip build-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}-*.zip
+          mv build-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}-*/ ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+        shell: bash
+      - name: "Linux: Pack and upload the artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
+          if-no-files-found: error
+          retention-days: 1
+      # Windows
+      - name: "Windows: Setup MSVC environment"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: "Windows: Compile the source code"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: .\build-windows.ps1
+        shell: pwsh
+      - name: "Windows: Prepare the artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: |
+          7z x build-windows\${env:ARTIFACT_DIRECTORY_NAME}-*.zip -o"${env:ARTIFACT_DIRECTORY_NAME}-windows-temp\" -y
+          New-Item -ItemType Directory -Path ${env:ARTIFACT_DIRECTORY_NAME}-windows
+          Get-ChildItem -Path ${env:ARTIFACT_DIRECTORY_NAME}-windows-temp\${env:ARTIFACT_DIRECTORY_NAME}-* -Recurse | 
+          Move-Item -Destination ${env:ARTIFACT_DIRECTORY_NAME}-windows
+        shell: pwsh
+      - name: "Windows: Pack and upload the artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-windows/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-windows
+          if-no-files-found: error
+          retention-days: 1
+  ironwail-generate-metadata:
+    name: "Ironwail: Generate metadata"
+    runs-on: ubuntu-22.04
+    env:
+      ARTIFACT_NAME: Ironwail
+      ARTIFACT_AUTHOR_NAME: Andrei Drexler
+      ARTIFACT_DIRECTORY_NAME: ironwail
+      ARTIFACT_REPOSITORY: andrei-drexler/ironwail
+      ARTIFACT_TWITTER_URL: https://twitter.com/andrei_drexler
+    steps:
+      # Setup
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ARTIFACT_REPOSITORY }}
+          fetch-depth: 0
+          submodules: recursive
+      - name: Get the latest commit details
+        run: |
+          LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
+          LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
+          LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
+          LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
+          LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
+          LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
+          echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
+          echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
+          echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
+          echo "LAST_COMMIT_DATE=$LAST_COMMIT_DATE" >> $GITHUB_ENV
+          echo "LAST_COMMIT_MESSAGE=$LAST_COMMIT_MESSAGE" >> $GITHUB_ENV
+          echo "LAST_COMMIT_SHA_HASH=$LAST_COMMIT_SHA_HASH" >> $GITHUB_ENV
+        shell: bash
+      - name: Create the content
+        run: |
+          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
+          echo "
+          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[GitHub](https://github.com/${{ env.ARTIFACT_REPOSITORY }})] [[Twitter](${{ env.ARTIFACT_TWITTER_URL }})]
+
+            > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
+            > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
+            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        shell: bash
+      - name: Pack and upload the metadata
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
+          if-no-files-found: error
+          retention-days: 1
+  ironwail-build-binaries:
+    name: "Ironwail: Build the binaries"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2022]
+    env:
+      ARTIFACT_DIRECTORY_NAME: ironwail
+      ARTIFACT_REPOSITORY: andrei-drexler/ironwail
+    steps:
+      # Setup
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ARTIFACT_REPOSITORY }}
+          fetch-depth: 0
+      # Linux
+      - name: "Linux: Install common dependencies"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          sudo apt update
+          sudo apt install libcurl4-openssl-dev libmad0-dev libsdl2-dev libvorbis-dev
+        shell: bash
+      - name: "Linux: Compile the source code"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: make --jobs=3 --keep-going --directory=Quake CC=gcc
+        shell: bash
+      - name: "Linux: Prepare the artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
+          cp Quake/${{ env.ARTIFACT_DIRECTORY_NAME }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}
+          cp Quake/${{ env.ARTIFACT_DIRECTORY_NAME }}.pak ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}.pak
+        shell: bash
+      - name: "Linux: Pack and upload the artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
+          if-no-files-found: error
+          retention-days: 1
+      # Windows
+      - name: "Windows: Set environment variables"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: |
+          $gitrev = $(git describe --always)
+          $gitbranch = $(git branch --show-current)
+          $ver_suffix = ("$gitbranch" -eq "master" -Or "$gitbranch" -eq "main") ? "-$gitrev" : "-$gitbranch-$gitrev"
+          $platform_alt = "win64"
+          $platform_short = "x64"
+          $build_artifact = "${env:ARTIFACT_DIRECTORY_NAME}-windows"
+          echo "VER_SUFFIX=$ver_suffix" >> ${env:GITHUB_ENV}
+          echo "BUILD_ARTIFACT=$build_artifact" >> ${env:GITHUB_ENV}
+          echo "BUILD_DIR=$build_artifact" >> ${env:GITHUB_ENV}
+          echo "PLATFORM_ALT=$platform_alt" >> ${env:GITHUB_ENV}
+          echo "PLATFORM_SHORT=$platform_short" >> ${env:GITHUB_ENV}
+          echo "ForceImportBeforeCppTargets=${env:GITHUB_WORKSPACE}\Windows\VisualStudio\custom_build.props" >> ${env:GITHUB_ENV}
+        shell: pwsh
+      - name: "Windows: Compile the source code"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: |
+          $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | Select-Object -First 1
+          & $msbuild Windows\VisualStudio\${env:ARTIFACT_DIRECTORY_NAME}.sln -property:Configuration=Release -property:Platform=x64 -maxcpucount -verbosity:minimal
+          if (-not $?) { throw "Build failed" }
+        shell: pwsh
+      - name: "Windows: Prepare the artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: |
+          $compiledir = "Windows\VisualStudio\${env:BUILD_DIR}"
+          $zipdir = "${env:BUILD_ARTIFACT}"
+          mkdir -p $zipdir | out-null
+          copy ${compiledir}\*.exe $zipdir
+          copy ${compiledir}\*.dll $zipdir
+          copy Quake\${env:ARTIFACT_DIRECTORY_NAME}.pak $zipdir
+          copy Quakespasm.html $zipdir
+          copy Quakespasm.txt $zipdir
+          copy Quakespasm-Music.txt $zipdir
+          copy LICENSE.txt $zipdir
+        shell: pwsh
+      - name: "Windows: Pack and upload the artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-windows/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-windows
+          if-no-files-found: error
+          retention-days: 1
+  quake-cli-tools-generate-metadata:
+    name: "Quake CLI Tools: Generate metadata"
+    runs-on: ubuntu-22.04
+    env:
+      ARTIFACT_NAME: Quake CLI Tools
+      ARTIFACT_AUTHOR_NAME: Joshua Skelton
+      ARTIFACT_DIRECTORY_NAME: quake-cli-tools
+      ARTIFACT_REPOSITORY: joshuaskelly/quake-cli-tools
+      ARTIFACT_WEBSITE_URL: https://joshua.itch.io/quake-tools
+      ARTIFACT_HOWTO_URL: https://www.youtube.com/watch?v=zJ0RX62VYaA
+    steps:
+      # Setup
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ARTIFACT_REPOSITORY }}
+          fetch-depth: 0
+          submodules: recursive
+      - name: Get the latest commit details
+        run: |
+          LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
+          LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
+          LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
+          LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
+          LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
+          LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
+          echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
+          echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
+          echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
+          echo "LAST_COMMIT_DATE=$LAST_COMMIT_DATE" >> $GITHUB_ENV
+          echo "LAST_COMMIT_MESSAGE=$LAST_COMMIT_MESSAGE" >> $GITHUB_ENV
+          echo "LAST_COMMIT_SHA_HASH=$LAST_COMMIT_SHA_HASH" >> $GITHUB_ENV
+        shell: bash
+      - name: Create the content
+        run: |
+          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
+          echo "
+          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[GitHub](https://github.com/${{ env.ARTIFACT_REPOSITORY }})] [[Website](${{ env.ARTIFACT_WEBSITE_URL }})] [[Usage](${{ env.ARTIFACT_HOWTO_URL }})]
+
+            > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
+            > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
+            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        shell: bash
+      - name: Pack and upload the metadata
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
+          if-no-files-found: error
+          retention-days: 1
+  quake-cli-tools-build-binaries:
+    name: "Quake CLI Tools: Build the binaries"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2022]
+    env:
+      ARTIFACT_DIRECTORY_NAME: quake-cli-tools
+      ARTIFACT_REPOSITORY: joshuaskelly/quake-cli-tools
+    steps:
+      # Setup
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ARTIFACT_REPOSITORY }}
+          fetch-depth: 0
+      # Linux
+      - name: "Linux: Install common dependencies"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip make
+        shell: bash
+      - name: "Linux: Install Python requirements"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+        shell: bash
+      - name: "Linux: Compile the source code"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: make build
+        shell: bash
+      - name: "Linux: Prepare the artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          make package
+          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-*-linux.zip
+          mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-*-linux/ ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+        shell: bash
+      - name: "Linux: Pack and upload the artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
+          if-no-files-found: error
+          retention-days: 1
+      # Windows
+      - name: "Windows: Setup MSVC environment"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: "Windows: Install Python requirements"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+        shell: pwsh
+      - name: "Windows: Compile the source code"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: make build
+        shell: pwsh
+      - name: "Windows: Prepare the artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: |
+          make package
+          unzip ${env:ARTIFACT_DIRECTORY_NAME}-*-windows.zip
+          mv ${env:ARTIFACT_DIRECTORY_NAME}-*-windows/ ${env:ARTIFACT_DIRECTORY_NAME}-windows/
+        shell: pwsh
+      - name: "Windows: Pack and upload the artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-windows/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-windows
+          if-no-files-found: error
+          retention-days: 1
+  trenchbroom-generate-metadata:
+    name: "TrenchBroom: Generate metadata"
+    runs-on: ubuntu-22.04
+    env:
+      ARTIFACT_NAME: TrenchBroom
+      ARTIFACT_AUTHOR_NAME: Kristian Duske
+      ARTIFACT_DIRECTORY_NAME: trenchbroom
+      ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
+      ARTIFACT_WEBSITE_URL: http://kristianduske.com/trenchbroom
+    steps:
+      # Setup
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ARTIFACT_REPOSITORY }}
+          fetch-depth: 0
+          submodules: recursive
+      - name: Get the latest commit details
+        run: |
+          LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
+          LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
+          LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
+          LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
+          LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
+          LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
+          echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
+          echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
+          echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
+          echo "LAST_COMMIT_DATE=$LAST_COMMIT_DATE" >> $GITHUB_ENV
+          echo "LAST_COMMIT_MESSAGE=$LAST_COMMIT_MESSAGE" >> $GITHUB_ENV
+          echo "LAST_COMMIT_SHA_HASH=$LAST_COMMIT_SHA_HASH" >> $GITHUB_ENV
+        shell: bash
+      - name: Create the content
+        run: |
+          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
+          echo "
+          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[GitHub](https://github.com/${{ env.ARTIFACT_REPOSITORY }})] [[Website](${{ env.ARTIFACT_WEBSITE_URL }})]
+
+            > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
+            > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
+            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        shell: bash
+      - name: Pack and upload the metadata
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
+          if-no-files-found: error
+          retention-days: 1
+  trenchbroom-build-binaries:
+    name: "TrenchBroom: Build the binaries"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2019]
+        tb-build-type: [release]
+        tb-arch: [default-arch]
+        exclude:
+          - os: windows-2019
+            tb-arch: default-arch
+        include:
+          - os: windows-2019
+            tb-arch: x64
+    env:
+      TB_PULL_REQUEST_HEAD_SHA_HASH: ${{ github.event.pull_request.head.sha }}
+      TB_OS_IMAGE: ${{ matrix.os }}
+      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/vcpkg/bincache
+      VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+      ARTIFACT_NAME: TrenchBroom
+      ARTIFACT_DIRECTORY_NAME: trenchbroom
+      ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
+    steps:
+      # Setup
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ARTIFACT_REPOSITORY }}
+          fetch-depth: 0
+          submodules: recursive
+      - name: Create directory ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
+        run: mkdir -p $VCPKG_DEFAULT_BINARY_CACHE
+        shell: bash
+      - name: Set some ACTIONS environment variables
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable("ACTIONS_CACHE_URL", process.env.ACTIONS_CACHE_URL || "");
+            core.exportVariable("ACTIONS_RUNTIME_TOKEN", process.env.ACTIONS_RUNTIME_TOKEN || "");
+      # Linux
+      - name: "Linux: Install common dependencies"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          sudo apt update
+          sudo apt install build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc cmake p7zip-full ninja-build xvfb libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev qtbase5-dev libqt5svg5-dev
+        shell: bash
+      - name: "Linux: Compile the source code"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: ./CI-linux.sh
+        shell: bash
+      - name: "Linux: Prepare the artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          dpkg -x build/${{ env.ARTIFACT_NAME }}-*.deb ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+          mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/usr/bin/${{ env.ARTIFACT_DIRECTORY_NAME }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+          mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/usr/share/${{ env.ARTIFACT_NAME }}/* ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+        shell: bash
+      - name: "Linux: Pack and upload the artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
+          if-no-files-found: error
+          retention-days: 1
+      # Windows
+      - name: "Windows: Install Pandoc"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: |
+          Invoke-WebRequest https://github.com/jgm/pandoc/releases/download/2.11.3.1/pandoc-2.11.3.1-windows-x86_64.zip -OutFile pandoc.zip
+          7z x pandoc.zip -o"." -y
+          echo "$(pwd)\pandoc-2.11.3.1" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        shell: pwsh
+      - name: "Windows: Install Qt"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: 5.15.2
+          arch: win64_msvc2019_64
+      - name: "Windows: Compile the source code"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: |
+          $Env:QT5_INSTALL_DIR = $env:Qt5_DIR
+          cmd.exe /c CI-windows.bat
+        shell: pwsh
+        env:
+          TB_ARCH: ${{ matrix.tb-arch }}
+      - name: "Windows: Prepare the artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: 7z x cmakebuild\${env:ARTIFACT_NAME}-*.7z -o"${env:ARTIFACT_DIRECTORY_NAME}-windows\" -y
+        shell: pwsh
+      - name: "Windows: Pack and upload the artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-windows/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-windows
+          if-no-files-found: error
+          retention-days: 1
+  extras-generate-metadata:
+    name: "Extras: Generate metadata"
+    runs-on: ubuntu-22.04
+    env:
+      ARTIFACT_NAME: Extras
+      ARTIFACT_DIRECTORY_NAME: extras
+    steps:
+      # Setup
+      - name: Create initial content
+        run: |
+          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
+          echo "
+          ### ${{ env.ARTIFACT_NAME }}
+          " >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        shell: bash
+      ## Prototype WAD
+      - name: "${{ env.EXTRA_NAME }}: Create the content"
+        run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[Source](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        shell: bash
+        env:
+          EXTRA_NAME: Prototype WAD 
+          EXTRA_AUTHOR_NAME: Aleksander Marhall
+          EXTRA_DETAILS_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263/
+      ## TrenchBroom Quake Map Source
+      - name: "${{ env.EXTRA_NAME }}: Create the content"
+        run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[Source](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        shell: bash
+        env:
+          EXTRA_NAME: TrenchBroom Quake Map Source
+          EXTRA_AUTHOR_NAME: Atul Varma
+          EXTRA_DETAILS_URL: https://book.leveldesignbook.com/appendix/resources/quake
+      - name: Pack and upload the metadata
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
+          if-no-files-found: error
+          retention-days: 1
+  extras-get-files:
+    name: "Extras: Get the files"
+    runs-on: ubuntu-22.04
+    env:
+      ARTIFACT_NAME: Extras
+      ARTIFACT_DIRECTORY_NAME: extras
+    steps:
+      ## Prototype WAD
+      - name: "${{ env.EXTRA_NAME }}: Download and extract"
+        run: |
+          curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip
+          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/wads/
+          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip -d ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/wads/
+        shell: bash
+        env:
+          EXTRA_NAME: Prototype WAD
+          EXTRA_DIRECTORY_NAME: prototype-wad
+          EXTRA_DOWNLOAD_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263/version/448/download&file=3663
+      ## TrenchBroom Quake Map Source
+      - name: "${{ env.EXTRA_NAME }}: Download and extract"
+        run: |
+          curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip
+          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/source/
+          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip -d ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/source/
+        shell: bash
+        env:
+          EXTRA_NAME: TrenchBroom Quake Map Source
+          EXTRA_DIRECTORY_NAME: trenchbroom-quake-map-source
+          EXTRA_DOWNLOAD_URL: https://toolness-media.s3.amazonaws.com/quake/trenchbroom_quake_map_source.zip
+      # Pack and upload
+      - name: Pack and upload the artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-files
+          if-no-files-found: error
+          retention-days: 1
