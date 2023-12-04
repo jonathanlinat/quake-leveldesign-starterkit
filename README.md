@@ -9,7 +9,7 @@ This project operates on an automated system, meaning the tools are compiled eve
 
 | Continuous Building Status | Continuous Packing Status | Continuous Releasing Status |
 |----------------------------|---------------------------|-----------------------------|
-| [![Continuous Building](https://github.com/jonathanlinat/quake-leveldesign-starterkit-playground/actions/workflows/continuous-building.yml/badge.svg)](https://github.com/jonathanlinat/quake-leveldesign-starterkit-playground/actions/workflows/continuous-building.yml) | [![Continuous Packing](https://github.com/jonathanlinat/quake-leveldesign-starterkit-playground/actions/workflows/continuous-packing.yml/badge.svg)](https://github.com/jonathanlinat/quake-leveldesign-starterkit-playground/actions/workflows/continuous-packing.yml) | [![Continuous Releasing](https://github.com/jonathanlinat/quake-leveldesign-starterkit-playground/actions/workflows/continuous-releasing.yml/badge.svg)](https://github.com/jonathanlinat/quake-leveldesign-starterkit-playground/actions/workflows/continuous-releasing.yml) |
+| [![Continuous Building](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-building.yml/badge.svg)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-building.yml) | [![Continuous Packing](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-packing.yml/badge.svg)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-packing.yml) | [![Continuous Releasing](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-releasing.yml/badge.svg)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-releasing.yml) |
 
 Two artifacts are released, offering compatibility with the following operating systems:
 
@@ -72,9 +72,9 @@ Create two new directories:
 
 * An `id1` directory within the `game` directory.
 * A `maps` directory inside the `id1` directory for saving compiled maps.
-* A `working` directory at the root, which will remain empty until the `ericw-tool` compiled is utilized and where the MAP files will be hosted.
+* A `working` directory at the root, which will remain empty until the `ericw-tools` compiler is utilized, and where the MAP and other related files will be hosted.
 
-Lastly, from your original Quake game installation, copy the `pak0.pak` and `pak1.pak` files into the `id1` directory. These files are necessary to test your map using `Ironwail`.
+Lastly, from your original Quake game installation, copy the `pak0.pak` file into the `id1` directory. These files are necessary to test your map using `Ironwail`.
 
 > ℹ️ **Note**: These instructions are also applicable to other expansions and modifications.
 
@@ -82,13 +82,14 @@ Here is what you should have at the end of the process:
 
 ```text
 .
+├── extras/
 ├── game/
 │   └── id1/
 │       ├── maps/
-│       ├── pak0.pak
-│       └── pak1.pak
+│       └── pak0.pak
+├── level-editor/
 ├── working/
-└── ...
+└── tools/
 ```
 
 > ⚠️ **Important**: Users on Unix systems need to grant execution rights to binaries.
@@ -108,7 +109,7 @@ To assist you in effectively utilizing the tools included in this starter kit, c
 
 The inspiration for this project primarily comes from the excellent series of video tutorials by [dumptruck_ds](https://twitter.com/david_spell). Be sure to explore these [informative videos](https://www.youtube.com/playlist?list=PLgDKRPte5Y0AZ_K_PZbWbgBAEt5xf74aE)!
 
-<p align="center"><a href-"http://www.youtube.com/watch?v=gONePWocbqA" align="center"><img src="http://img.youtube.com/vi/gONePWocbqA/0.jpg"></a></p>
+<p align="center"><a href="https://www.youtube.com/watch?v=gONePWocbqA" align="center"><img src="https://img.youtube.com/vi/gONePWocbqA/0.jpg"></a></p>
 
 ## Additional Resources
 
