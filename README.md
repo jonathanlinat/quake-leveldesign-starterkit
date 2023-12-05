@@ -8,8 +8,8 @@ The **Quake Level Design Starter Kit**, also known as **QLDSK**, consolidates a 
 ## Weekly Release
 
 | 🔔 Get the Latest Weekly Release |
-|----------------------------------|
-| [![Latest Weekly Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Release)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) |
+| -------------------------------- |
+| [![Get the Latest Weekly Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Release)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) |
 
 Great, you're all set! Now, [proceed to the installation](#installation).
 
@@ -18,7 +18,7 @@ Great, you're all set! Now, [proceed to the installation](#installation).
 This project operates on an automated system, meaning the tools are compiled every week from their original source codes available on GitHub, while additional resources are securely sourced from legitimate and reputable websites.
 
 | 🏗️ Continuous Building Status | 📦 Continuous Packing Status | 🚀 Continuous Releasing Status |
-|-------------------------------|------------------------------|--------------------------------|
+| ----------------------------- | ---------------------------- | ------------------------------ |
 | [![Continuous Building](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-building.yml/badge.svg)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-building.yml) | [![Continuous Packing](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-packing.yml/badge.svg)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-packing.yml) | [![Continuous Releasing](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-releasing.yml/badge.svg)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-releasing.yml) |
 
 Two artifacts are released, offering compatibility with the following operating systems:
@@ -40,9 +40,9 @@ The current version of **QLDSK** includes the following set of tools and extras:
   - A suite of command-line utilities for building levels (maps) for games like Quake and Hexen 2, and represent an evolved branch of Tyrann's original Quake tools. The tools focus on adding advanced lighting features, some of which are borrowed from q3map2, and include bugfixes for the qbsp tool, which is used for constructing the block structure of the map.
 * **Ironwail**, Andrei Drexler [[GitHub](https://github.com/andrei-drexler/ironwail)] [[Twitter](https://twitter.com/andrei_drexler)] 
   - An advanced fork of QuakeSpasm, a popular source port of the Quake engine, aimed at enhancing performance and introducing additional features. It has been optimized for high performance, incorporating modern techniques such as culling, GPU-accelerated lightmap updates, and compute shaders, allowing it to handle highly detailed Quake maps at very high framerates.
-* **Quake CLI Tools**, Joshua Skelton [[GitHub](https://github.com/joshuaskelly/quake-cli-tools)] [[Website](https://joshua.itch.io/quake-tools)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)]
+* **Quake CLI Tools**, Joshua Skelton [[GitHub](https://github.com/joshuaskelly/quake-cli-tools)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)] [[Website](https://joshua.itch.io/quake-tools)] [[Discord](https://discord.gg/PyqRPNwnk7)]
   - A collection of command-line utilities to facilitate the creation of content for the Quake game series. These tools can perform various tasks, including managing PAK and WAD files, such as adding and extracting files, converting BSP files to WAD files, and even creating SVG files from BSP files.
-* **TrenchBroom**, Kristian Duske [[GitHub](https://github.com/TrenchBroom/TrenchBroom)] [[Website](http://kristianduske.com/trenchbroom)]
+* **TrenchBroom**, Kristian Duske [[GitHub](https://github.com/TrenchBroom/TrenchBroom)] [[Website](http://kristianduske.com/trenchbroom)] [[Discord](https://discord.gg/txsKc3EARW)]
   - A free, open-source, cross-platform level editor designed explicitly for Quake-engine-based games. It is compatible with games like Quake, Quake 2, and Hexen 2 and can be run on multiple operating systems. It is recognized for its ease of use, offering simple and advanced tools that enable designers to craft complex and engaging levels without much hassle.
 
 ### Extras
@@ -69,6 +69,10 @@ The organization of **QLDSK** is as follows:
 ---
 
 ## Installation
+ 
+| 💬 Do You Need Support? |
+| ----------------------- |
+| [![](https://dcbadge.vercel.app/api/server/dh29D3kqrM?style=plastic)](https://discord.gg/dh29D3kqrM) |
 
 ### Software Requirements
 
@@ -148,8 +152,14 @@ The inspiration for this project primarily comes from the excellent series of vi
 
 ---
 
+## Acknowledgments
+
+The [image](https://i.imgur.com/p0E4SuR.png) utilized to create the project illustration.
+
+---
+
 ## License
 
-**Quake Level Design Starter Kit** and its infrastructure is [CC0 1.0 Universal licensed](LICENSE).
+**Quake Level Design Starter Kit**, also known as **QLDSK**, and its infrastructure is [CC0 1.0 Universal licensed](LICENSE).
 
-The licenses of the compiled and released tools vary and are independent of QLDSK's licensing. Please note that there is no guarantee that all tools will work perfectly in every scenario, and users should utilize them at their own discretion.
+The licenses of the compiled and released tools vary and are independent of **QLDSK**'s licensing. Please note that there is no guarantee that all tools will work perfectly in every scenario, and users should utilize them at their own discretion.
