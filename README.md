@@ -3,12 +3,22 @@
 
 The **Quake Level Design Starter Kit**, also known as **QLDSK**, consolidates a variety of tools and resources into one comprehensive package, facilitating the quick and easy creation of Quake-based maps with just a few clicks.
 
-## Weekly Release Workflow
+---
+
+## Weekly Release
+
+| 🔔 Get the Latest Weekly Release |
+|----------------------------------|
+| [![Latest Weekly Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Release)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) |
+
+Great, you're all set! Now, [proceed to the installation](#installation).
+
+### Automated Workflow
 
 This project operates on an automated system, meaning the tools are compiled every week from their original source codes available on GitHub, while additional resources are securely sourced from legitimate and reputable websites.
 
-| Continuous Building Status | Continuous Packing Status | Continuous Releasing Status |
-|----------------------------|---------------------------|-----------------------------|
+| 🏗️ Continuous Building Status | 📦 Continuous Packing Status | 🚀 Continuous Releasing Status |
+|-------------------------------|------------------------------|--------------------------------|
 | [![Continuous Building](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-building.yml/badge.svg)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-building.yml) | [![Continuous Packing](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-packing.yml/badge.svg)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-packing.yml) | [![Continuous Releasing](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-releasing.yml/badge.svg)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/actions/workflows/continuous-releasing.yml) |
 
 Two artifacts are released, offering compatibility with the following operating systems:
@@ -17,6 +27,8 @@ Two artifacts are released, offering compatibility with the following operating 
 
 - **Microsoft Windows**
 - **Linux** (specifically for Debian-based distributions)
+
+---
 
 ## Features
 
@@ -40,6 +52,8 @@ The current version of **QLDSK** includes the following set of tools and extras:
 * **TrenchBroom Quake Map Source**, Atul Varma [[Source](https://book.leveldesignbook.com/appendix/resources/quake)]
   - A collection of the original Quake 1 MAP source files, as released by John Romero in 2006. These files have been converted to a modern file format that is compatible with TrenchBroom. Additionally,  the texture references in these files have been fixed with a repackaged `quake101.wad` file.
 
+---
+
 ## Project Structure
 
 The organization of **QLDSK** is as follows:
@@ -52,13 +66,15 @@ The organization of **QLDSK** is as follows:
 └── tools/          # Holds the tool binaries
 ```
 
-## Software Requirements
+---
+
+## Installation
+
+### Software Requirements
 
 * A legitimate copy of Quake [[Steam](https://store.steampowered.com/app/2310)] [[Good Old Games](https://www.gog.com/game/quake_the_offering)]
 * For **Microsoft Windows** users:
   - Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019 [[x64](https://aka.ms/vs/16/release/vc_redist.x64.exe)]
-
-## Installation
 
 ### Download
 
@@ -96,6 +112,8 @@ Here is what you should have at the end of the process:
 >
 > To set execution permissions recursively from the **QLDSK** directory, execute this command in your Terminal: `find . -type f -exec sh -c 'file -b "{}" | grep -q "^ELF"' \; -exec chmod +x "{}" \;`.
 
+---
+
 ## Getting Started
 
 To assist you in effectively utilizing the tools included in this starter kit, consider these two informative articles for guidance:
@@ -110,6 +128,8 @@ To assist you in effectively utilizing the tools included in this starter kit, c
 The inspiration for this project primarily comes from the excellent series of video tutorials by [dumptruck_ds](https://twitter.com/david_spell). Be sure to explore these [informative videos](https://www.youtube.com/playlist?list=PLgDKRPte5Y0AZ_K_PZbWbgBAEt5xf74aE)!
 
 <p align="center"><a href="https://www.youtube.com/watch?v=gONePWocbqA" align="center"><img src="https://img.youtube.com/vi/gONePWocbqA/0.jpg"></a></p>
+
+---
 
 ## Additional Resources
 
