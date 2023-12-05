@@ -145,3 +145,11 @@ The inspiration for this project primarily comes from the excellent series of vi
   - A significant forum and online community focused on video game level design, particularly for games using the Quake engine. For over twenty years, it has been a central hub for both hobbyist and professional level designers to exchange ideas and engage in discussions about game development.
 * **Quaketastic** [[Website](https://www.quaketastic.com)]
   - Hosts an extensive collection of reusable resources, available through a comprehensive file browser.
+
+---
+
+## License
+
+**Quake Level Design Starter Kit** and its infrastructure is [CC0 1.0 Universal licensed](LICENSE).
+
+The licenses of the compiled and released tools vary and are independent of QLDSK's licensing. Please note that there is no guarantee that all tools will work perfectly in every scenario, and users should utilize them at their own discretion.
