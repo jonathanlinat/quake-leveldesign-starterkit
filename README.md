@@ -23,7 +23,8 @@ This project operates on an automated system, meaning the tools are compiled eve
 
 Two artifacts are released, offering compatibility with the following operating systems:
 
-> ⚠️ **Important**: Only 64-bit versions are supported.
+> [!WARNING]
+> Only 64-bit versions are supported.
 
 - **Microsoft Windows**
 - **Linux** (specifically for Debian-based distributions)
@@ -96,7 +97,8 @@ Create two new directories:
 
 Lastly, from your original Quake game installation, copy the `pak0.pak` file into the `id1` directory. These files are necessary to test your map using `Ironwail`.
 
-> ℹ️ **Note**: These instructions are also applicable to other expansions and modifications.
+> [!NOTE]
+> These instructions are also applicable to other expansions and modifications.
 
 Here is what you should have at the end of the process:
 
@@ -112,7 +114,8 @@ Here is what you should have at the end of the process:
 └── tools/
 ```
 
-> ⚠️ **Important**: Users on Unix systems need to grant execution rights to binaries.
+> [!WARNING]
+> Users on Unix systems need to grant execution rights to binaries.
 >
 > To set execution permissions recursively from the **QLDSK** directory, execute this command in your Terminal: `find . -type f -exec sh -c 'file -b "{}" | grep -q "^ELF"' \; -exec chmod +x "{}" \;`.
 
@@ -122,7 +125,8 @@ Here is what you should have at the end of the process:
 
 To assist you in effectively utilizing the tools included in this starter kit, consider these two informative articles for guidance:
 
-> ℹ️ **Note**: The procedures outlined might slightly vary from the current project structure.
+> [!NOTE]
+> The procedures outlined might slightly vary from the current project structure.
 
 * **Setting up TrenchBroom in Ubuntu to create and compile Quake maps**, s3thra [[Website](https://quake.blog/trenchbroom-ubuntu-setup-tutorial.html)]
 * **Configure TrenchBroom in Windows to create Quake maps**, s3thra [[Website](https://quake.blog/configure-trenchbroom-in-windows.html)]
