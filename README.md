@@ -118,7 +118,7 @@ Your directory structure should look like this:
 >
 > To set execution permissions recursively from the **QLDSK** directory, execute the following command in your Terminal: `find . -type f -exec sh -c 'file -b "{}" | grep -q "^ELF"' \; -exec chmod +x "{}" \;`.
 
-### Quake Game Profile
+### Configure the Quake Game Profile
 
 1. Open `TrenchBroom`.
 2. In the `Welcome to TrenchBroom` window, click on `New map...`.
@@ -138,7 +138,7 @@ Your directory structure should look like this:
 
 A new document is now open for mapping.
 
-### Compiler
+### Set Up the Compiler
 
 1. Save the document in `<path/to/quake-leveldesign-starterkit-<date>-<os>>/working`. Name it as you wish.
 2. Click on `Run` menu.
