@@ -11,7 +11,7 @@ The **Quake Level Design Starter Kit**, also known as **QLDSK**, consolidates a 
 | -------------------------------- |
 | [![Get the Latest Weekly Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Release)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) |
 
-Great, you're all set! Now, [proceed to the installation](#installation).
+Great, you're all set! Now, [proceed to the configure the kit](#first-setup).
 
 ### Automated Workflow
 
@@ -85,22 +85,21 @@ The organization of **QLDSK** is as follows:
 
 Get the [latest ZIP release](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases) and extract its contents into a directory, likely named `quake-leveldesign-starterkit-<date>-<os>`.
 
-### First Setup
+---
 
-Find and open the `quake-leveldesign-starterkit-<date>-<os>` directory in your files explorer.
+## First Setup
 
-Create two new directories:
-
-* An `id1` directory within the `game` directory.
-* A `maps` directory inside the `id1` directory for saving compiled maps.
-* A `working` directory at the root, which will remain empty until the `ericw-tools` compiler is utilized, and where the MAP and other related files will be hosted.
-
-Lastly, from your original Quake game installation, copy the `pak0.pak` file into the `id1` directory. These files are necessary to test your map using `Ironwail`.
+1. Locate and open the `quake-leveldesign-starterkit-<date>-<os>` directory in your file explorer.
+2. Create three new directories:
+   - An `id1` directory inside the `game` directory.
+   - A `maps` directory within the `id1` directory for storing compiled maps.
+   - A `working` directory at the root level, which will initially be empty. This directory will be used for hosting MAP files and other related files once the `ericw-tools` compiler is used.
+3. Copy the `pak0.pak` file from your original Quake game installation into the `id1` directory.
 
 > [!NOTE]
-> These instructions are also applicable to other expansions and modifications.
+> These instructions also apply to other expansions and modifications.
 
-Here is what you should have at the end of the process:
+Your directory structure should look like this:
 
 ```text
 .
@@ -115,15 +114,61 @@ Here is what you should have at the end of the process:
 ```
 
 > [!WARNING]
-> Users on Unix systems need to grant execution rights to binaries.
+> For Unix system users: Grant execution rights to binaries.
 >
-> To set execution permissions recursively from the **QLDSK** directory, execute this command in your Terminal: `find . -type f -exec sh -c 'file -b "{}" | grep -q "^ELF"' \; -exec chmod +x "{}" \;`.
+> To set execution permissions recursively from the **QLDSK** directory, execute the following command in your Terminal: `find . -type f -exec sh -c 'file -b "{}" | grep -q "^ELF"' \; -exec chmod +x "{}" \;`.
 
----
+### Quake Game Profile
 
-## Getting Started
+1. Open `TrenchBroom`.
+2. In the `Welcome to TrenchBroom` window, click on `New map...`.
+3. In the `Select Game` window, click `Open preferences...`.
+4. In the `Games` tab of the `Preferences` window, select the `Quake` profile.
+5. Set the `Game Path` to `<path/to/quake-leveldesign-starterkit-<date>-<os>>/game`.
+6. Click on `Configure engines...`.
+7. Add a new profile by clicking the `+` button.
+8. Set `Name` to `Ironwail`.
+9. Set `Path` to `<path/to/quake-leveldesign-starterkit-<date>-<os>>/game/ironwail(.exe)`.
+10. Click `Close`.
+11. Leave the `Compilation Tools` fields empty.
+12. Click `Apply`, then `OK`.
+13. In the `Select Game` window, select the `Quake` profile.
+14. Keep `Map Format` as `Valve`.
+15. Click `OK`.
 
-To assist you in effectively utilizing the tools included in this starter kit, consider these two informative articles for guidance:
+A new document is now open for mapping.
+
+### Compiler
+
+1. Save the document in `<path/to/quake-leveldesign-starterkit-<date>-<os>>/working`. Name it as you wish.
+2. Click on `Run` menu.
+3. Select `Compile Map...`.
+4. In the `Compile` window, add a new profile by clicking on the `+` button.
+5. Set `Name` to `Compile`.
+6. Set `Working Directory` to `${MAP_DIR_PATH}`.
+7. Add a `Export Map` task profile by clicking `+`.
+8. Set `Field Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}-compile.map`.
+9. Ensure the task is enabled (checkbox checked).
+10. Add a `Run Tool` task profile for each of the following tools, setting `Tool Path` to the respective paths in `<path/to/quake-leveldesign-starterkit-<date>-<os>>/tools/ericw-tools/bin/`:
+    - `qbsp` with `Parameters`: `-nocolor ${MAP_BASE_NAME}-compile.map ${MAP_BASE_NAME}.bsp`.
+    - `vis` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
+    - `light` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
+    - `bspinfo` with `Parameters`: `${MAP_BASE_NAME}.bsp`.
+11. For each tool, enable `Stop on nonzero error code` and ensure the task is enabled.
+12. Add a `Copy Files` task profile.
+13. Set `Source File Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}.bsp`.
+14. Set `Target Directory Path` to `${GAME_DIR_PATH}/${MODS[-1]}/maps`.
+15. Ensure the task is enabled.
+16. Click on `Compile` and verify that everything works and the document compiles successfully.
+17. Click on `Launch...`.
+18. In the `Launch Engine` window, set `Parameters` to `-basedir <path/to/quake-leveldesign-starterkit-<date>-<os>>/game/ +map <name-of-the-saved-document>`.
+19. Click `Close`.
+
+Congratulations! You are now ready to start mapping.
+
+### References
+
+To assist you in effectively configuring the tools included in this kit, consider these two informative articles for additional guidance:
 
 > [!NOTE]
 > The procedures outlined might vary slightly from the current project structure.
@@ -131,9 +176,11 @@ To assist you in effectively utilizing the tools included in this starter kit, c
 * **Setting up TrenchBroom in Ubuntu to create and compile Quake maps**, s3thra [[Website](https://quake.blog/trenchbroom-ubuntu-setup-tutorial.html)]
 * **Configure TrenchBroom in Windows to create Quake maps**, s3thra [[Website](https://quake.blog/configure-trenchbroom-in-windows.html)]
 
-### Basic Usage
+---
 
-The inspiration for this project primarily comes from the excellent series of video tutorials by [dumptruck_ds](https://twitter.com/david_spell). Be sure to explore these [informative videos](https://www.youtube.com/playlist?list=PLgDKRPte5Y0AZ_K_PZbWbgBAEt5xf74aE)!
+## Getting Started
+
+The inspiration for this project primarily comes from the excellent series of video tutorials by [dumptruck_ds](https://twitter.com/david_spell). Be sure to watch these [informative videos](https://www.youtube.com/playlist?list=PLgDKRPte5Y0AZ_K_PZbWbgBAEt5xf74aE)!
 
 <p align="center"><a href="https://www.youtube.com/watch?v=gONePWocbqA" align="center"><img src="https://img.youtube.com/vi/gONePWocbqA/0.jpg"></a></p>
 
