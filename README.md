@@ -158,7 +158,7 @@ The inspiration for this project primarily comes from the excellent series of vi
 
 ## Acknowledgments
 
-A heartfelt thank you to **Devin 'Shark' Smigle**, from the Discord channel [Quake Mapping](https://discord.gg/dh29D3kqrM), for his outstanding contribution, brilliantly bringing the project's vision to life with his unique creativity in the illustration! 👏
+A heartfelt thank you to **Devin 'shark' Smigle**, from the Discord channel [Quake Mapping](https://discord.gg/dh29D3kqrM), for his outstanding contribution, brilliantly bringing the project's vision to life with his unique creativity in the illustration! 👏
 
 ---
 
