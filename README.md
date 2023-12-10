@@ -150,10 +150,10 @@ A new document is now open for mapping.
 8. Set `Field Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}-compile.map`.
 9. Ensure the task is enabled (checkbox checked).
 10. Add a `Run Tool` task profile for each of the following tools, setting `Tool Path` to the respective paths in `<path/to/quake-leveldesign-starterkit-<date>-<os>>/tools/ericw-tools/bin/`:
-    - `qbsp` with `Parameters`: `-nocolor ${MAP_BASE_NAME}-compile.map ${MAP_BASE_NAME}.bsp`.
-    - `vis` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
-    - `light` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
-    - `bspinfo` with `Parameters`: `${MAP_BASE_NAME}.bsp`.
+    - `qbsp(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}-compile.map ${MAP_BASE_NAME}.bsp`.
+    - `vis(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
+    - `light(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
+    - `bspinfo(.exe)` with `Parameters`: `${MAP_BASE_NAME}.bsp`.
 11. For each tool, enable `Stop on nonzero error code` and ensure the task is enabled.
 12. Add a `Copy Files` task profile.
 13. Set `Source File Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}.bsp`.
