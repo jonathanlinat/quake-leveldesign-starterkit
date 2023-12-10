@@ -1,4 +1,4 @@
-<p align="center"><img src="https://camo.githubusercontent.com/55ce69ebaf4bbabe5a3e87f9f744a5fba22991fb9d185b2301567cb67e6a9193/68747470733a2f2f696d6167652e6962622e636f2f636f667974652f7175616b656c6576656c64657369676e737461727465726b69745f6c6f676f2e706e67"></p>
+<p align="center"><img src="https://github.com/jonathanlinat/quake-leveldesign-starterkit/assets/14064112/17ec93fe-e436-46dd-8c19-8fbb9f38aa50"></p>
 <h1 align="center">Quake Level Design Starter Kit</h1>
 
 The **Quake Level Design Starter Kit**, also known as **QLDSK**, consolidates a variety of tools and resources into one comprehensive package, facilitating the quick and easy creation of Quake-based maps with just a few clicks.
@@ -126,7 +126,7 @@ Here is what you should have at the end of the process:
 To assist you in effectively utilizing the tools included in this starter kit, consider these two informative articles for guidance:
 
 > [!NOTE]
-> The procedures outlined might slightly vary from the current project structure.
+> The procedures outlined might vary slightly from the current project structure.
 
 * **Setting up TrenchBroom in Ubuntu to create and compile Quake maps**, s3thra [[Website](https://quake.blog/trenchbroom-ubuntu-setup-tutorial.html)]
 * **Configure TrenchBroom in Windows to create Quake maps**, s3thra [[Website](https://quake.blog/configure-trenchbroom-in-windows.html)]
@@ -158,7 +158,7 @@ The inspiration for this project primarily comes from the excellent series of vi
 
 ## Acknowledgments
 
-The [image](https://i.imgur.com/p0E4SuR.png) utilized to create the project illustration.
+A heartfelt thank you to **Devin 'Shark' Smigle**, from the Discord channel [Quake Mapping](https://discord.gg/dh29D3kqrM), for his outstanding contribution, brilliantly bringing the project's vision to life with his unique creativity in the illustration! 👏
 
 ---
 
