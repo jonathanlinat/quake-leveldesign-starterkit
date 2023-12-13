@@ -14,6 +14,11 @@ jobs:
       matrix:
         os: [ubuntu-22.04, windows-2022]
     steps:
+      # Setup
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       # Linux
       - name: "Linux: Set current packing date"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
@@ -124,6 +129,11 @@ jobs:
         env:
           ARTIFACT_NAME: Extras
           ARTIFACT_DIRECTORY_NAME: extras
+      ## Markdown and LICENSE files
+      - name: "Linux: Copy Markdown and LICENSE files"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: cp *.md LICENSE ${{ env.PROJECT_NAME_PREFIX }}-linux/
+        shell: bash
       - name: "Linux: Pack and upload the artifact"
         uses: actions/upload-artifact@v3
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
@@ -232,6 +242,11 @@ jobs:
         env:
           ARTIFACT_NAME: Extras
           ARTIFACT_DIRECTORY_NAME: extras
+      ## Markdown and LICENSE files
+      - name: "Windows: Copy Markdown and LICENSE files"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: Copy-Item *.md, LICENSE -Destination ${{ env.PROJECT_NAME_PREFIX }}-windows/
+        shell: pwsh
       - name: "Windows: Pack and upload the artifact"
         uses: actions/upload-artifact@v3
         if: ${{ startsWith(matrix.os, 'windows-') }}
@@ -244,9 +259,11 @@ jobs:
     name: Create the release notes
     runs-on: ubuntu-22.04
     steps:
+      # Setup
       - name: Set current packing date
         run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
         shell: bash
+      # Process the metadata
       - name: Download packed metadata
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -265,6 +282,7 @@ jobs:
         shell: bash
         env:
           METADATA_FILES: ericw-tools,ironwail,quake-cli-tools,trenchbroom,extras
+      # Pack and upload the artifact
       - name: Pack and upload the release notes
         uses: actions/upload-artifact@v3
         with:
