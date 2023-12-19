@@ -19,14 +19,14 @@ jobs:
         run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
         shell: bash
       - name: Download packed binaries
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v3
         with:
           name_is_regexp: true
           name: ^${{ env.PROJECT_NAME_PREFIX }}.*$
           workflow: continuous-packing.yml
           skip_unpack: true
       - name: Download packed release notes
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v3
         with:
           name_is_regexp: true
           name: ^${{ env.PROJECT_NAME_PREFIX }}-release-notes.*$

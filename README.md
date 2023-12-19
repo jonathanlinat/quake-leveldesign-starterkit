@@ -1,7 +1,7 @@
 <p align="center"><img src="https://github.com/jonathanlinat/quake-leveldesign-starterkit/assets/14064112/17ec93fe-e436-46dd-8c19-8fbb9f38aa50"></p>
 <h1 align="center">Quake Level Design Starter Kit</h1>
 
-The **Quake Level Design Starter Kit**, also known as **QLDSK**, consolidates a variety of tools and resources into one comprehensive package, facilitating the quick and easy creation of Quake-based maps with just a few clicks.
+The **Quake Level Design Starter Kit**, also known as **QLDSK**, consolidates various tools and resources into one comprehensive package, facilitating the quick and easy creation of Quake-based maps with just a few clicks.
 
 ---
 
@@ -11,11 +11,11 @@ The **Quake Level Design Starter Kit**, also known as **QLDSK**, consolidates a 
 | -------------------------------- |
 | [![Get the Latest Weekly Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Release)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) |
 
-Great, you're all set! Now, [proceed to the configure the kit](#first-setup).
+Great, you're all set! Now, [proceed to configure the kit](#first-setup).
 
 ### Automated Workflow
 
-This project operates on an automated system, meaning the tools are compiled every week from their original source codes available on GitHub, while additional resources are securely sourced from legitimate and reputable websites.
+This project operates on an automated system, meaning the tools are compiled weekly from their source codes available on GitHub. In contrast, additional resources are securely sourced from legitimate and reputable websites.
 
 | 🏗️ Continuous Building Status | 📦 Continuous Packing Status | 🚀 Continuous Releasing Status |
 | ----------------------------- | ---------------------------- | ------------------------------ |
@@ -38,20 +38,20 @@ The current version of **QLDSK** includes the following set of tools and extras:
 ### Tools
 
 * **ericw-tools**, Eric Wasylishen [[GitHub](https://github.com/ericwa/ericw-tools)] [[Website](https://ericwa.github.io/ericw-tools)]
-  - A suite of command-line utilities for building levels (maps) for games like Quake and Hexen 2, and represent an evolved branch of Tyrann's original Quake tools. The tools focus on adding advanced lighting features, some of which are borrowed from q3map2, and include bugfixes for the qbsp tool, which is used for constructing the block structure of the map.
+  - A suite of command-line utilities for building levels (maps) for games like Quake and Hexen 2 represents an evolved branch of Tyrann's original Quake tools. The tools focus on adding advanced lighting features, some of which are borrowed from q3map2, and include bugfixes for the qbsp tool, which is used for constructing the block structure of the map.
 * **Ironwail**, Andrei Drexler [[GitHub](https://github.com/andrei-drexler/ironwail)] [[Twitter](https://twitter.com/andrei_drexler)] 
-  - An advanced fork of QuakeSpasm, a popular source port of the Quake engine, aimed at enhancing performance and introducing additional features. It has been optimized for high performance, incorporating modern techniques such as culling, GPU-accelerated lightmap updates, and compute shaders, allowing it to handle highly detailed Quake maps at very high framerates.
+  - An advanced fork of QuakeSpasm, a popular source port of the Quake engine, aimed at enhancing performance and introducing additional features. It has been optimized for high performance, incorporating modern techniques such as culling, GPU-accelerated lightmap updates, and compute shaders, allowing it to handle highly detailed Quake maps at high framerates.
 * **Quake CLI Tools**, Joshua Skelton [[GitHub](https://github.com/joshuaskelly/quake-cli-tools)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)] [[Website](https://joshua.itch.io/quake-tools)] [[Discord](https://discord.gg/PyqRPNwnk7)]
-  - A collection of command-line utilities to facilitate the creation of content for the Quake game series. These tools can perform various tasks, including managing PAK and WAD files, such as adding and extracting files, converting BSP files to WAD files, and even creating SVG files from BSP files.
+  - A collection of command-line utilities to facilitate the creation of content for the Quake game series. These tools can perform various tasks, including managing PAK and WAD files, adding and extracting files, converting BSP files to WAD files, and even creating SVG files from BSP files.
 * **TrenchBroom**, Kristian Duske [[GitHub](https://github.com/TrenchBroom/TrenchBroom)] [[Website](http://kristianduske.com/trenchbroom)] [[Discord](https://discord.gg/txsKc3EARW)]
   - A free, open-source, cross-platform level editor designed explicitly for Quake-engine-based games. It is compatible with games like Quake, Quake 2, and Hexen 2 and can be run on multiple operating systems. It is recognized for its ease of use, offering simple and advanced tools that enable designers to craft complex and engaging levels without much hassle.
 
 ### Extras
 
 * **Prototype WAD**, Aleksander Marhall [[Source](https://www.slipseer.com/index.php?resources/prototype-wad.263)]
-  - A resource containing Quake textures designed for map prototyping. It features 273 prototype textures that are indexed to Quake's palette. The collection includes basic checker textures in eight base colors, three shades, and four different sizes (16x16, 32x32, 64x64, and 128x128). It also contains solid color textures, which include fullbright colors, and specialized textures.
+  - A resource containing Quake textures designed for map prototyping. It features 273 prototype textures that are indexed to Quake's palette. The collection includes basic checker textures in eight base colors, three shades, and four sizes (16x16, 32x32, 64x64, and 128x128). It also contains solid color textures, which include fullbright colors and specialized textures.
 * **TrenchBroom Quake Map Source**, Atul Varma [[Source](https://book.leveldesignbook.com/appendix/resources/quake)]
-  - A collection of the original Quake 1 MAP source files, as released by John Romero in 2006. These files have been converted to a modern file format that is compatible with TrenchBroom. Additionally,  the texture references in these files have been fixed with a repackaged `quake101.wad` file.
+  - A collection of the original Quake 1 MAP source files, as released by John Romero in 2006. These files have been converted to a modern format compatible with TrenchBroom. The texture references in these files have also been fixed with a repackaged `quake101.wad` file.
 
 ---
 
@@ -92,8 +92,8 @@ Get the [latest ZIP release](https://github.com/jonathanlinat/quake-leveldesign-
 1. Locate and open the `quake-leveldesign-starterkit-<date>-<os>` directory in your file explorer.
 2. Create three new directories:
    - An `id1` directory inside the `game` directory.
-   - A `maps` directory within the `id1` directory for storing compiled maps.
-   - A `working` directory at the root level, which will initially be empty. This directory will be used for hosting MAP files and other related files once the `ericw-tools` compiler is used.
+   - A `maps` directory within the `id1` directory stores compiled maps.
+   - A `working` directory at the root level will initially be empty. This directory will host `.map` files and other related files once the `ericw-tools` compiler is used.
 3. Copy the `pak0.pak` file from your original Quake game installation into the `id1` directory.
 
 > [!NOTE]
@@ -123,7 +123,7 @@ Your directory structure should look like this:
 1. Open `TrenchBroom`.
 2. In the `Welcome to TrenchBroom` window, click on `New map...`.
 3. In the `Select Game` window, click `Open preferences...`.
-4. In the `Games` tab of the `Preferences` window, select the `Quake` profile.
+4. Select the `Quake` profile in the `Games` tab of the `Preferences` window.
 5. Set the `Game Path` to `<path/to/quake-leveldesign-starterkit-<date>-<os>>/game`.
 6. Click on `Configure engines...`.
 7. Add a new profile by clicking the `+` button.
@@ -132,7 +132,7 @@ Your directory structure should look like this:
 10. Click `Close`.
 11. Leave the `Compilation Tools` fields empty.
 12. Click `Apply`, then `OK`.
-13. In the `Select Game` window, select the `Quake` profile.
+13. Select the `Quake` profile in the `Select Game` window.
 14. Keep `Map Format` as `Valve`.
 15. Click `OK`.
 
@@ -141,12 +141,12 @@ A new document is now open for mapping.
 ### Set Up the Compiler
 
 1. Save the document in `<path/to/quake-leveldesign-starterkit-<date>-<os>>/working`. Name it as you wish.
-2. Click on `Run` menu.
+2. Click on the `Run` menu.
 3. Select `Compile Map...`.
-4. In the `Compile` window, add a new profile by clicking on the `+` button.
+4. In the `Compile` window, add a new profile by clicking the `+` button.
 5. Set `Name` to `Compile`.
 6. Set `Working Directory` to `${MAP_DIR_PATH}`.
-7. Add a `Export Map` task profile by clicking `+`.
+7. Add an `Export Map` task profile by clicking `+`.
 8. Set `Field Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}-compile.map`.
 9. Ensure the task is enabled (checkbox checked).
 10. Add a `Run Tool` task profile for each of the following tools, setting `Tool Path` to the respective paths in `<path/to/quake-leveldesign-starterkit-<date>-<os>>/tools/ericw-tools/bin/`:
@@ -154,7 +154,7 @@ A new document is now open for mapping.
     - `vis(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
     - `light(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
     - `bspinfo(.exe)` with `Parameters`: `${MAP_BASE_NAME}.bsp`.
-11. For each tool, enable `Stop on nonzero error code` and ensure the task is enabled.
+11. Enable `Stop on nonzero error code` for each tool.
 12. Add a `Copy Files` task profile.
 13. Set `Source File Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}.bsp`.
 14. Set `Target Directory Path` to `${GAME_DIR_PATH}/${MODS[-1]}/maps`.
@@ -189,17 +189,17 @@ The inspiration for this project primarily comes from the excellent series of vi
 ## Additional Resources
 
 * **The Level Design Book**, Robert Yang [[Website](https://book.leveldesignbook.com)]
-  - This online resource compiles a wealth of information on 3D video game level design in a contemporary and accessible manner. It caters to designers across all levels of experience and various game engines.
+  - This online resource compiles a wealth of information on 3D video game-level design in a contemporary and accessible manner. It caters to designers across all levels of experience and various game engines.
 * **Quaddicted**, Spirit [[Website](https://www.quaddicted.com)]
-  - A fan site dedicated to the iconic game Quake, renowned for its comprehensive archive of Quake singleplayer maps. The site also includes installation tools, a range of archives featuring engines, tools, wads, multiplayer maps, and informative articles, catering to the needs of both Quake players and developers.
+  - A fan site dedicated to the iconic game Quake, renowned for its comprehensive archive of Quake single-player maps. The site also includes installation tools, a range of archives featuring engines, tools, wads, multiplayer maps, and informative articles catering to the needs of both Quake players and developers.
 * **Slipgate Sightseer**, Michael Markie [[Website](https://www.slipseer.com)]
   - A website dedicated to the Quake modding community. It offers a variety of content related to Quake, a popular first-person shooter game known for its modding capabilities and active community support. The site features tools and resources for both players and modders of Quake.
 * **Quake.blog**, s3thra [[Website](https://quake.blog)]
-  - A comprehensive blog that began as a platform to document the creator's experiences with TrenchBroom, Quake map creation, and playing Quake map packs. The blog has grown to include a variety of content including tutorials, personal stories, and videos, extending beyond the realm of Quake to cover other topics as well.
+  - A comprehensive blog that began as a platform to document the creator's experiences with TrenchBroom, Quake map creation, and playing Quake map packs. The blog has grown to include various content, including tutorials, personal stories, and videos, extending beyond the realm of Quake to cover other topics as well.
 * **Func_Msgboard**, John Fitzgibbons [[Website](https://www.celephais.net)]
-  - A significant forum and online community focused on video game level design, particularly for games using the Quake engine. For over twenty years, it has been a central hub for both hobbyist and professional level designers to exchange ideas and engage in discussions about game development.
+  - A significant forum and online community focused on video game-level design, particularly for Quake engine games. It has been a central hub for hobbyist and professional-level designers for over twenty years to exchange ideas and discuss game development.
 * **Quaketastic** [[Website](https://www.quaketastic.com)]
-  - Hosts an extensive collection of reusable resources, available through a comprehensive file browser.
+  - Hosts an extensive collection of reusable resources through a comprehensive file browser.
 
 ---
 
@@ -213,4 +213,4 @@ A heartfelt thank you to **Devin 'shark' Smigle**, from the Discord channel [Qua
 
 **Quake Level Design Starter Kit**, also known as **QLDSK**, and its infrastructure is [CC0 1.0 Universal licensed](LICENSE).
 
-The licenses of the compiled and released tools vary and are independent of **QLDSK**'s licensing. Please note that there is no guarantee that all tools will work perfectly in every scenario, and users should utilize them at their own discretion.
+The licenses of the compiled and released tools vary and are independent of **QLDSK**'s licensing. Just so you know, there is no guarantee that all tools will work perfectly in every scenario, and users should use them at their discretion.
