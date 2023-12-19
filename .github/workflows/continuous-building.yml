@@ -18,7 +18,6 @@ jobs:
       ARTIFACT_REPOSITORY: ericwa/ericw-tools
       ARTIFACT_WEBSITE_URL: https://ericwa.github.io/ericw-tools
     steps:
-      # Setup
       - name: Checkout the repository
         uses: actions/checkout@v4
         with:
@@ -73,14 +72,12 @@ jobs:
       ARTIFACT_DIRECTORY_NAME: ericw-tools
       ARTIFACT_REPOSITORY: ericwa/ericw-tools
     steps:
-      # Setup
       - name: Checkout the repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
           fetch-depth: 0
           submodules: recursive
-      # Linux
       - name: "Linux: Compile the source code"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: ./build-linux-64.sh
@@ -99,7 +96,6 @@ jobs:
           name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
           if-no-files-found: error
           retention-days: 1
-      # Windows
       - name: "Windows: Setup MSVC environment"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ilammy/msvc-dev-cmd@v1
@@ -133,7 +129,6 @@ jobs:
       ARTIFACT_REPOSITORY: andrei-drexler/ironwail
       ARTIFACT_TWITTER_URL: https://twitter.com/andrei_drexler
     steps:
-      # Setup
       - name: Checkout the repository
         uses: actions/checkout@v4
         with:
@@ -183,13 +178,11 @@ jobs:
       ARTIFACT_DIRECTORY_NAME: ironwail
       ARTIFACT_REPOSITORY: andrei-drexler/ironwail
     steps:
-      # Setup
       - name: Checkout the repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
           fetch-depth: 0
-      # Linux
       - name: "Linux: Install common dependencies"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
@@ -215,7 +208,6 @@ jobs:
           name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
           if-no-files-found: error
           retention-days: 1
-      # Windows
       - name: "Windows: Set environment variables"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         run: |
@@ -272,7 +264,6 @@ jobs:
       ARTIFACT_WEBSITE_URL: https://joshua.itch.io/quake-tools
       ARTIFACT_HOWTO_URL: https://www.youtube.com/watch?v=zJ0RX62VYaA
     steps:
-      # Setup
       - name: Checkout the repository
         uses: actions/checkout@v4
         with:
@@ -322,13 +313,11 @@ jobs:
       ARTIFACT_DIRECTORY_NAME: quake-cli-tools
       ARTIFACT_REPOSITORY: joshuaskelly/quake-cli-tools
     steps:
-      # Setup
       - name: Checkout the repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
           fetch-depth: 0
-      # Linux
       - name: "Linux: Install common dependencies"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
@@ -360,7 +349,6 @@ jobs:
           name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
           if-no-files-found: error
           retention-days: 1
-      # Windows
       - name: "Windows: Setup MSVC environment"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ilammy/msvc-dev-cmd@v1
@@ -399,7 +387,6 @@ jobs:
       ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
       ARTIFACT_WEBSITE_URL: http://kristianduske.com/trenchbroom
     steps:
-      # Setup
       - name: Checkout the repository
         uses: actions/checkout@v4
         with:
@@ -462,7 +449,6 @@ jobs:
       ARTIFACT_DIRECTORY_NAME: trenchbroom
       ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
     steps:
-      # Setup
       - name: Checkout the repository
         uses: actions/checkout@v4
         with:
@@ -478,7 +464,6 @@ jobs:
           script: |
             core.exportVariable("ACTIONS_CACHE_URL", process.env.ACTIONS_CACHE_URL || "");
             core.exportVariable("ACTIONS_RUNTIME_TOKEN", process.env.ACTIONS_RUNTIME_TOKEN || "");
-      # Linux
       - name: "Linux: Install common dependencies"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
@@ -504,7 +489,6 @@ jobs:
           name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
           if-no-files-found: error
           retention-days: 1
-      # Windows
       - name: "Windows: Install Pandoc"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         run: |
@@ -545,15 +529,12 @@ jobs:
       ARTIFACT_NAME: Extras
       ARTIFACT_DIRECTORY_NAME: extras
     steps:
-      # Setup
       - name: Create initial content
         run: |
           mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
           echo "
-          ### ${{ env.ARTIFACT_NAME }}
           " >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
-      ## Prototype WAD
       - name: "${{ env.EXTRA_NAME }}: Create the content"
         run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[Source](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
@@ -561,7 +542,6 @@ jobs:
           EXTRA_NAME: Prototype WAD 
           EXTRA_AUTHOR_NAME: Aleksander Marhall
           EXTRA_DETAILS_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263/
-      ## TrenchBroom Quake Map Source
       - name: "${{ env.EXTRA_NAME }}: Create the content"
         run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[Source](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
@@ -583,7 +563,6 @@ jobs:
       ARTIFACT_NAME: Extras
       ARTIFACT_DIRECTORY_NAME: extras
     steps:
-      ## Prototype WAD
       - name: "${{ env.EXTRA_NAME }}: Download and extract"
         run: |
           curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip
@@ -594,7 +573,6 @@ jobs:
           EXTRA_NAME: Prototype WAD
           EXTRA_DIRECTORY_NAME: prototype-wad
           EXTRA_DOWNLOAD_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263/version/448/download&file=3663
-      ## TrenchBroom Quake Map Source
       - name: "${{ env.EXTRA_NAME }}: Download and extract"
         run: |
           curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip
@@ -605,7 +583,6 @@ jobs:
           EXTRA_NAME: TrenchBroom Quake Map Source
           EXTRA_DIRECTORY_NAME: trenchbroom-quake-map-source
           EXTRA_DOWNLOAD_URL: https://toolness-media.s3.amazonaws.com/quake/trenchbroom_quake_map_source.zip
-      # Pack and upload
       - name: Pack and upload the artifact
         uses: actions/upload-artifact@v3
         with:
