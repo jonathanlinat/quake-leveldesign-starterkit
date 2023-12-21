@@ -257,7 +257,7 @@ jobs:
       - name: Parse the metadata files
         run: |
           mkdir -p "${{ env.PROJECT_NAME_PREFIX }}-release-notes/"
-          echo -e "This is a release of [Quake Level Design Starter Kit](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}). For comprehensive details about the project and setup guidance, please [refer to the instructions](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}#readme).\n\n## Features\n\nThe current version of **QLDSK** includes the following set of tools and extras:\n\n### Tools" > "${{ env.PROJECT_NAME_PREFIX }}-release-notes/RELEASE-NOTES.md"
+          echo -e "This is a release of [Quake Level Design Starter Kit](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}). For comprehensive details about the project and setup guidance, please [refer to the instructions](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}#readme).\n\n## Features\n\nThe current version of **QLDSK** includes the following set of tools and extras:\n\n### Tools" > "${{ env.PROJECT_NAME_PREFIX }}-release-notes/RELEASE_NOTES.md"
           IFS=',' read -r -a metadata_files <<< "${{ env.METADATA_FILES }}"
           for metadata_file in "${metadata_files[@]}"; do
             unzip -p "$metadata_file-metadata.zip" METADATA.md >> "${{ env.PROJECT_NAME_PREFIX }}-release-notes/RELEASE_NOTES.md"
