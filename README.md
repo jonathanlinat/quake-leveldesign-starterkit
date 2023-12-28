@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/jonathanlinat/quake-leveldesign-starterkit/assets/14064112/17ec93fe-e436-46dd-8c19-8fbb9f38aa50"></p>
+<p align="center"><img src="https://github.com/jonathanlinat/quake-leveldesign-starterkit/assets/14064112/03402bb0-65fe-4b86-a95d-3b92aeb044b7"></p>
 <h1 align="center">Quake Level Design Starter Kit</h1>
 
 The **Quake Level Design Starter Kit**, also known as **QLDSK**, consolidates various tools and resources into one comprehensive package, facilitating the quick and easy creation of Quake-based maps with just a few clicks.
