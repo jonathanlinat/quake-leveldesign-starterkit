@@ -121,47 +121,47 @@ Your directory structure should look like this:
 ### Configure the Quake Game Profile
 
 1. Open `TrenchBroom`.
-2. In the `Welcome to TrenchBroom` window, click on `New map...`.
-3. In the `Select Game` window, click `Open preferences...`.
-4. Select the `Quake` profile in the `Games` tab of the `Preferences` window.
-5. Set the `Game Path` to `<path/to/quake-leveldesign-starterkit-<date>-<os>>/game`.
-6. Click on `Configure engines...`.
-7. Add a new profile by clicking the `+` button.
-8. Set `Name` to `Ironwail`.
-9. Set `Path` to `<path/to/quake-leveldesign-starterkit-<date>-<os>>/game/ironwail(.exe)`.
-10. Click `Close`.
-11. Leave the `Compilation Tools` fields empty.
-12. Click `Apply`, then `OK`.
-13. Select the `Quake` profile in the `Select Game` window.
-14. Keep `Map Format` as `Valve`.
-15. Click `OK`.
+1. In the `Welcome to TrenchBroom` window, click on `New map...`.
+1. In the `Select Game` window, click `Open preferences...`.
+1. Select the `Quake` profile in the `Games` tab of the `Preferences` window.
+1. Set the `Game Path` to `<path/to/quake-leveldesign-starterkit-<date>-<os>>/game`.
+1. Click on `Configure engines...`.
+1. Add a new profile by clicking the `+` button.
+1. Set `Name` to `Ironwail`.
+1. Set `Path` to `<path/to/quake-leveldesign-starterkit-<date>-<os>>/game/ironwail(.exe)`.
+1. Click `Close`.
+1. Leave the `Compilation Tools` fields empty.
+1. Click `Apply`, then `OK`.
+1. Select the `Quake` profile in the `Select Game` window.
+1. Keep `Map Format` as `Valve`.
+1. Click `OK`.
 
 A new document is now open for mapping.
 
 ### Set Up the Compiler
 
 1. Save the document in `<path/to/quake-leveldesign-starterkit-<date>-<os>>/working`. Name it as you wish.
-2. Click on the `Run` menu.
-3. Select `Compile Map...`.
-4. In the `Compile` window, add a new profile by clicking the `+` button.
-5. Set `Name` to `Compile`.
-6. Set `Working Directory` to `${MAP_DIR_PATH}`.
-7. Add an `Export Map` task profile by clicking `+`.
-8. Set `Field Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}-compile.map`.
-10. Add a `Run Tool` task profile for each of the following tools, setting `Tool Path` to the respective paths in `<path/to/quake-leveldesign-starterkit-<date>-<os>>/tools/ericw-tools/bin/`:
+1. Click on the `Run` menu.
+1. Select `Compile Map...`.
+1. In the `Compile` window, add a new profile by clicking the `+` button.
+1. Set `Name` to `Compile`.
+1. Set `Working Directory` to `${MAP_DIR_PATH}`.
+1. Add an `Export Map` task profile by clicking `+`.
+1. Set `Field Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}-compile.map`.
+1. Add a `Run Tool` task profile for each of the following tools, setting `Tool Path` to the respective paths in `<path/to/quake-leveldesign-starterkit-<date>-<os>>/tools/ericw-tools/bin/`:
     - `qbsp(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}-compile.map ${MAP_BASE_NAME}.bsp`.
     - `vis(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
     - `light(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
     - `bspinfo(.exe)` with `Parameters`: `${MAP_BASE_NAME}.bsp`.
-11. Enable `Stop on nonzero error code` for each tool.
-12. Add a `Copy Files` task profile for each of the following files, setting `Target Directory Path` to `${GAME_DIR_PATH}/${MODS[-1]}/maps`:
+1. Enable `Stop on nonzero error code` for each tool.
+1. Add a `Copy Files` task profile for each of the following files, setting `Target Directory Path` to `${GAME_DIR_PATH}/${MODS[-1]}/maps`:
     - `Source File Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}.bsp`.
     - `Source File Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}.lit`.
-13. Ensure the tasks are all enabled.
-14. Click on `Compile` and verify that everything works and the document compiles successfully.
-15. Click on `Launch...`.
-16. In the `Launch Engine` window, set `Parameters` to `-basedir <path/to/quake-leveldesign-starterkit-<date>-<os>>/game/ +map <name-of-the-saved-document>`.
-17. Click `Close`.
+1. Ensure the tasks are all enabled.
+1. Click on `Compile` and verify that everything works and the document compiles successfully.
+1. Click on `Launch...`.
+1. In the `Launch Engine` window, set `Parameters` to `-basedir <path/to/quake-leveldesign-starterkit-<date>-<os>>/game/ +map <name-of-the-saved-document>`.
+1. Click `Close`.
 
 Congratulations! You are now ready to start mapping.
 
