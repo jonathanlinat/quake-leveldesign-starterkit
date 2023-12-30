@@ -148,7 +148,6 @@ A new document is now open for mapping.
 6. Set `Working Directory` to `${MAP_DIR_PATH}`.
 7. Add an `Export Map` task profile by clicking `+`.
 8. Set `Field Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}-compile.map`.
-9. Ensure the task is enabled (checkbox checked).
 10. Add a `Run Tool` task profile for each of the following tools, setting `Tool Path` to the respective paths in `<path/to/quake-leveldesign-starterkit-<date>-<os>>/tools/ericw-tools/bin/`:
     - `qbsp(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}-compile.map ${MAP_BASE_NAME}.bsp`.
     - `vis(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
@@ -158,7 +157,7 @@ A new document is now open for mapping.
 12. Add a `Copy Files` task profile for each of the following files, setting `Target Directory Path` to `${GAME_DIR_PATH}/${MODS[-1]}/maps`:
     - `Source File Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}.bsp`.
     - `Source File Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}.lit`.
-13. Ensure the task is enabled.
+13. Ensure the tasks are all enabled.
 14. Click on `Compile` and verify that everything works and the document compiles successfully.
 15. Click on `Launch...`.
 16. In the `Launch Engine` window, set `Parameters` to `-basedir <path/to/quake-leveldesign-starterkit-<date>-<os>>/game/ +map <name-of-the-saved-document>`.
