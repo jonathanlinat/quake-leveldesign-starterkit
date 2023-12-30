@@ -155,14 +155,14 @@ A new document is now open for mapping.
     - `light(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
     - `bspinfo(.exe)` with `Parameters`: `${MAP_BASE_NAME}.bsp`.
 11. Enable `Stop on nonzero error code` for each tool.
-12. Add a `Copy Files` task profile.
-13. Set `Source File Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}.bsp`.
-14. Set `Target Directory Path` to `${GAME_DIR_PATH}/${MODS[-1]}/maps`.
-15. Ensure the task is enabled.
-16. Click on `Compile` and verify that everything works and the document compiles successfully.
-17. Click on `Launch...`.
-18. In the `Launch Engine` window, set `Parameters` to `-basedir <path/to/quake-leveldesign-starterkit-<date>-<os>>/game/ +map <name-of-the-saved-document>`.
-19. Click `Close`.
+12. Add a `Copy Files` task profile for each of the following files, setting `Target Directory Path` to `${GAME_DIR_PATH}/${MODS[-1]}/maps`:
+    - `Source File Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}.bsp`.
+    - `Source File Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}.lit`.
+13. Ensure the task is enabled.
+14. Click on `Compile` and verify that everything works and the document compiles successfully.
+15. Click on `Launch...`.
+16. In the `Launch Engine` window, set `Parameters` to `-basedir <path/to/quake-leveldesign-starterkit-<date>-<os>>/game/ +map <name-of-the-saved-document>`.
+17. Click `Close`.
 
 Congratulations! You are now ready to start mapping.
 
