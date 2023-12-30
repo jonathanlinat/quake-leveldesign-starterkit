@@ -83,13 +83,13 @@ The organization of **QLDSK** is as follows:
 
 ### Download
 
-Get the [latest ZIP release](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases) and extract its contents into a directory, likely named `quake-leveldesign-starterkit-<date>-<os>`.
+Get the [latest ZIP release](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases) and extract its contents into a directory, likely named `quake-leveldesign-starterkit-[date]-[os]`.
 
 ---
 
 ## First Setup
 
-1. Locate and open the `quake-leveldesign-starterkit-<date>-<os>` directory in your file explorer.
+1. Locate and open the `quake-leveldesign-starterkit-[date]-[os]` directory in your file explorer.
 2. Create three new directories:
    - An `id1` directory inside the `game` directory.
    - A `maps` directory within the `id1` directory stores compiled maps.
@@ -124,11 +124,11 @@ Your directory structure should look like this:
 1. In the `Welcome to TrenchBroom` window, click on `New map...`.
 1. In the `Select Game` window, click `Open preferences...`.
 1. Select the `Quake` profile in the `Games` tab of the `Preferences` window.
-1. Set the `Game Path` to `<path/to/quake-leveldesign-starterkit-<date>-<os>>/game`.
+1. Set the `Game Path` to `/path/to/quake-leveldesign-starterkit-[date]-[os]/game`.
 1. Click on `Configure engines...`.
 1. Add a new profile by clicking the `+` button.
 1. Set `Name` to `Ironwail`.
-1. Set `Path` to `<path/to/quake-leveldesign-starterkit-<date>-<os>>/game/ironwail(.exe)`.
+1. Set `Path` to `/path/to/quake-leveldesign-starterkit-[date]-[os]/game/ironwail(.exe)`.
 1. Click `Close`.
 1. Leave the `Compilation Tools` fields empty.
 1. Click `Apply`, then `OK`.
@@ -140,7 +140,7 @@ A new document is now open for mapping.
 
 ### Set Up the Compiler
 
-1. Save the document in `<path/to/quake-leveldesign-starterkit-<date>-<os>>/working`. Name it as you wish.
+1. Save the document in `/path/to/quake-leveldesign-starterkit-[date]-[os]/working`. Name it as you wish.
 1. Click on the `Run` menu.
 1. Select `Compile Map...`.
 1. In the `Compile` window, add a new profile by clicking the `+` button.
@@ -148,7 +148,7 @@ A new document is now open for mapping.
 1. Set `Working Directory` to `${MAP_DIR_PATH}`.
 1. Add an `Export Map` task profile by clicking `+`.
 1. Set `Field Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}-compile.map`.
-1. Add a `Run Tool` task profile for each of the following tools, setting `Tool Path` to the respective paths in `<path/to/quake-leveldesign-starterkit-<date>-<os>>/tools/ericw-tools/bin/`:
+1. Add a `Run Tool` task profile for each of the following tools, setting `Tool Path` to the respective paths in `/path/to/quake-leveldesign-starterkit-[date]-[os]/tools/ericw-tools/bin/`:
     - `qbsp(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}-compile.map ${MAP_BASE_NAME}.bsp`.
     - `vis(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
     - `light(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
@@ -160,7 +160,7 @@ A new document is now open for mapping.
 1. Ensure the tasks are all enabled.
 1. Click on `Compile` and verify that everything works and the document compiles successfully.
 1. Click on `Launch...`.
-1. In the `Launch Engine` window, set `Parameters` to `-basedir <path/to/quake-leveldesign-starterkit-<date>-<os>>/game/ +map <name-of-the-saved-document>`.
+1. In the `Launch Engine` window, set `Parameters` to `-basedir /path/to/quake-leveldesign-starterkit-[date]-[os]/game/ +map <name-of-the-saved-document>`.
 1. Click `Close`.
 
 Congratulations! You are now ready to start mapping.
@@ -196,7 +196,7 @@ The inspiration for this project primarily comes from the excellent series of vi
 * **Quake.blog**, s3thra [[Website](https://quake.blog)]
   - A comprehensive blog that began as a platform to document the creator's experiences with TrenchBroom, Quake map creation, and playing Quake map packs. The blog has grown to include various content, including tutorials, personal stories, and videos, extending beyond the realm of Quake to cover other topics as well.
 * **Func_Msgboard**, John Fitzgibbons [[Website](https://www.celephais.net)]
-  - A significant forum and online community focused on video game-level design, particularly for Quake engine games. It has been a central hub for hobbyist and professional-level designers for over twenty years to exchange ideas and discuss game development.
+  - A significant forum and online community focused on video game-level design, particularly for Quake engine games. For over twenty years, it has been a central hub for hobbyist and professional-level designers to exchange ideas and discuss game development.
 * **Quaketastic** [[Website](https://www.quaketastic.com)]
   - Hosts an extensive collection of reusable resources through a comprehensive file browser.
 
@@ -212,4 +212,4 @@ A heartfelt thank you to **Devin 'shark' Smigle**, from the Discord channel [Qua
 
 **Quake Level Design Starter Kit**, also known as **QLDSK**, and its infrastructure is [CC0 1.0 Universal licensed](LICENSE).
 
-The licenses of the compiled and released tools vary and are independent of **QLDSK**'s licensing. Just so you know, there is no guarantee that all tools will work perfectly in every scenario, and users should use them at their discretion.
+The licenses of the compiled and released tools vary and are independent of **QLDSK**'s licensing. There is no guarantee that all tools will work perfectly in every scenario, and users should use them at their discretion.
