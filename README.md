@@ -94,7 +94,9 @@ Get the [latest ZIP release](https://github.com/jonathanlinat/quake-leveldesign-
    - An `id1` directory inside the `game` directory.
    - A `maps` directory within the `id1` directory stores compiled maps.
    - A `working` directory at the root level will initially be empty. This directory will host `.map` files and other related files once the `ericw-tools` compiler is used.
-3. Copy the `pak0.pak` and `pak1.pak` files from your original Quake game installation into the `id1` directory.
+3. Copy the `.pak` files from your original Quake game installation into the `id1` directory:
+   - `pak0.pak` and `pak1.pak` from the original Quake game release.
+   - `pak0.pak` from the Quake re-release.
 
 > [!NOTE]
 > These instructions also apply to other expansions and modifications.
@@ -108,7 +110,7 @@ Your directory structure should look like this:
 │   └── id1/
 │       ├── maps/
 │       └── pak0.pak
-│       └── pak1.pak
+│       └── (pak1.pak)
 ├── level-editor/
 ├── working/
 └── tools/
