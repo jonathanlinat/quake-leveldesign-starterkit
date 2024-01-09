@@ -78,6 +78,11 @@ jobs:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
           fetch-depth: 0
           submodules: recursive
+      - name: "Linux: Install Qt5"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          sudo apt update
+          sudo apt install qtbase5-dev libqt5svg5-dev
       - name: "Linux: Compile the source code"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: ./build-linux-64.sh
@@ -85,8 +90,8 @@ jobs:
       - name: "Linux: Prepare the artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
-          unzip build-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}-*.zip
-          mv build-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}-*/ ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+          mkdir ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
+          unzip build-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}-*.zip -d ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
         shell: bash
       - name: "Linux: Pack and upload the artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
@@ -99,17 +104,19 @@ jobs:
       - name: "Windows: Setup MSVC environment"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ilammy/msvc-dev-cmd@v1
+      - name: "Windows: Install Qt5"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: 5.15.2
+          arch: win64_msvc2019_64
       - name: "Windows: Compile the source code"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         run: .\build-windows.ps1
         shell: pwsh
       - name: "Windows: Prepare the artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: |
-          7z x build-windows\${env:ARTIFACT_DIRECTORY_NAME}-*.zip -o"${env:ARTIFACT_DIRECTORY_NAME}-windows-temp\" -y
-          New-Item -ItemType Directory -Path ${env:ARTIFACT_DIRECTORY_NAME}-windows
-          Get-ChildItem -Path ${env:ARTIFACT_DIRECTORY_NAME}-windows-temp\${env:ARTIFACT_DIRECTORY_NAME}-* -Recurse | 
-          Move-Item -Destination ${env:ARTIFACT_DIRECTORY_NAME}-windows
+        run: 7z x build-windows\${env:ARTIFACT_DIRECTORY_NAME}-*.zip -o"${env:ARTIFACT_DIRECTORY_NAME}-windows\" -y
         shell: pwsh
       - name: "Windows: Pack and upload the artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
