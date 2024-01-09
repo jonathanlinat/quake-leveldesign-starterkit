@@ -33,6 +33,7 @@ jobs:
           LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
           LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
+          echo "CURRENT_BRANCH_NAME=$CURRENT_BRANCH_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
           echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
@@ -153,6 +154,7 @@ jobs:
           LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
           LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
+          echo "CURRENT_BRANCH_NAME=$CURRENT_BRANCH_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
           echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
@@ -290,6 +292,7 @@ jobs:
           LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
           LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
+          echo "CURRENT_BRANCH_NAME=$CURRENT_BRANCH_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
           echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
@@ -415,6 +418,7 @@ jobs:
           LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
           LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
+          echo "CURRENT_BRANCH_NAME=$CURRENT_BRANCH_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
           echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
