@@ -49,8 +49,8 @@ jobs:
 
             > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
             > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
-            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}
-            > **Branch Name**: \`${{ env.CURRENT_BRANCH_NAME }}\`" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+            > **Branch**: \`${{ env.CURRENT_BRANCH_NAME }}\`
+            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
       - name: Pack and upload the metadata
         uses: actions/upload-artifact@v4
@@ -170,8 +170,8 @@ jobs:
 
             > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
             > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
-            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}
-            > **Branch Name**: \`${{ env.CURRENT_BRANCH_NAME }}\`" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+            > **Branch**: \`${{ env.CURRENT_BRANCH_NAME }}\`
+            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
       - name: Pack and upload the metadata
         uses: actions/upload-artifact@v4
@@ -308,8 +308,8 @@ jobs:
 
             > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
             > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
-            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}
-            > **Branch Name**: \`${{ env.CURRENT_BRANCH_NAME }}\`" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+            > **Branch**: \`${{ env.CURRENT_BRANCH_NAME }}\`
+            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
       - name: Pack and upload the metadata
         uses: actions/upload-artifact@v4
@@ -434,8 +434,8 @@ jobs:
 
             > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
             > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
-            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}
-            > **Branch Name**: \`${{ env.CURRENT_BRANCH_NAME }}\`" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+            > **Branch**: \`${{ env.CURRENT_BRANCH_NAME }}\`
+            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
       - name: Pack and upload the metadata
         uses: actions/upload-artifact@v4
