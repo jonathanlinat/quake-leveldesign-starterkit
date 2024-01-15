@@ -26,7 +26,7 @@ jobs:
           submodules: recursive
       - name: Get the latest commit details
         run: |
-          CURRENT_BRANCH_NAME=${git branch --show-current}
+          CURRENT_BRANCH_NAME=$(git branch --show-current)
           LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
           LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
           LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
@@ -147,7 +147,7 @@ jobs:
           submodules: recursive
       - name: Get the latest commit details
         run: |
-          CURRENT_BRANCH_NAME=${git branch --show-current}
+          CURRENT_BRANCH_NAME=$(git branch --show-current)
           LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
           LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
           LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
@@ -285,7 +285,7 @@ jobs:
           submodules: recursive
       - name: Get the latest commit details
         run: |
-          CURRENT_BRANCH_NAME=${git branch --show-current}
+          CURRENT_BRANCH_NAME=$(git branch --show-current)
           LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
           LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
           LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
@@ -411,7 +411,7 @@ jobs:
           submodules: recursive
       - name: Get the latest commit details
         run: |
-          CURRENT_BRANCH_NAME=${git branch --show-current}
+          CURRENT_BRANCH_NAME=$(git branch --show-current)
           LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
           LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
           LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
