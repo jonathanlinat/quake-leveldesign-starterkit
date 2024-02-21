@@ -570,7 +570,7 @@ jobs:
           EXTRA_NAME: Quake Palette
           EXTRA_AUTHOR_NAME: Spiney
           EXTRA_SOURCE_NAME: Quake Wiki
-          EXTRA_DETAILS_URL: https://quakewiki.org/wiki/File:quake_palette.zip
+          EXTRA_DETAILS_URL: https://quakewiki.org/wiki/Quake_palette
       - name: "${{ env.EXTRA_NAME }}: Create the content"
         run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
