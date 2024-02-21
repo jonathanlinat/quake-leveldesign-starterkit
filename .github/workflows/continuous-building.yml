@@ -540,21 +540,32 @@ jobs:
         run: |
           mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
           echo "
+          ### ${{ env.ARTIFACT_NAME }}
           " >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
       - name: "${{ env.EXTRA_NAME }}: Create the content"
-        run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[Source](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
         env:
-          EXTRA_NAME: Prototype WAD 
+          EXTRA_NAME: Prototype WAD
           EXTRA_AUTHOR_NAME: Aleksander Marhall
-          EXTRA_DETAILS_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263/
+          EXTRA_SOURCE_NAME: Slipseer
+          EXTRA_DETAILS_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263
       - name: "${{ env.EXTRA_NAME }}: Create the content"
-        run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[Source](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        shell: bash
+        env:
+          EXTRA_NAME: Quake Palette
+          EXTRA_AUTHOR_NAME: Spiney
+          EXTRA_SOURCE_NAME: Quake Wiki
+          EXTRA_DETAILS_URL: https://quakewiki.org/wiki/File:quake_palette.zip
+      - name: "${{ env.EXTRA_NAME }}: Create the content"
+        run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
         env:
           EXTRA_NAME: TrenchBroom Quake Map Source
           EXTRA_AUTHOR_NAME: Atul Varma
+          EXTRA_SOURCE_NAME: The Level Design Book
           EXTRA_DETAILS_URL: https://book.leveldesignbook.com/appendix/resources/quake
       - name: Pack and upload the metadata
         uses: actions/upload-artifact@v4
@@ -580,6 +591,16 @@ jobs:
           EXTRA_NAME: Prototype WAD
           EXTRA_DIRECTORY_NAME: prototype-wad
           EXTRA_DOWNLOAD_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263/version/448/download&file=3663
+      - name: "${{ env.EXTRA_NAME }}: Download and extract"
+        run: |
+          curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip
+          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/palette/
+          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip -d ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/palette/
+        shell: bash
+        env:
+          EXTRA_NAME: Quake Palette
+          EXTRA_DIRECTORY_NAME: quake-palette
+          EXTRA_DOWNLOAD_URL: https://quakewiki.org/w/images/d/d2/quake_palette.zip
       - name: "${{ env.EXTRA_NAME }}: Download and extract"
         run: |
           curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip

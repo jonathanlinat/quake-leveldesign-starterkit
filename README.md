@@ -48,10 +48,12 @@ The current version of **QLDSK** includes the following set of tools and extras:
 
 ### Extras
 
-* **Prototype WAD**, Aleksander Marhall [[Source](https://www.slipseer.com/index.php?resources/prototype-wad.263)]
+* **Prototype WAD**, Aleksander Marhall [[Slipseer](https://www.slipseer.com/index.php?resources/prototype-wad.263)]
   - A resource containing Quake textures designed for map prototyping. It features 273 prototype textures that are indexed to Quake's palette. The collection includes basic checker textures in eight base colors, three shades, and four sizes (16x16, 32x32, 64x64, and 128x128). It also contains solid color textures, which include fullbright colors and specialized textures.
-* **TrenchBroom Quake Map Source**, Atul Varma [[Source](https://book.leveldesignbook.com/appendix/resources/quake)]
-  - A collection of the original Quake 1 MAP source files, as released by John Romero in 2006. These files have been converted to a modern format compatible with TrenchBroom. The texture references in these files have also been fixed with a repackaged `quake101.wad` file.
+* **Quake Palette**, Spiney [[Quake Wiki](https://quakewiki.org/wiki/File:quake_palette.zip)]
+  - The original Quake's palette provided in multiple formats: `.lmp`, `.aco`, `.act`, `.ase`, `.pal`, `.png` and `.txt`.
+* **TrenchBroom Quake Map Source**, Atul Varma [[The Level Design Book](https://book.leveldesignbook.com/appendix/resources/quake)]
+  - A collection of the original Quake `.map` source files, as released by John Romero in 2006. These files have been converted to a modern format compatible with TrenchBroom. The texture references in these files have also been fixed with a repackaged `quake101.wad` file.
 
 ---
 
@@ -164,7 +166,7 @@ A new document is now open for mapping.
 1. Click on `Compile` and verify that everything works and the document compiles successfully.
 1. Click on `Launch...`.
 1. In the `Launch Engine` window, set `Parameters` to `-basedir /path/to/quake-leveldesign-starterkit-[date]-[os]/game/ +map <name-of-the-saved-document>`.
-1. Click `Close`.
+1. Click `Launch`.
 
 Congratulations! You are now ready to start mapping.
 
