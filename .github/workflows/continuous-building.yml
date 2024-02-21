@@ -26,12 +26,14 @@ jobs:
           submodules: recursive
       - name: Get the latest commit details
         run: |
+          CURRENT_BRANCH_NAME=$(git branch --show-current)
           LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
           LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
           LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
           LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
           LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
+          echo "CURRENT_BRANCH_NAME=$CURRENT_BRANCH_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
           echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
@@ -43,10 +45,11 @@ jobs:
         run: |
           mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
           echo "
-          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[GitHub](https://github.com/${{ env.ARTIFACT_REPOSITORY }})] [[Website](${{ env.ARTIFACT_WEBSITE_URL }})]
+          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[Website](${{ env.ARTIFACT_WEBSITE_URL }})]
 
             > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
             > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
+            > **Branch**: \`${{ env.CURRENT_BRANCH_NAME }}\`
             > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
       - name: Pack and upload the metadata
@@ -144,12 +147,14 @@ jobs:
           submodules: recursive
       - name: Get the latest commit details
         run: |
+          CURRENT_BRANCH_NAME=$(git branch --show-current)
           LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
           LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
           LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
           LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
           LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
+          echo "CURRENT_BRANCH_NAME=$CURRENT_BRANCH_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
           echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
@@ -161,10 +166,11 @@ jobs:
         run: |
           mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
           echo "
-          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[GitHub](https://github.com/${{ env.ARTIFACT_REPOSITORY }})] [[Twitter](${{ env.ARTIFACT_TWITTER_URL }})]
+          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[Twitter](${{ env.ARTIFACT_TWITTER_URL }})]
 
             > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
             > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
+            > **Branch**: \`${{ env.CURRENT_BRANCH_NAME }}\`
             > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
       - name: Pack and upload the metadata
@@ -279,12 +285,14 @@ jobs:
           submodules: recursive
       - name: Get the latest commit details
         run: |
+          CURRENT_BRANCH_NAME=$(git branch --show-current)
           LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
           LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
           LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
           LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
           LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
+          echo "CURRENT_BRANCH_NAME=$CURRENT_BRANCH_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
           echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
@@ -296,10 +304,11 @@ jobs:
         run: |
           mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
           echo "
-          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[GitHub](https://github.com/${{ env.ARTIFACT_REPOSITORY }})] [[Website](${{ env.ARTIFACT_WEBSITE_URL }})] [[Usage](${{ env.ARTIFACT_HOWTO_URL }})]
+          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[Website](${{ env.ARTIFACT_WEBSITE_URL }})] [[Usage](${{ env.ARTIFACT_HOWTO_URL }})]
 
             > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
             > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
+            > **Branch**: \`${{ env.CURRENT_BRANCH_NAME }}\`
             > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
       - name: Pack and upload the metadata
@@ -402,12 +411,14 @@ jobs:
           submodules: recursive
       - name: Get the latest commit details
         run: |
+          CURRENT_BRANCH_NAME=$(git branch --show-current)
           LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
           LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
           LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
           LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
           LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
+          echo "CURRENT_BRANCH_NAME=$CURRENT_BRANCH_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
           echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
           echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
@@ -419,10 +430,11 @@ jobs:
         run: |
           mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
           echo "
-          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[GitHub](https://github.com/${{ env.ARTIFACT_REPOSITORY }})] [[Website](${{ env.ARTIFACT_WEBSITE_URL }})]
+          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[Website](${{ env.ARTIFACT_WEBSITE_URL }})]
 
             > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
             > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
+            > **Branch**: \`${{ env.CURRENT_BRANCH_NAME }}\`
             > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
       - name: Pack and upload the metadata

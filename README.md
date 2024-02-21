@@ -153,7 +153,7 @@ A new document is now open for mapping.
 1. Set `Working Directory` to `${MAP_DIR_PATH}`.
 1. Add an `Export Map` task profile by clicking `+`.
 1. Set `Field Path` to `${WORK_DIR_PATH}/${MAP_BASE_NAME}-compile.map`.
-1. Add a `Run Tool` task profile for each of the following tools, setting `Tool Path` to the respective paths in `/path/to/quake-leveldesign-starterkit-[date]-[os]/tools/ericw-tools/bin/`:
+1. Add a `Run Tool` task profile for each of the following tools, setting `Tool Path` to the respective paths in `/path/to/quake-leveldesign-starterkit-[date]-[os]/tools/ericw-tools/`:
     - `qbsp(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}-compile.map ${MAP_BASE_NAME}.bsp`.
     - `vis(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
     - `light(.exe)` with `Parameters`: `-nocolor ${MAP_BASE_NAME}.bsp`.
