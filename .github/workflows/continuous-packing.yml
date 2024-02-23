@@ -37,7 +37,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
           mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/
-          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -d ${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/
+          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -o"${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
           ARTIFACT_NAME: ericw-tools
@@ -57,7 +57,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
           mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/game/
-          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -d ${{ env.PROJECT_NAME_PREFIX }}-linux/game/
+          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -o"${{ env.PROJECT_NAME_PREFIX }}-linux/game/" -y
         shell: bash
         env:
           ARTIFACT_NAME: Ironwail
@@ -77,7 +77,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
           mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/
-          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -d ${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/
+          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -o"${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
           ARTIFACT_NAME: Quake CLI Tools
@@ -97,7 +97,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
           mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/level-editor/
-          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -d ${{ env.PROJECT_NAME_PREFIX }}-linux/level-editor/
+          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -o"${{ env.PROJECT_NAME_PREFIX }}-linux/level-editor/" -y
         shell: bash
         env:
           ARTIFACT_NAME: TrenchBroom
@@ -117,7 +117,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
           mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}/
-          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-files.zip -d ${{ env.PROJECT_NAME_PREFIX }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}/
+          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-files.zip -o"${{ env.PROJECT_NAME_PREFIX }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
           ARTIFACT_NAME: Extras
@@ -260,7 +260,7 @@ jobs:
           echo -e "This is a release of [Quake Level Design Starter Kit](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}). For comprehensive details about the project and setup guidance, please [refer to the instructions](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}#readme).\n\n## Features\n\nThe current version of **QLDSK** includes the following set of tools and extras:\n\n### Tools" > "${{ env.PROJECT_NAME_PREFIX }}-release-notes/RELEASE_NOTES.md"
           IFS=',' read -r -a metadata_files <<< "${{ env.METADATA_FILES }}"
           for metadata_file in "${metadata_files[@]}"; do
-            unzip -p "$metadata_file-metadata.zip" METADATA.md >> "${{ env.PROJECT_NAME_PREFIX }}-release-notes/RELEASE_NOTES.md"
+            7z e -so "$metadata_file-metadata.zip" METADATA.md >> "${{ env.PROJECT_NAME_PREFIX }}-release-notes/RELEASE_NOTES.md" -y
           done
         shell: bash
         env:

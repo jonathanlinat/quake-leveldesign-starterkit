@@ -94,7 +94,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
           mkdir ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
-          unzip build-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}-*.zip -d ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
+          7z x "$(find build-linux/ -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*.zip' | head -n 1)" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/" -y
         shell: bash
       - name: "Linux: Pack and upload the artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
@@ -350,7 +350,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
           make package
-          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-*-linux.zip
+          7z x "$(find . -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*-linux.zip' | head -n 1)"
           mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-*-linux/ ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
         shell: bash
       - name: "Linux: Pack and upload the artifact"
@@ -380,7 +380,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'windows-') }}
         run: |
           make package
-          unzip ${env:ARTIFACT_DIRECTORY_NAME}-*-windows.zip
+          7z x "$(find . -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*-windows.zip' | head -n 1)"
           mv ${env:ARTIFACT_DIRECTORY_NAME}-*-windows/ ${env:ARTIFACT_DIRECTORY_NAME}-windows/
         shell: pwsh
       - name: "Windows: Pack and upload the artifact"
@@ -595,7 +595,7 @@ jobs:
         run: |
           curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip
           mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/wads/
-          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip -d ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/wads/
+          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/wads/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
           EXTRA_NAME: Prototype WAD
@@ -605,7 +605,7 @@ jobs:
         run: |
           curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip
           mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/palette/
-          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip -d ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/palette/
+          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
           EXTRA_NAME: Quake Palette
@@ -615,7 +615,7 @@ jobs:
         run: |
           curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip
           mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/source/
-          unzip ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip -d ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/source/
+          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/source/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
           EXTRA_NAME: TrenchBroom Quake Map Source
