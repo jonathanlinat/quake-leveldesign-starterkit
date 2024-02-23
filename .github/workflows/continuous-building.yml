@@ -350,7 +350,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
           make package
-          7z x "$(find . -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*-linux.zip' | head -n 1)"
+          7z x "$(find . -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*-linux.zip' | head -n 1)" -y
           mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-*-linux/ ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
         shell: bash
       - name: "Linux: Pack and upload the artifact"
@@ -380,7 +380,8 @@ jobs:
         if: ${{ startsWith(matrix.os, 'windows-') }}
         run: |
           make package
-          7z x "$(find . -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*-windows.zip' | head -n 1)"
+          $zipFile = Get-ChildItem -Name "${env:ARTIFACT_DIRECTORY_NAME}-*-windows.zip" | Select-Object -First 1
+          7z x $zipFile -y
           mv ${env:ARTIFACT_DIRECTORY_NAME}-*-windows/ ${env:ARTIFACT_DIRECTORY_NAME}-windows/
         shell: pwsh
       - name: "Windows: Pack and upload the artifact"
