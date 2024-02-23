@@ -107,6 +107,8 @@ jobs:
       - name: "Windows: Setup MSVC environment"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ilammy/msvc-dev-cmd@v1
+        with:
+          vsversion: 2022
       - name: "Windows: Install Qt5"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: jurplel/install-qt-action@v3
@@ -334,12 +336,6 @@ jobs:
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
           fetch-depth: 0
-      - name: "Linux: Install common dependencies"
-        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip make
-        shell: bash
       - name: "Linux: Install Python requirements"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
@@ -368,6 +364,8 @@ jobs:
       - name: "Windows: Setup MSVC environment"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ilammy/msvc-dev-cmd@v1
+        with:
+          vsversion: 2022
       - name: "Windows: Install Python requirements"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         run: |
@@ -487,7 +485,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
           sudo apt update
-          sudo apt install build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc cmake p7zip-full ninja-build xvfb libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev qtbase5-dev libqt5svg5-dev
+          sudo apt install build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc ninja-build libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev qtbase5-dev libqt5svg5-dev
         shell: bash
       - name: "Linux: Compile the source code"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
