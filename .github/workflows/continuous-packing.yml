@@ -247,7 +247,7 @@ jobs:
       - name: Parse the metadata files
         run: |
           mkdir -p "${{ env.PROJECT_NAME_PREFIX }}-release-notes/"
-          echo "This is a release of [Quake Level Design Starter Kit](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}). For comprehensive details about the project and setup guidance, please [refer to the instructions](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}#readme).
+          echo "This is a release of [Quake Level Design Starter Kit](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}). For comprehensive details about the project and setup guidance, please [refer to the instructions](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}/wiki).
 
           ## Features
 
@@ -258,7 +258,7 @@ jobs:
           done
         shell: bash
         env:
-          METADATA_FILES: ericw-tools,ironwail,quake-cli-tools,trenchbroom,extras
+          METADATA_FILES: trenchbroom,ericw-tools,ironwail,quake-cli-tools,extras
       - name: Pack and upload the release notes
         uses: actions/upload-artifact@v4
         with:
