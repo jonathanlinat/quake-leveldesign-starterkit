@@ -33,7 +33,9 @@ jobs:
           workflow: continuous-packing.yml
           skip_unpack: true
       - name: Unpack the release notes
-        run: 7z x "$(find . -type f -name '${{ env.PROJECT_NAME_PREFIX }}-release-notes-*.zip' | head -n 1)" -o${{ env.PROJECT_NAME_PREFIX }}/
+        run: |
+          file=$(find . -type f -name "${{ env.PROJECT_NAME_PREFIX }}-release-notes-*.zip" | head -n 1)
+          7z x "$file" -o"${{ env.PROJECT_NAME_PREFIX }}/"
         shell: bash
       - name: Release the starter kit
         uses: ncipollo/release-action@v1

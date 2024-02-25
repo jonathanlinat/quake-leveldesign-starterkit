@@ -8,6 +8,149 @@ on:
     paths:
       - .github/workflows/**
 jobs:
+  trenchbroom-generate-metadata:
+    name: "TrenchBroom: Generate metadata"
+    runs-on: ubuntu-22.04
+    env:
+      ARTIFACT_NAME: TrenchBroom
+      ARTIFACT_AUTHOR_NAME: Kristian Duske
+      ARTIFACT_DIRECTORY_NAME: trenchbroom
+      ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
+      ARTIFACT_WEBSITE_URL: http://kristianduske.com/trenchbroom
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ARTIFACT_REPOSITORY }}
+          fetch-depth: 0
+          submodules: recursive
+      - name: Get the latest commit details
+        run: |
+          echo "CURRENT_BRANCH_NAME=$(git branch --show-current)" >> $GITHUB_ENV
+          echo "LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_LOGIN_NAME=$(curl -s 'https://api.github.com/search/users?q='$(git log -1 --pretty=format:'%ae') | jq -r '.items[0].login')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)" >> $GITHUB_ENV
+          echo "LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
+        shell: bash
+      - name: Create the content
+        run: |
+          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
+          echo "
+          ### Applications
+
+          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[Website](${{ env.ARTIFACT_WEBSITE_URL }})]
+
+            > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
+            > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
+            > **Branch**: \`${{ env.CURRENT_BRANCH_NAME }}\`
+            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        shell: bash
+      - name: Pack and upload the metadata
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
+          if-no-files-found: error
+          retention-days: 1
+  trenchbroom-build-binaries:
+    name: "TrenchBroom: Build the binaries"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2019]
+        tb-build-type: [release]
+        tb-arch: [default-arch]
+        exclude:
+          - os: windows-2019
+            tb-arch: default-arch
+        include:
+          - os: windows-2019
+            tb-arch: x64
+    env:
+      TB_PULL_REQUEST_HEAD_SHA_HASH: ${{ github.event.pull_request.head.sha }}
+      TB_OS_IMAGE: ${{ matrix.os }}
+      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/vcpkg/bincache
+      VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+      ARTIFACT_NAME: TrenchBroom
+      ARTIFACT_DIRECTORY_NAME: trenchbroom
+      ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ARTIFACT_REPOSITORY }}
+          fetch-depth: 0
+          submodules: recursive
+      - name: Create directory ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
+        run: mkdir -p $VCPKG_DEFAULT_BINARY_CACHE
+        shell: bash
+      - name: Set some ACTIONS environment variables
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable("ACTIONS_CACHE_URL", process.env.ACTIONS_CACHE_URL || "");
+            core.exportVariable("ACTIONS_RUNTIME_TOKEN", process.env.ACTIONS_RUNTIME_TOKEN || "");
+      - name: "Linux: Install common dependencies"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          sudo apt update
+          sudo apt install build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc ninja-build libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev qtbase5-dev libqt5svg5-dev
+        shell: bash
+      - name: "Linux: Compile the source code"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: ./CI-linux.sh
+        shell: bash
+      - name: "Linux: Prepare the artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: |
+          dpkg -x build/${{ env.ARTIFACT_NAME }}-*.deb ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+          mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/usr/bin/${{ env.ARTIFACT_DIRECTORY_NAME }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+          mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/usr/share/${{ env.ARTIFACT_NAME }}/* ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+        shell: bash
+      - name: "Linux: Pack and upload the artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
+          if-no-files-found: error
+          retention-days: 1
+      - name: "Windows: Install Pandoc"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: |
+          Invoke-WebRequest https://github.com/jgm/pandoc/releases/download/2.11.3.1/pandoc-2.11.3.1-windows-x86_64.zip -OutFile pandoc.zip
+          7z x pandoc.zip -o"." -y
+          echo "$(pwd)\pandoc-2.11.3.1" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        shell: pwsh
+      - name: "Windows: Install Qt"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: 5.15.2
+          arch: win64_msvc2019_64
+      - name: "Windows: Compile the source code"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: |
+          $Env:QT5_INSTALL_DIR = $env:Qt5_DIR
+          cmd.exe /c CI-windows.bat
+        shell: pwsh
+        env:
+          TB_ARCH: ${{ matrix.tb-arch }}
+      - name: "Windows: Prepare the artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: 7z x cmakebuild\${env:ARTIFACT_NAME}-*.7z -o"${env:ARTIFACT_DIRECTORY_NAME}-windows\" -y
+        shell: pwsh
+      - name: "Windows: Pack and upload the artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-windows/
+          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-windows
+          if-no-files-found: error
+          retention-days: 1
   ericw-tools-generate-metadata:
     name: "ericw-tools: Generate metadata"
     runs-on: ubuntu-22.04
@@ -26,20 +169,13 @@ jobs:
           submodules: recursive
       - name: Get the latest commit details
         run: |
-          CURRENT_BRANCH_NAME=$(git branch --show-current)
-          LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
-          LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
-          LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
-          LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
-          LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
-          LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
-          echo "CURRENT_BRANCH_NAME=$CURRENT_BRANCH_NAME" >> $GITHUB_ENV
-          echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
-          echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
-          echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
-          echo "LAST_COMMIT_DATE=$LAST_COMMIT_DATE" >> $GITHUB_ENV
-          echo "LAST_COMMIT_MESSAGE=$LAST_COMMIT_MESSAGE" >> $GITHUB_ENV
-          echo "LAST_COMMIT_SHA_HASH=$LAST_COMMIT_SHA_HASH" >> $GITHUB_ENV
+          echo "CURRENT_BRANCH_NAME=$(git branch --show-current)" >> $GITHUB_ENV
+          echo "LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_LOGIN_NAME=$(curl -s 'https://api.github.com/search/users?q='$(git log -1 --pretty=format:'%ae') | jq -r '.items[0].login')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)" >> $GITHUB_ENV
+          echo "LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
         shell: bash
       - name: Create the content
         run: |
@@ -149,25 +285,20 @@ jobs:
           submodules: recursive
       - name: Get the latest commit details
         run: |
-          CURRENT_BRANCH_NAME=$(git branch --show-current)
-          LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
-          LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
-          LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
-          LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
-          LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
-          LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
-          echo "CURRENT_BRANCH_NAME=$CURRENT_BRANCH_NAME" >> $GITHUB_ENV
-          echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
-          echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
-          echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
-          echo "LAST_COMMIT_DATE=$LAST_COMMIT_DATE" >> $GITHUB_ENV
-          echo "LAST_COMMIT_MESSAGE=$LAST_COMMIT_MESSAGE" >> $GITHUB_ENV
-          echo "LAST_COMMIT_SHA_HASH=$LAST_COMMIT_SHA_HASH" >> $GITHUB_ENV
+          echo "CURRENT_BRANCH_NAME=$(git branch --show-current)" >> $GITHUB_ENV
+          echo "LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_LOGIN_NAME=$(curl -s 'https://api.github.com/search/users?q='$(git log -1 --pretty=format:'%ae') | jq -r '.items[0].login')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)" >> $GITHUB_ENV
+          echo "LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
         shell: bash
       - name: Create the content
         run: |
           mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
           echo "
+          ### Tools
+
           - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[Twitter](${{ env.ARTIFACT_TWITTER_URL }})]
 
             > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
@@ -287,20 +418,13 @@ jobs:
           submodules: recursive
       - name: Get the latest commit details
         run: |
-          CURRENT_BRANCH_NAME=$(git branch --show-current)
-          LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
-          LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
-          LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
-          LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
-          LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
-          LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
-          echo "CURRENT_BRANCH_NAME=$CURRENT_BRANCH_NAME" >> $GITHUB_ENV
-          echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
-          echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
-          echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
-          echo "LAST_COMMIT_DATE=$LAST_COMMIT_DATE" >> $GITHUB_ENV
-          echo "LAST_COMMIT_MESSAGE=$LAST_COMMIT_MESSAGE" >> $GITHUB_ENV
-          echo "LAST_COMMIT_SHA_HASH=$LAST_COMMIT_SHA_HASH" >> $GITHUB_ENV
+          echo "CURRENT_BRANCH_NAME=$(git branch --show-current)" >> $GITHUB_ENV
+          echo "LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_LOGIN_NAME=$(curl -s 'https://api.github.com/search/users?q='$(git log -1 --pretty=format:'%ae') | jq -r '.items[0].login')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)" >> $GITHUB_ENV
+          echo "LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+          echo "LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
         shell: bash
       - name: Create the content
         run: |
@@ -381,156 +505,8 @@ jobs:
         run: |
           make package
           $zipFile = Get-ChildItem -Name "${env:ARTIFACT_DIRECTORY_NAME}-*-windows.zip" | Select-Object -First 1
-          7z x $zipFile -y
+          7z x "$zipFile" -y
           mv ${env:ARTIFACT_DIRECTORY_NAME}-*-windows/ ${env:ARTIFACT_DIRECTORY_NAME}-windows/
-        shell: pwsh
-      - name: "Windows: Pack and upload the artifact"
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: actions/upload-artifact@v4
-        with:
-          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-windows/
-          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-windows
-          if-no-files-found: error
-          retention-days: 1
-  trenchbroom-generate-metadata:
-    name: "TrenchBroom: Generate metadata"
-    runs-on: ubuntu-22.04
-    env:
-      ARTIFACT_NAME: TrenchBroom
-      ARTIFACT_AUTHOR_NAME: Kristian Duske
-      ARTIFACT_DIRECTORY_NAME: trenchbroom
-      ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
-      ARTIFACT_WEBSITE_URL: http://kristianduske.com/trenchbroom
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ env.ARTIFACT_REPOSITORY }}
-          fetch-depth: 0
-          submodules: recursive
-      - name: Get the latest commit details
-        run: |
-          CURRENT_BRANCH_NAME=$(git branch --show-current)
-          LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
-          LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
-          LAST_COMMIT_LOGIN_NAME=$(curl -s "https://api.github.com/search/users?q=$LAST_COMMIT_EMAIL" | jq -r '.items[0].login')
-          LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)
-          LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
-          LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)
-          echo "CURRENT_BRANCH_NAME=$CURRENT_BRANCH_NAME" >> $GITHUB_ENV
-          echo "LAST_COMMIT_AUTHOR_NAME=$LAST_COMMIT_AUTHOR_NAME" >> $GITHUB_ENV
-          echo "LAST_COMMIT_EMAIL=$LAST_COMMIT_EMAIL" >> $GITHUB_ENV
-          echo "LAST_COMMIT_LOGIN_NAME=$LAST_COMMIT_LOGIN_NAME" >> $GITHUB_ENV
-          echo "LAST_COMMIT_DATE=$LAST_COMMIT_DATE" >> $GITHUB_ENV
-          echo "LAST_COMMIT_MESSAGE=$LAST_COMMIT_MESSAGE" >> $GITHUB_ENV
-          echo "LAST_COMMIT_SHA_HASH=$LAST_COMMIT_SHA_HASH" >> $GITHUB_ENV
-        shell: bash
-      - name: Create the content
-        run: |
-          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
-          echo "
-          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[Website](${{ env.ARTIFACT_WEBSITE_URL }})]
-
-            > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
-            > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
-            > **Branch**: \`${{ env.CURRENT_BRANCH_NAME }}\`
-            > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
-        shell: bash
-      - name: Pack and upload the metadata
-        uses: actions/upload-artifact@v4
-        with:
-          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
-          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
-          if-no-files-found: error
-          retention-days: 1
-  trenchbroom-build-binaries:
-    name: "TrenchBroom: Build the binaries"
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-22.04, windows-2019]
-        tb-build-type: [release]
-        tb-arch: [default-arch]
-        exclude:
-          - os: windows-2019
-            tb-arch: default-arch
-        include:
-          - os: windows-2019
-            tb-arch: x64
-    env:
-      TB_PULL_REQUEST_HEAD_SHA_HASH: ${{ github.event.pull_request.head.sha }}
-      TB_OS_IMAGE: ${{ matrix.os }}
-      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/vcpkg/bincache
-      VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
-      ARTIFACT_NAME: TrenchBroom
-      ARTIFACT_DIRECTORY_NAME: trenchbroom
-      ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ env.ARTIFACT_REPOSITORY }}
-          fetch-depth: 0
-          submodules: recursive
-      - name: Create directory ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
-        run: mkdir -p $VCPKG_DEFAULT_BINARY_CACHE
-        shell: bash
-      - name: Set some ACTIONS environment variables
-        uses: actions/github-script@v7
-        with:
-          script: |
-            core.exportVariable("ACTIONS_CACHE_URL", process.env.ACTIONS_CACHE_URL || "");
-            core.exportVariable("ACTIONS_RUNTIME_TOKEN", process.env.ACTIONS_RUNTIME_TOKEN || "");
-      - name: "Linux: Install common dependencies"
-        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: |
-          sudo apt update
-          sudo apt install build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc ninja-build libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev qtbase5-dev libqt5svg5-dev
-        shell: bash
-      - name: "Linux: Compile the source code"
-        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: ./CI-linux.sh
-        shell: bash
-      - name: "Linux: Prepare the artifact"
-        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: |
-          dpkg -x build/${{ env.ARTIFACT_NAME }}-*.deb ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
-          mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/usr/bin/${{ env.ARTIFACT_DIRECTORY_NAME }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
-          mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/usr/share/${{ env.ARTIFACT_NAME }}/* ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
-        shell: bash
-      - name: "Linux: Pack and upload the artifact"
-        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: actions/upload-artifact@v4
-        with:
-          path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
-          name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
-          if-no-files-found: error
-          retention-days: 1
-      - name: "Windows: Install Pandoc"
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: |
-          Invoke-WebRequest https://github.com/jgm/pandoc/releases/download/2.11.3.1/pandoc-2.11.3.1-windows-x86_64.zip -OutFile pandoc.zip
-          7z x pandoc.zip -o"." -y
-          echo "$(pwd)\pandoc-2.11.3.1" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-        shell: pwsh
-      - name: "Windows: Install Qt"
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: jurplel/install-qt-action@v3
-        with:
-          version: 5.15.2
-          arch: win64_msvc2019_64
-      - name: "Windows: Compile the source code"
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: |
-          $Env:QT5_INSTALL_DIR = $env:Qt5_DIR
-          cmd.exe /c CI-windows.bat
-        shell: pwsh
-        env:
-          TB_ARCH: ${{ matrix.tb-arch }}
-      - name: "Windows: Prepare the artifact"
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: 7z x cmakebuild\${env:ARTIFACT_NAME}-*.7z -o"${env:ARTIFACT_DIRECTORY_NAME}-windows\" -y
         shell: pwsh
       - name: "Windows: Pack and upload the artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
@@ -552,6 +528,13 @@ jobs:
           mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
           echo "
           ### ${{ env.ARTIFACT_NAME }}
+          " >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        shell: bash
+      - name: Create Quake section
+        run: |
+          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
+          echo "
+          #### Quake
           " >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
         shell: bash
       - name: "${{ env.EXTRA_NAME }}: Create the content"
@@ -578,6 +561,21 @@ jobs:
           EXTRA_AUTHOR_NAME: Atul Varma
           EXTRA_SOURCE_NAME: The Level Design Book
           EXTRA_DETAILS_URL: https://book.leveldesignbook.com/appendix/resources/quake
+      - name: Create GoldSrc section
+        run: |
+          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
+          echo "
+          #### GoldSrc
+          " >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        shell: bash
+      - name: "${{ env.EXTRA_NAME }}: Create the content"
+        run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        shell: bash
+        env:
+          EXTRA_NAME: Digit's Developer Textures
+          EXTRA_AUTHOR_NAME: Digit404
+          EXTRA_SOURCE_NAME: GameBanana
+          EXTRA_DETAILS_URL: https://gamebanana.com/mods/6693
       - name: Pack and upload the metadata
         uses: actions/upload-artifact@v4
         with:
@@ -594,9 +592,8 @@ jobs:
     steps:
       - name: "${{ env.EXTRA_NAME }}: Download and extract"
         run: |
-          curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip
-          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/wads/
-          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/wads/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
+          curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip"
+          7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/quake/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
           EXTRA_NAME: Prototype WAD
@@ -604,9 +601,8 @@ jobs:
           EXTRA_DOWNLOAD_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263/version/448/download&file=3663
       - name: "${{ env.EXTRA_NAME }}: Download and extract"
         run: |
-          curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip
-          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/palette/
-          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
+          curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip"
+          7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/quake/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
           EXTRA_NAME: Quake Palette
@@ -614,14 +610,22 @@ jobs:
           EXTRA_DOWNLOAD_URL: https://quakewiki.org/w/images/d/d2/quake_palette.zip
       - name: "${{ env.EXTRA_NAME }}: Download and extract"
         run: |
-          curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip
-          mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/source/
-          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/source/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
+          curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip"
+          7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/quake/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
           EXTRA_NAME: TrenchBroom Quake Map Source
           EXTRA_DIRECTORY_NAME: trenchbroom-quake-map-source
           EXTRA_DOWNLOAD_URL: https://toolness-media.s3.amazonaws.com/quake/trenchbroom_quake_map_source.zip
+      - name: "${{ env.EXTRA_NAME }}: Download and extract"
+        run: |
+          curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.rar"
+          7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.rar" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/goldsrc/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
+        shell: bash
+        env:
+          EXTRA_NAME: Digit's Developer Textures
+          EXTRA_DIRECTORY_NAME: digits-developer-textures-wad
+          EXTRA_DOWNLOAD_URL: https://files.gamebanana.com/mods/digits-devtex-13.rar
       - name: Pack and upload the artifact
         uses: actions/upload-artifact@v4
         with:

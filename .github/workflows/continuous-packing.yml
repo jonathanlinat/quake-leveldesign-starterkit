@@ -35,9 +35,7 @@ jobs:
           ARTIFACT_DIRECTORY_NAME: ericw-tools
       - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: |
-          mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/
-          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -o"${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/" -y
+        run: 7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip" -o"${{ env.PROJECT_NAME_PREFIX }}-linux/level-compiler/" -y
         shell: bash
         env:
           ARTIFACT_NAME: ericw-tools
@@ -55,9 +53,7 @@ jobs:
           ARTIFACT_DIRECTORY_NAME: ironwail
       - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: |
-          mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/game/
-          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -o"${{ env.PROJECT_NAME_PREFIX }}-linux/game/" -y
+        run: 7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip" -o"${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
           ARTIFACT_NAME: Ironwail
@@ -75,9 +71,7 @@ jobs:
           ARTIFACT_DIRECTORY_NAME: quake-cli-tools
       - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: |
-          mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/
-          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -o"${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/" -y
+        run: 7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip" -o"${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
           ARTIFACT_NAME: Quake CLI Tools
@@ -95,9 +89,7 @@ jobs:
           ARTIFACT_DIRECTORY_NAME: trenchbroom
       - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: |
-          mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/level-editor/
-          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip -o"${{ env.PROJECT_NAME_PREFIX }}-linux/level-editor/" -y
+        run: 7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip" -o"${{ env.PROJECT_NAME_PREFIX }}-linux/level-editor/" -y
         shell: bash
         env:
           ARTIFACT_NAME: TrenchBroom
@@ -115,16 +107,14 @@ jobs:
           ARTIFACT_DIRECTORY_NAME: extras
       - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: |
-          mkdir -p ${{ env.PROJECT_NAME_PREFIX }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}/
-          7z x ${{ env.ARTIFACT_DIRECTORY_NAME }}-files.zip -o"${{ env.PROJECT_NAME_PREFIX }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}/" -y
+        run: 7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-files.zip" -o"${{ env.PROJECT_NAME_PREFIX }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
           ARTIFACT_NAME: Extras
           ARTIFACT_DIRECTORY_NAME: extras
       - name: "Linux: Copy Markdown and LICENSE files"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: cp *.md LICENSE ${{ env.PROJECT_NAME_PREFIX }}-linux/
+        run: cp *.md LICENSE "${{ env.PROJECT_NAME_PREFIX }}-linux/"
         shell: bash
       - name: "Linux: Pack and upload the artifact"
         uses: actions/upload-artifact@v4
@@ -136,7 +126,7 @@ jobs:
           retention-days: 1
       - name: "Windows: Set current packing date"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: echo "CURRENT_DATE=$(Get-Date -Format "yyyyMMdd")" | Out-File -Append -FilePath ${env:GITHUB_ENV}
+        run: echo "CURRENT_DATE=$(Get-Date -Format 'yyyyMMdd')" | Out-File -Append -FilePath $env:GITHUB_ENV
         shell: pwsh
       - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
@@ -151,7 +141,7 @@ jobs:
           ARTIFACT_DIRECTORY_NAME: ericw-tools
       - name: "Windows: Unpack ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: 7z x ${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip -o"${env:PROJECT_NAME_PREFIX}-windows\tools\${env:ARTIFACT_DIRECTORY_NAME}\" -y
+        run: 7z x "${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip" -o"${env:PROJECT_NAME_PREFIX}-windows\level-compiler\" -y
         shell: pwsh
         env:
           ARTIFACT_NAME: ericw-tools
@@ -169,7 +159,7 @@ jobs:
           ARTIFACT_DIRECTORY_NAME: ironwail
       - name: "Windows: Unpack ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: 7z x ${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip -o"${env:PROJECT_NAME_PREFIX}-windows\game\" -y
+        run: 7z x "${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip" -o"${env:PROJECT_NAME_PREFIX}-windows\tools\${env:ARTIFACT_DIRECTORY_NAME}\" -y
         shell: pwsh
         env:
           ARTIFACT_NAME: Ironwail
@@ -187,7 +177,7 @@ jobs:
           ARTIFACT_DIRECTORY_NAME: quake-cli-tools
       - name: "Windows: Unpack ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: 7z x ${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip -o"${env:PROJECT_NAME_PREFIX}-windows\tools\${env:ARTIFACT_DIRECTORY_NAME}\" -y
+        run: 7z x "${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip" -o"${env:PROJECT_NAME_PREFIX}-windows\tools\${env:ARTIFACT_DIRECTORY_NAME}\" -y
         shell: pwsh
         env:
           ARTIFACT_NAME: Quake CLI Tools
@@ -205,7 +195,7 @@ jobs:
           ARTIFACT_DIRECTORY_NAME: trenchbroom
       - name: "Windows: Unpack ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: 7z x ${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip -o"${env:PROJECT_NAME_PREFIX}-windows\level-editor\" -y
+        run: 7z x "${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip" -o"${env:PROJECT_NAME_PREFIX}-windows\level-editor\" -y
         shell: pwsh
         env:
           ARTIFACT_NAME: TrenchBroom
@@ -223,14 +213,14 @@ jobs:
           ARTIFACT_DIRECTORY_NAME: extras
       - name: "Windows: Unpack ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: 7z x ${env:ARTIFACT_DIRECTORY_NAME}-files.zip -o"${env:PROJECT_NAME_PREFIX}-windows\${env:ARTIFACT_DIRECTORY_NAME}\" -y
+        run: 7z x "${env:ARTIFACT_DIRECTORY_NAME}-files.zip" -o"${env:PROJECT_NAME_PREFIX}-windows\${env:ARTIFACT_DIRECTORY_NAME}\" -y
         shell: pwsh
         env:
           ARTIFACT_NAME: Extras
           ARTIFACT_DIRECTORY_NAME: extras
       - name: "Windows: Copy Markdown and LICENSE files"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: Copy-Item *.md, LICENSE -Destination ${{ env.PROJECT_NAME_PREFIX }}-windows/
+        run: Copy-Item *.md, LICENSE -Destination "${{ env.PROJECT_NAME_PREFIX }}-windows/"
         shell: pwsh
       - name: "Windows: Pack and upload the artifact"
         uses: actions/upload-artifact@v4
@@ -257,7 +247,11 @@ jobs:
       - name: Parse the metadata files
         run: |
           mkdir -p "${{ env.PROJECT_NAME_PREFIX }}-release-notes/"
-          echo -e "This is a release of [Quake Level Design Starter Kit](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}). For comprehensive details about the project and setup guidance, please [refer to the instructions](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}#readme).\n\n## Features\n\nThe current version of **QLDSK** includes the following set of tools and extras:\n\n### Tools" > "${{ env.PROJECT_NAME_PREFIX }}-release-notes/RELEASE_NOTES.md"
+          echo "This is a release of [Quake Level Design Starter Kit](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}). For comprehensive details about the project and setup guidance, please [refer to the instructions](https://github.com/jonathanlinat/${{ env.PROJECT_NAME_PREFIX }}#readme).
+
+          ## Features
+
+          The current version of **QLDSK** includes the following set of applications, tools and extras:" >> "${{ env.PROJECT_NAME_PREFIX }}-release-notes/RELEASE_NOTES.md"
           IFS=',' read -r -a metadata_files <<< "${{ env.METADATA_FILES }}"
           for metadata_file in "${metadata_files[@]}"; do
             7z e -so "$metadata_file-metadata.zip" METADATA.md >> "${{ env.PROJECT_NAME_PREFIX }}-release-notes/RELEASE_NOTES.md" -y
