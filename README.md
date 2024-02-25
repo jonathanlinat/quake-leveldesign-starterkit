@@ -23,7 +23,7 @@ The current version of **QLDSK** includes the following set of applications, too
 
 * **TrenchBroom**, Kristian Duske [[GitHub](https://github.com/TrenchBroom/TrenchBroom)] [[Website](http://kristianduske.com/trenchbroom)] [[Discord](https://discord.gg/txsKc3EARW)]
    - A free, open-source, cross-platform level editor designed explicitly for Quake-engine-based games. It is compatible with games like Quake and Half-Life and can be run on multiple operating systems. It is recognized for its ease of use, offering simple and advanced tools that enable designers to craft complex and engaging levels without much hassle.
-* **ericw-tools**, Eric Wasylishen [[GitHub](https://github.com/ericwa/ericw-tools)] [[Website](https://ericwa.github.io/ericw-tools)]
+* **ericw-tools**, Eric Wasylishen [[GitHub](https://github.com/ericwa/ericw-tools)] [[Documentation](https://ericw-tools.readthedocs.io)]
    - A suite of command-line utilities for building levels (maps) for games like Quake and Half-Life represents an evolved branch of Tyrann's original Quake tools. The tools focus on adding advanced lighting features, some of which are borrowed from q3map2, and include bugfixes for the `qbsp` tool, which is used for constructing the block structure of the map.
 
 ### Tools
