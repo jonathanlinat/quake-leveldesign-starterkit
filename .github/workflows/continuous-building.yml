@@ -159,7 +159,7 @@ jobs:
       ARTIFACT_AUTHOR_NAME: Eric Wasylishen
       ARTIFACT_DIRECTORY_NAME: ericw-tools
       ARTIFACT_REPOSITORY: ericwa/ericw-tools
-      ARTIFACT_WEBSITE_URL: https://ericwa.github.io/ericw-tools
+      ARTIFACT_DOCUMENTATION_URL: https://ericw-tools.readthedocs.io
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
@@ -181,7 +181,7 @@ jobs:
         run: |
           mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
           echo "
-          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[Website](${{ env.ARTIFACT_WEBSITE_URL }})]
+          - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[Documentation](${{ env.ARTIFACT_DOCUMENTATION_URL }})]
 
             > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
             > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
@@ -624,7 +624,7 @@ jobs:
         shell: bash
         env:
           EXTRA_NAME: Digit's Developer Textures
-          EXTRA_DIRECTORY_NAME: digits-developer-textures-wad
+          EXTRA_DIRECTORY_NAME: digits-developer-textures
           EXTRA_DOWNLOAD_URL: https://files.gamebanana.com/mods/digits-devtex-13.rar
       - name: Pack and upload the artifact
         uses: actions/upload-artifact@v4
