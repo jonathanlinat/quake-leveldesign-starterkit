@@ -9,7 +9,7 @@
 
 | 🔔 Get the Latest Weekly Release | 💬 Do You Need Support? |
 | -------------------------------- | ----------------------- |
-| [![Get the Latest Weekly Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Release)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) | [![](https://dcbadge.vercel.app/api/server/dh29D3kqrM?style=plastic)](https://discord.gg/dh29D3kqrM) |
+| [![Get the Latest Weekly Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Release)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) | [![](https://dcbadge.vercel.app/api/server/dh29D3kqrM?style=plastic)](https://discord.gg/dh29D3kqrM) [![](https://dcbadge.vercel.app/api/server/BXEjbQYdnC?style=plastic)](https://discord.gg/BXEjbQYdnC) |
 
 Great, you're all set! Now, proceed to [read the documentation](https://github.com/jonathanlinat/quake-leveldesign-starterkit/wiki) to install, set up and get started with this project.
 
