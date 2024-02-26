@@ -7,11 +7,11 @@
 
 ## Weekly Release
 
-| 🔔 Get the Latest Weekly Release |
-| -------------------------------- |
-| [![Get the Latest Weekly Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Release)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) |
+| 🔔 Get the Latest Weekly Release | 💬 Do You Need Support? |
+| -------------------------------- | ----------------------- |
+| [![Get the Latest Weekly Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Release)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) | [![](https://dcbadge.vercel.app/api/server/dh29D3kqrM?style=plastic)](https://discord.gg/dh29D3kqrM) |
 
-Great, you're all set! Now, [proceed to read the documentation](https://github.com/jonathanlinat/quake-leveldesign-starterkit/wiki) to set up and get started with this project.
+Great, you're all set! Now, proceed to [read the documentation](https://github.com/jonathanlinat/quake-leveldesign-starterkit/wiki) to install, set up and get started with this project.
 
 ---
 
@@ -22,9 +22,9 @@ The current version of **QLDSK** includes the following set of applications, too
 ### Applications
 
 * **TrenchBroom**, Kristian Duske [[GitHub](https://github.com/TrenchBroom/TrenchBroom)] [[Website](http://kristianduske.com/trenchbroom)] [[Discord](https://discord.gg/txsKc3EARW)]
-   - A free, open-source, cross-platform level editor designed explicitly for Quake-engine-based games. It is compatible with games like Quake and Half-Life and can be run on multiple operating systems. It is recognized for its ease of use, offering simple and advanced tools that enable designers to craft complex and engaging levels without much hassle.
+   - A free, open-source, cross-platform level editor designed explicitly for Quake engine-based games. It is compatible with games like Quake and Half-Life and can be run on multiple operating systems. It is recognized for its ease of use, offering simple and advanced tools that enable designers to craft complex and engaging levels without much hassle.
 * **ericw-tools**, Eric Wasylishen [[GitHub](https://github.com/ericwa/ericw-tools)] [[Documentation](https://ericw-tools.readthedocs.io)]
-   - A suite of command-line utilities for building levels (maps) for games like Quake and Half-Life represents an evolved branch of Tyrann's original Quake tools. The tools focus on adding advanced lighting features, some of which are borrowed from q3map2, and include bugfixes for the `qbsp` tool, which is used for constructing the block structure of the map.
+   - A suite of command-line utilities for building levels (maps) for games like Quake and Half-Life represents an evolved branch of Tyrann's original Quake tools. The tools focus on adding advanced lighting features, some of which are borrowed from [q3map2](http://q3map2.robotrenegade.com/), and include bugfixes for the `qbsp` tool, which is used for constructing the block structure of the map.
 
 ### Tools
 
