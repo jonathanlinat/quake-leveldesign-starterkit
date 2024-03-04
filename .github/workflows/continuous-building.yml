@@ -602,7 +602,7 @@ jobs:
         run: |
           $zipdir = "${env:ARTIFACT_DIRECTORY_NAME}-windows"
           mkdir -p $zipdir | Out-Null
-          copy ${env:ARTIFACT_DIRECTORY_NAME}.exe $zipdir
+          copy *.exe $zipdir
         shell: pwsh
       - name: "Windows: Pack and upload the artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
