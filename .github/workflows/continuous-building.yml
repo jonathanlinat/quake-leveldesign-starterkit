@@ -60,14 +60,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, windows-2019]
+        os: [ubuntu-22.04, windows-2022]
         tb-build-type: [release]
         tb-arch: [default-arch]
         exclude:
-          - os: windows-2019
+          - os: windows-2022
             tb-arch: default-arch
         include:
-          - os: windows-2019
+          - os: windows-2022
             tb-arch: x64
     env:
       TB_PULL_REQUEST_HEAD_SHA_HASH: ${{ github.event.pull_request.head.sha }}
