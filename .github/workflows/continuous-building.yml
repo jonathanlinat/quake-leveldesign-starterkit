@@ -560,7 +560,7 @@ jobs:
           if-no-files-found: error
           retention-days: 1
   goldutil-build-binaries:
-    name: "Quake CLI Tools: Build the binaries"
+    name: "goldutil: Build the binaries"
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
