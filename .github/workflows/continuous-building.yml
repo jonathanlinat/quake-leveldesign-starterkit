@@ -600,8 +600,9 @@ jobs:
       - name: "Windows: Prepare the artifact"
         if: startsWith(matrix.os, 'windows-')
         run: |
-          mkdir $env:ARTIFACT_DIRECTORY_NAME-windows | Out-Null
-          copy $env:ARTIFACT_DIRECTORY_NAME.exe $env:ARTIFACT_DIRECTORY_NAME-windows
+          $zipdir = "${env:ARTIFACT_DIRECTORY_NAME}-windows"
+          mkdir -p $zipdir | Out-Null
+          copy ${env:ARTIFACT_DIRECTORY_NAME}.exe $zipdir
         shell: pwsh
       - name: "Windows: Pack and upload the artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
