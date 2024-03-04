@@ -32,6 +32,8 @@ The current version of **QLDSK** includes the following set of applications, too
    - An advanced fork of QuakeSpasm, a popular source port of the Quake engine, aimed at enhancing performance and introducing additional features. It has been optimized for high performance, incorporating modern techniques such as culling, GPU-accelerated lightmap updates, and compute shaders, allowing it to handle highly detailed Quake maps at high framerates.
 * **Quake CLI Tools**, Joshua Skelton [[GitHub](https://github.com/joshuaskelly/quake-cli-tools)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)] [[Website](https://joshua.itch.io/quake-tools)] [[Discord](https://discord.gg/PyqRPNwnk7)]
    - A collection of command-line utilities to facilitate the creation of content for the Quake game series. These tools can perform various tasks, including managing `.pak` and `.wad` files, adding and extracting files, converting `.bsp` files to `.wad` files, and even creating `.svg` files from `.bsp` files.
+* **goldutil**, Léo Peltier [[GitHub](https://github.com/L-P/goldutil)]
+   - A comprehensive suite of GoldSrc engine CLI utilities for content creation, offering `.wad` and `.spr` files management, entity graph generation, and `.map` file cleanup to streamline TrenchBroom workflows.
 
 ### Extras
 

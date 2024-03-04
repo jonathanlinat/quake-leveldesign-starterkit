@@ -31,6 +31,24 @@ jobs:
           workflow: continuous-building.yml
           skip_unpack: true
         env:
+          ARTIFACT_NAME: TrenchBroom
+          ARTIFACT_DIRECTORY_NAME: trenchbroom
+      - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: 7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip" -o"${{ env.PROJECT_NAME_PREFIX }}-linux/level-editor/" -y
+        shell: bash
+        env:
+          ARTIFACT_NAME: TrenchBroom
+          ARTIFACT_DIRECTORY_NAME: trenchbroom
+      - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          name_is_regexp: true
+          name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*linux$
+          workflow: continuous-building.yml
+          skip_unpack: true
+        env:
           ARTIFACT_NAME: ericw-tools
           ARTIFACT_DIRECTORY_NAME: ericw-tools
       - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
@@ -85,15 +103,15 @@ jobs:
           workflow: continuous-building.yml
           skip_unpack: true
         env:
-          ARTIFACT_NAME: TrenchBroom
-          ARTIFACT_DIRECTORY_NAME: trenchbroom
+          ARTIFACT_NAME: goldutil
+          ARTIFACT_DIRECTORY_NAME: goldutil
       - name: "Linux: Unpack ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: 7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip" -o"${{ env.PROJECT_NAME_PREFIX }}-linux/level-editor/" -y
+        run: 7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux.zip" -o"${{ env.PROJECT_NAME_PREFIX }}-linux/tools/${{ env.ARTIFACT_DIRECTORY_NAME }}/" -y
         shell: bash
         env:
-          ARTIFACT_NAME: TrenchBroom
-          ARTIFACT_DIRECTORY_NAME: trenchbroom
+          ARTIFACT_NAME: goldutil
+          ARTIFACT_DIRECTORY_NAME: goldutil
       - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         uses: dawidd6/action-download-artifact@v3
@@ -128,6 +146,24 @@ jobs:
         if: ${{ startsWith(matrix.os, 'windows-') }}
         run: echo "CURRENT_DATE=$(Get-Date -Format 'yyyyMMdd')" | Out-File -Append -FilePath $env:GITHUB_ENV
         shell: pwsh
+      - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          name_is_regexp: true
+          name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*windows$
+          workflow: continuous-building.yml
+          skip_unpack: true
+        env:
+          ARTIFACT_NAME: TrenchBroom
+          ARTIFACT_DIRECTORY_NAME: trenchbroom
+      - name: "Windows: Unpack ${{ env.ARTIFACT_NAME }} artifact"
+        if: ${{ startsWith(matrix.os, 'windows-') }}
+        run: 7z x "${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip" -o"${env:PROJECT_NAME_PREFIX}-windows\level-editor\" -y
+        shell: pwsh
+        env:
+          ARTIFACT_NAME: TrenchBroom
+          ARTIFACT_DIRECTORY_NAME: trenchbroom
       - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: dawidd6/action-download-artifact@v3
@@ -191,15 +227,15 @@ jobs:
           workflow: continuous-building.yml
           skip_unpack: true
         env:
-          ARTIFACT_NAME: TrenchBroom
-          ARTIFACT_DIRECTORY_NAME: trenchbroom
+          ARTIFACT_NAME: goldutil
+          ARTIFACT_DIRECTORY_NAME: goldutil
       - name: "Windows: Unpack ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: 7z x "${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip" -o"${env:PROJECT_NAME_PREFIX}-windows\level-editor\" -y
+        run: 7z x "${env:ARTIFACT_DIRECTORY_NAME}-binaries-windows.zip" -o"${env:PROJECT_NAME_PREFIX}-windows\tools\${env:ARTIFACT_DIRECTORY_NAME}\" -y
         shell: pwsh
         env:
-          ARTIFACT_NAME: TrenchBroom
-          ARTIFACT_DIRECTORY_NAME: trenchbroom
+          ARTIFACT_NAME: goldutil
+          ARTIFACT_DIRECTORY_NAME: goldutil
       - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: dawidd6/action-download-artifact@v3
@@ -258,7 +294,7 @@ jobs:
           done
         shell: bash
         env:
-          METADATA_FILES: trenchbroom,ericw-tools,ironwail,quake-cli-tools,extras
+          METADATA_FILES: trenchbroom,ericw-tools,ironwail,quake-cli-tools,goldutil,extras
       - name: Pack and upload the release notes
         uses: actions/upload-artifact@v4
         with:
