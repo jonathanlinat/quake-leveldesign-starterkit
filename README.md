@@ -8,9 +8,13 @@
 ## Weekly Release
 
 > [!WARNING]
+> **April 8th, 2024**: Important notice.
+> 
 > The **automated build process is on hold** due to [a cybersecurity concern](https://github.com/TrenchBroom/TrenchBroom/issues/4538) impacting a wide range of Unix-based operating systems and the TrenchBroom build procedure. The process will resume after the problem has been resolved.
 >
-> **For more information**: https://tukaani.org/xz-backdoor/
+> > **For more information**: https://tukaani.org/xz-backdoor/
+
+---
 
 | 🔔 Get the Latest Weekly Release | 💬 Do You Need Support? |
 | -------------------------------- | ----------------------- |
