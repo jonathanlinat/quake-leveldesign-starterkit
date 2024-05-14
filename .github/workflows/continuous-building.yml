@@ -716,7 +716,7 @@ jobs:
       - name: "${{ env.EXTRA_NAME }}: Download and extract"
         run: |
           curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.rar"
-          7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.rar" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/goldsrc/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
+          7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.rar" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/goldsrc/${{ env.EXTRA_DIRECTORY_NAME }}/" -y 2>/dev/null
         shell: bash
         env:
           EXTRA_NAME: Digit's Developer Textures
