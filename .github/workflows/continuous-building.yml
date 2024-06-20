@@ -127,7 +127,7 @@ jobs:
         shell: pwsh
       - name: "Windows: Install Qt"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           version: 5.15.2
           arch: win64_msvc2019_64
@@ -247,7 +247,7 @@ jobs:
           vsversion: 2022
       - name: "Windows: Install Qt5"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           version: 5.15.2
           arch: win64_msvc2019_64
