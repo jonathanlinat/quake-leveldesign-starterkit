@@ -333,7 +333,7 @@ jobs:
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
           sudo apt update
-          sudo apt install libcurl4-openssl-dev libmad0-dev libsdl2-dev libvorbis-dev
+          sudo apt install libcurl4-openssl-dev libmpg123-dev libsdl2-dev libvorbis-dev
         shell: bash
       - name: "Linux: Compile the source code"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
