@@ -3,6 +3,8 @@
 
 **Quake Level Design Starter Kit**, also known as **QLDSK**, consolidates various tools and resources into one comprehensive package, facilitating the quick and easy creation of **Quake** and **GoldSrc** engine-based maps with just a few clicks.
 
+![qldsk-preview](https://github.com/user-attachments/assets/2ac3a477-f00e-4de9-a5e5-2d572f3cc259)
+
 ---
 
 ## Weekly Release
