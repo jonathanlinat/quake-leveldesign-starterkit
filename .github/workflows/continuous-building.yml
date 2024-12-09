@@ -105,7 +105,9 @@ jobs:
         shell: bash
       - name: "Linux: Prepare the artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: mv build/${{ env.ARTIFACT_NAME }}-* ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+        run: |
+          mkdir ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
+          mv build/${{ env.ARTIFACT_NAME }}-* ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
         shell: bash
       - name: "Linux: Pack and upload the artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
