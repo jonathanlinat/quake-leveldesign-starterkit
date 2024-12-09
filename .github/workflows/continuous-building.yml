@@ -106,7 +106,7 @@ jobs:
       - name: "Linux: Prepare the artifact"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: |
-          7z x "build/${{ env.ARTIFACT_NAME }}-*.AppImage" -o"${{ env.PROJECT_NAME_PREFIX }}-linux/" -y
+          7z x "build/${{ env.ARTIFACT_NAME }}-*.AppImage" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/" -y
           mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/usr/bin/${{ env.ARTIFACT_DIRECTORY_NAME }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
           mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/usr/share/${{ env.ARTIFACT_NAME }}/* ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
         shell: bash
