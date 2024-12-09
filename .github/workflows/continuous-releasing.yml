@@ -6,8 +6,17 @@ on:
 env:
   PROJECT_NAME_PREFIX: quake-leveldesign-starterkit
 jobs:
+  run-on-workflow-success:
+    name: Check if previous workflow succeeded
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check workflow status
+        run: echo "Previous workflow succeeded"
+        shell: bash
   release-starter-kit:
     name: Release the starter kit
+    needs: run-on-workflow-success
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout the repository
@@ -19,14 +28,14 @@ jobs:
         run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
         shell: bash
       - name: Download packed binaries
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v7
         with:
           name_is_regexp: true
           name: ^${{ env.PROJECT_NAME_PREFIX }}.*$
           workflow: continuous-packing.yml
           skip_unpack: true
       - name: Download packed release notes
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v7
         with:
           name_is_regexp: true
           name: ^${{ env.PROJECT_NAME_PREFIX }}-release-notes.*$
