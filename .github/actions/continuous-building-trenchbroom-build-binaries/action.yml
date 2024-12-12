@@ -5,9 +5,6 @@ runs:
     - name: Change the directory
       run: cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository
       shell: bash
-    - name: Change the directory
-      run: cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository
-      shell: bash
     - name: Create directory ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
       run: mkdir -p $VCPKG_DEFAULT_BINARY_CACHE
       shell: bash
