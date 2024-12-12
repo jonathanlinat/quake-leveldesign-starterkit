@@ -3,9 +3,6 @@ on:
   schedule:
     - cron: 0 0 * * 1
   push:
-    branches:
-      - main
-      - debug
     paths:
       - .github/workflows/**
 jobs:
@@ -19,10 +16,16 @@ jobs:
       ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
       ARTIFACT_WEBSITE_URL: http://kristianduske.com/trenchbroom
     steps:
-      - name: Checkout the repository
+      - name: Checkout the local repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Checkout the artifact repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
+          path: "${{ env.ARTIFACT_DIRECTORY_NAME }}-repository"
           fetch-depth: 0
           submodules: recursive
       - uses: ./.github/actions/continuous-building-trenchbroom-generate-metadata
@@ -50,10 +53,16 @@ jobs:
       ARTIFACT_DIRECTORY_NAME: trenchbroom
       ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
     steps:
-      - name: Checkout the repository
+      - name: Checkout the local repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Checkout the artifact repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
+          path: "${{ env.ARTIFACT_DIRECTORY_NAME }}-repository"
           fetch-depth: 0
           submodules: recursive
       - uses: ./.github/actions/continuous-building-trenchbroom-build-binaries
@@ -67,10 +76,16 @@ jobs:
       ARTIFACT_REPOSITORY: ericwa/ericw-tools
       ARTIFACT_DOCUMENTATION_URL: https://ericw-tools.readthedocs.io
     steps:
-      - name: Checkout the repository
+      - name: Checkout the local repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Checkout the artifact repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
+          path: "${{ env.ARTIFACT_DIRECTORY_NAME }}-repository"
           fetch-depth: 0
           submodules: recursive
       - uses: ./.github/actions/continuous-building-ericw-tools-generate-metadata
@@ -90,10 +105,16 @@ jobs:
       ARTIFACT_DIRECTORY_NAME: ericw-tools
       ARTIFACT_REPOSITORY: ericwa/ericw-tools
     steps:
-      - name: Checkout the repository
+      - name: Checkout the local repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Checkout the artifact repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
+          path: "${{ env.ARTIFACT_DIRECTORY_NAME }}-repository"
           fetch-depth: 0
           submodules: recursive
       - uses: ./.github/actions/continuous-building-ericw-tools-build-binaries
@@ -107,10 +128,16 @@ jobs:
       ARTIFACT_REPOSITORY: andrei-drexler/ironwail
       ARTIFACT_TWITTER_URL: https://twitter.com/andrei_drexler
     steps:
-      - name: Checkout the repository
+      - name: Checkout the local repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Checkout the artifact repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
+          path: "${{ env.ARTIFACT_DIRECTORY_NAME }}-repository"
           fetch-depth: 0
           submodules: recursive
       - uses: ./.github/actions/continuous-building-ironwail-generate-metadata
@@ -125,12 +152,18 @@ jobs:
       ARTIFACT_DIRECTORY_NAME: ironwail
       ARTIFACT_REPOSITORY: andrei-drexler/ironwail
     steps:
-      - name: Checkout the repository
+      - name: Checkout the local repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Checkout the artifact repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
+          path: "${{ env.ARTIFACT_DIRECTORY_NAME }}-repository"
           fetch-depth: 0
-      - uses: ./.github/actions/continuous-building-ironwail-build-binaries
+          submodules: recursive
   quake-cli-tools-generate-metadata:
     name: "Quake CLI Tools: Generate metadata"
     runs-on: ubuntu-22.04
@@ -142,10 +175,16 @@ jobs:
       ARTIFACT_WEBSITE_URL: https://joshua.itch.io/quake-tools
       ARTIFACT_HOWTO_URL: https://www.youtube.com/watch?v=zJ0RX62VYaA
     steps:
-      - name: Checkout the repository
+      - name: Checkout the local repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Checkout the artifact repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
+          path: "${{ env.ARTIFACT_DIRECTORY_NAME }}-repository"
           fetch-depth: 0
           submodules: recursive
       - uses: ./.github/actions/continuous-building-quake-cli-tools-generate-metadata
@@ -160,12 +199,18 @@ jobs:
       ARTIFACT_DIRECTORY_NAME: quake-cli-tools
       ARTIFACT_REPOSITORY: joshuaskelly/quake-cli-tools
     steps:
-      - name: Checkout the repository
+      - name: Checkout the local repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Checkout the artifact repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
+          path: "${{ env.ARTIFACT_DIRECTORY_NAME }}-repository"
           fetch-depth: 0
-      - uses: ./.github/actions/continuous-building-quake-cli-tools-build-binaries
+          submodules: recursive
   goldutil-generate-metadata:
     name: "goldutil: Generate metadata"
     runs-on: ubuntu-22.04
@@ -175,10 +220,16 @@ jobs:
       ARTIFACT_DIRECTORY_NAME: goldutil
       ARTIFACT_REPOSITORY: L-P/goldutil
     steps:
-      - name: Checkout the repository
+      - name: Checkout the local repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Checkout the artifact repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
+          path: "${{ env.ARTIFACT_DIRECTORY_NAME }}-repository"
           fetch-depth: 0
           submodules: recursive
       - uses: ./.github/actions/continuous-building-goldutil-generate-metadata
@@ -193,12 +244,18 @@ jobs:
       ARTIFACT_DIRECTORY_NAME: goldutil
       ARTIFACT_REPOSITORY: L-P/goldutil
     steps:
-      - name: Checkout the repository
+      - name: Checkout the local repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Checkout the artifact repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARTIFACT_REPOSITORY }}
+          path: "${{ env.ARTIFACT_DIRECTORY_NAME }}-repository"
           fetch-depth: 0
-      - uses: ./.github/actions/continuous-building-goldutil-build-binaries
+          submodules: recursive
   extras-generate-metadata:
     name: "Extras: Generate metadata"
     runs-on: ubuntu-22.04

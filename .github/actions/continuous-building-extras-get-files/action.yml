@@ -2,6 +2,9 @@ name: "Extras: Get the files"
 runs:
   using: composite
   steps:
+    - name: Change the directory
+      run: cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository
+      shell: bash
     - name: "${{ env.EXTRA_NAME }}: Download and extract"
       run: |
         curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip"

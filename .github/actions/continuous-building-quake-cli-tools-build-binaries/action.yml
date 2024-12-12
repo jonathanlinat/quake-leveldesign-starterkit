@@ -2,6 +2,9 @@ name: "Quake CLI Tools: Build the binaries"
 runs:
   using: composite
   steps:
+    - name: Change the directory
+      run: cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository
+      shell: bash
     - name: "Linux: Install Python requirements"
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: |
