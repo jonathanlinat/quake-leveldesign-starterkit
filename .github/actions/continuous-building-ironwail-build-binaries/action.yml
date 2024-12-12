@@ -1,0 +1,74 @@
+name: "Ironwail: Build the binaries"
+runs:
+  using: composite
+  steps:
+    - name: "Linux: Install common dependencies"
+      if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      run: |
+        sudo apt update
+        sudo apt install libcurl4-openssl-dev libmpg123-dev libsdl2-dev libvorbis-dev
+      shell: bash
+    - name: "Linux: Compile the source code"
+      if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      run: make --jobs=3 --keep-going --directory=Quake CC=gcc
+      shell: bash
+    - name: "Linux: Prepare the artifact"
+      if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      run: |
+        mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
+        cp Quake/${{ env.ARTIFACT_DIRECTORY_NAME }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}
+        cp Quake/${{ env.ARTIFACT_DIRECTORY_NAME }}.pak ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}.pak
+      shell: bash
+    - name: "Linux: Pack and upload the artifact"
+      if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      uses: actions/upload-artifact@v4
+      with:
+        path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+        name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
+        if-no-files-found: error
+        retention-days: 1
+    - name: "Windows: Set environment variables"
+      if: ${{ startsWith(matrix.os, 'windows-') }}
+      run: |
+        $gitrev = $(git describe --always)
+        $gitbranch = $(git branch --show-current)
+        $ver_suffix = ("$gitbranch" -eq "master" -Or "$gitbranch" -eq "main") ? "-$gitrev" : "-$gitbranch-$gitrev"
+        $platform_alt = "win64"
+        $platform_short = "x64"
+        $build_artifact = "${env:ARTIFACT_DIRECTORY_NAME}-windows"
+        echo "VER_SUFFIX=$ver_suffix" >> ${env:GITHUB_ENV}
+        echo "BUILD_ARTIFACT=$build_artifact" >> ${env:GITHUB_ENV}
+        echo "BUILD_DIR=$build_artifact" >> ${env:GITHUB_ENV}
+        echo "PLATFORM_ALT=$platform_alt" >> ${env:GITHUB_ENV}
+        echo "PLATFORM_SHORT=$platform_short" >> ${env:GITHUB_ENV}
+        echo "ForceImportBeforeCppTargets=${env:GITHUB_WORKSPACE}\Windows\VisualStudio\custom_build.props" >> ${env:GITHUB_ENV}
+      shell: pwsh
+    - name: "Windows: Compile the source code"
+      if: ${{ startsWith(matrix.os, 'windows-') }}
+      run: |
+        $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | Select-Object -First 1
+        & $msbuild Windows\VisualStudio\${env:ARTIFACT_DIRECTORY_NAME}.sln -property:Configuration=Release -property:Platform=x64 -maxcpucount -verbosity:minimal
+        if (-not $?) { throw "Build failed" }
+      shell: pwsh
+    - name: "Windows: Prepare the artifact"
+      if: ${{ startsWith(matrix.os, 'windows-') }}
+      run: |
+        $compiledir = "Windows\VisualStudio\${env:BUILD_DIR}"
+        $zipdir = "${env:BUILD_ARTIFACT}"
+        mkdir -p $zipdir | Out-Null
+        copy ${compiledir}\*.exe $zipdir
+        copy ${compiledir}\*.dll $zipdir
+        copy Quake\${env:ARTIFACT_DIRECTORY_NAME}.pak $zipdir
+        copy Quakespasm.html $zipdir
+        copy Quakespasm.txt $zipdir
+        copy Quakespasm-Music.txt $zipdir
+        copy LICENSE.txt $zipdir
+      shell: pwsh
+    - name: "Windows: Pack and upload the artifact"
+      if: ${{ startsWith(matrix.os, 'windows-') }}
+      uses: actions/upload-artifact@v4
+      with:
+        path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-windows/
+        name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-windows
+        if-no-files-found: error
+        retention-days: 1

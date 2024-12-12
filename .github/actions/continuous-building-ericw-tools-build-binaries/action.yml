@@ -1,0 +1,54 @@
+name: "ericw-tools: Build the binaries"
+runs:
+  using: composite
+  steps:
+    - name: "Linux: Install Qt5"
+      if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      run: |
+        sudo apt update
+        sudo apt install qtbase5-dev libqt5svg5-dev
+    - name: "Linux: Compile the source code"
+      if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      run: ./build-linux-64.sh
+      shell: bash
+    - name: "Linux: Prepare the artifact"
+      if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      run: |
+        mkdir ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
+        7z x "$(find build-linux/ -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*.zip' | head -n 1)" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/" -y
+      shell: bash
+    - name: "Linux: Pack and upload the artifact"
+      if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      uses: actions/upload-artifact@v4
+      with:
+        path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+        name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
+        if-no-files-found: error
+        retention-days: 1
+    - name: "Windows: Setup MSVC environment"
+      if: ${{ startsWith(matrix.os, 'windows-') }}
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        vsversion: 2022
+    - name: "Windows: Install Qt5"
+      if: ${{ startsWith(matrix.os, 'windows-') }}
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: 5.15.2
+        arch: win64_msvc2019_64
+    - name: "Windows: Compile the source code"
+      if: ${{ startsWith(matrix.os, 'windows-') }}
+      run: .\build-windows.ps1
+      shell: pwsh
+    - name: "Windows: Prepare the artifact"
+      if: ${{ startsWith(matrix.os, 'windows-') }}
+      run: 7z x "build-windows\${env:ARTIFACT_DIRECTORY_NAME}-*.zip" -o"${env:ARTIFACT_DIRECTORY_NAME}-windows\" -y
+      shell: pwsh
+    - name: "Windows: Pack and upload the artifact"
+      if: ${{ startsWith(matrix.os, 'windows-') }}
+      uses: actions/upload-artifact@v4
+      with:
+        path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-windows/
+        name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-windows
+        if-no-files-found: error
+        retention-days: 1

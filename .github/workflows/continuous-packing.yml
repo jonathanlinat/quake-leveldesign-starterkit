@@ -3,6 +3,9 @@ on:
   workflow_run:
     workflows: Continuous Building
     types: completed
+  push:
+    branches:
+      - main
 env:
   PROJECT_NAME_PREFIX: quake-leveldesign-starterkit
 jobs:
