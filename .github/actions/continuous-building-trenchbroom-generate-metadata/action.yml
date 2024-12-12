@@ -43,3 +43,6 @@ runs:
         name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
         if-no-files-found: error
         retention-days: 1
+    - name: Get back to the parent directory
+      run: cd ..
+      shell: bash
