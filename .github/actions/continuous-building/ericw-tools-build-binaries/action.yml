@@ -3,22 +3,22 @@ runs:
   using: composite
   steps:
     - name: Checkout the artifact repository files
-      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
       shell: bash
     - name: "Linux: Install Qt5"
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+      working-directory: working-directory/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: |
         sudo apt update
         sudo apt install qtbase5-dev libqt5svg5-dev
       shell: bash
     - name: "Linux: Compile the source code"
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+      working-directory: working-directory/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: ./build-linux-64.sh
       shell: bash
     - name: "Linux: Prepare the artifact"
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+      working-directory: working-directory/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: |
         mkdir ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
@@ -33,25 +33,23 @@ runs:
         if-no-files-found: error
         retention-days: 1
     - name: "Windows: Setup MSVC environment"
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       uses: ilammy/msvc-dev-cmd@v1
       with:
         vsversion: 2022
     - name: "Windows: Install Qt5"
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       uses: jurplel/install-qt-action@v4
       with:
         version: 5.15.2
         arch: win64_msvc2019_64
     - name: "Windows: Compile the source code"
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+      working-directory: working-directory/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       run: .\build-windows.ps1
       shell: pwsh
     - name: "Windows: Prepare the artifact"
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+      working-directory: working-directory/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       run: 7z x "build-windows\${env:ARTIFACT_DIRECTORY_NAME}-*.zip" -o"${env:ARTIFACT_DIRECTORY_NAME}-windows\" -y
       shell: pwsh
