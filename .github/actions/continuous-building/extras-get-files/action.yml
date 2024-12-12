@@ -48,7 +48,7 @@ runs:
     - name: Pack and upload the artifact
       uses: actions/upload-artifact@v4
       with:
-        path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/
+        path: working-directory/${{ env.ARTIFACT_DIRECTORY_NAME }}-files/
         name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-files
         if-no-files-found: error
         retention-days: 1
