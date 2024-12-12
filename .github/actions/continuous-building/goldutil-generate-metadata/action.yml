@@ -8,7 +8,7 @@ runs:
         cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       shell: bash
     - name: Checkout the artifact repository files
-      run: git clone --depth 0 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} .
+      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} .
       shell: bash
     - name: Get the latest commit details
       run: |

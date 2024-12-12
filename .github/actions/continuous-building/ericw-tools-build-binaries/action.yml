@@ -1,4 +1,4 @@
-name: "Quake CLI Tools: Build the binaries"
+name: "ericw-tools: Build the binaries"
 runs:
   using: composite
   steps:
@@ -8,24 +8,23 @@ runs:
         cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       shell: bash
     - name: Checkout the artifact repository files
-      run: git clone --depth 0 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} .
+      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} .
       shell: bash
-    - name: "Linux: Install Python requirements"
+    - name: "Linux: Install Qt5"
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: |
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
+        sudo apt update
+        sudo apt install qtbase5-dev libqt5svg5-dev
       shell: bash
     - name: "Linux: Compile the source code"
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-      run: make build
+      run: ./build-linux-64.sh
       shell: bash
     - name: "Linux: Prepare the artifact"
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: |
-        make package
-        7z x "$(find . -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*-linux.zip' | head -n 1)" -y
-        mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-*-linux/ ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+        mkdir ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
+        7z x "$(find build-linux/ -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*.zip' | head -n 1)" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/" -y
       shell: bash
     - name: "Linux: Pack and upload the artifact"
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
@@ -40,23 +39,19 @@ runs:
       uses: ilammy/msvc-dev-cmd@v1
       with:
         vsversion: 2022
-    - name: "Windows: Install Python requirements"
+    - name: "Windows: Install Qt5"
       if: ${{ startsWith(matrix.os, 'windows-') }}
-      run: |
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
-      shell: pwsh
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: 5.15.2
+        arch: win64_msvc2019_64
     - name: "Windows: Compile the source code"
       if: ${{ startsWith(matrix.os, 'windows-') }}
-      run: make build
+      run: .\build-windows.ps1
       shell: pwsh
     - name: "Windows: Prepare the artifact"
       if: ${{ startsWith(matrix.os, 'windows-') }}
-      run: |
-        make package
-        $zipFile = Get-ChildItem -Name "${env:ARTIFACT_DIRECTORY_NAME}-*-windows.zip" | Select-Object -First 1
-        7z x "$zipFile" -y
-        mv ${env:ARTIFACT_DIRECTORY_NAME}-*-windows/ ${env:ARTIFACT_DIRECTORY_NAME}-windows/
+      run: 7z x "build-windows\${env:ARTIFACT_DIRECTORY_NAME}-*.zip" -o"${env:ARTIFACT_DIRECTORY_NAME}-windows\" -y
       shell: pwsh
     - name: "Windows: Pack and upload the artifact"
       if: ${{ startsWith(matrix.os, 'windows-') }}

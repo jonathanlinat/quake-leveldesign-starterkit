@@ -1,4 +1,4 @@
-name: "TrenchBroom: Generate metadata"
+name: "Ironwail: Generate metadata"
 runs:
   using: composite
   steps:
@@ -8,7 +8,7 @@ runs:
         cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       shell: bash
     - name: Checkout the artifact repository files
-      run: git clone --depth 0 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} .
+      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} .
       shell: bash
     - name: Get the latest commit details
       run: |
@@ -24,9 +24,9 @@ runs:
       run: |
         mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
         echo "
-        ### Applications
+        ### Tools
 
-        - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[Website](${{ env.ARTIFACT_WEBSITE_URL }})]
+        - **${{ env.ARTIFACT_NAME }}**, ${{ env.ARTIFACT_AUTHOR_NAME }} [[Twitter](${{ env.ARTIFACT_TWITTER_URL }})]
 
           > **Commit**: [${{ env.LAST_COMMIT_SHA_HASH }}](https://github.com/${{ env.ARTIFACT_REPOSITORY }}/commit/${{ env.LAST_COMMIT_SHA_HASH }}) pushed by [${{ env.LAST_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.LAST_COMMIT_LOGIN_NAME }}) on **${{ env.LAST_COMMIT_DATE }}**
           > **Message**: \`${{ env.LAST_COMMIT_MESSAGE }}\`
