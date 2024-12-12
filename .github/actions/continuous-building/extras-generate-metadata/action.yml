@@ -2,12 +2,11 @@ name: "Extras: Generate metadata"
 runs:
   using: composite
   steps:
-    - name: Change the directory
-      run: |
-        mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
-        cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+    - name: Create the working directory
+      run: mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository
       shell: bash
     - name: Create initial content
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: |
         mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
         echo "
@@ -15,6 +14,7 @@ runs:
         " >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
     - name: Create Quake section
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: |
         mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
         echo "
@@ -22,6 +22,7 @@ runs:
         " >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
     - name: "${{ env.EXTRA_NAME }}: Create the content"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
       env:
@@ -30,6 +31,7 @@ runs:
         EXTRA_SOURCE_NAME: Slipseer
         EXTRA_DETAILS_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263
     - name: "${{ env.EXTRA_NAME }}: Create the content"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
       env:
@@ -38,6 +40,7 @@ runs:
         EXTRA_SOURCE_NAME: Quake Wiki
         EXTRA_DETAILS_URL: https://quakewiki.org/wiki/Quake_palette
     - name: "${{ env.EXTRA_NAME }}: Create the content"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
       env:
@@ -46,6 +49,7 @@ runs:
         EXTRA_SOURCE_NAME: The Level Design Book
         EXTRA_DETAILS_URL: https://book.leveldesignbook.com/appendix/resources/quake
     - name: Create GoldSrc section
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: |
         mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
         echo "
@@ -53,6 +57,7 @@ runs:
         " >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
     - name: "${{ env.EXTRA_NAME }}: Create the content"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
       env:
@@ -61,6 +66,7 @@ runs:
         EXTRA_SOURCE_NAME: GameBanana
         EXTRA_DETAILS_URL: https://gamebanana.com/mods/6693
     - name: Pack and upload the metadata
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       uses: actions/upload-artifact@v4
       with:
         path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/

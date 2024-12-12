@@ -3,21 +3,22 @@ runs:
   using: composite
   steps:
     - name: Checkout the artifact repository files
-      run: |
-        git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
-        cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       shell: bash
     - name: "Linux: Install Python requirements"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: |
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
       shell: bash
     - name: "Linux: Compile the source code"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: make build
       shell: bash
     - name: "Linux: Prepare the artifact"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: |
         make package
@@ -25,6 +26,7 @@ runs:
         mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-*-linux/ ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
       shell: bash
     - name: "Linux: Pack and upload the artifact"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       uses: actions/upload-artifact@v4
       with:
@@ -33,21 +35,25 @@ runs:
         if-no-files-found: error
         retention-days: 1
     - name: "Windows: Setup MSVC environment"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       uses: ilammy/msvc-dev-cmd@v1
       with:
         vsversion: 2022
     - name: "Windows: Install Python requirements"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       run: |
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
       shell: pwsh
     - name: "Windows: Compile the source code"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       run: make build
       shell: pwsh
     - name: "Windows: Prepare the artifact"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       run: |
         make package
@@ -56,6 +62,7 @@ runs:
         mv ${env:ARTIFACT_DIRECTORY_NAME}-*-windows/ ${env:ARTIFACT_DIRECTORY_NAME}-windows/
       shell: pwsh
     - name: "Windows: Pack and upload the artifact"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       uses: actions/upload-artifact@v4
       with:

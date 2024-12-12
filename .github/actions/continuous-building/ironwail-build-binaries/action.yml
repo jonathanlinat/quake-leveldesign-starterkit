@@ -3,21 +3,22 @@ runs:
   using: composite
   steps:
     - name: Checkout the artifact repository files
-      run: |
-        git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
-        cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       shell: bash
     - name: "Linux: Install common dependencies"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: |
         sudo apt update
         sudo apt install libcurl4-openssl-dev libmpg123-dev libsdl2-dev libvorbis-dev
       shell: bash
     - name: "Linux: Compile the source code"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: make --jobs=3 --keep-going --directory=Quake CC=gcc
       shell: bash
     - name: "Linux: Prepare the artifact"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: |
         mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
@@ -25,6 +26,7 @@ runs:
         cp Quake/${{ env.ARTIFACT_DIRECTORY_NAME }}.pak ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}.pak
       shell: bash
     - name: "Linux: Pack and upload the artifact"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       uses: actions/upload-artifact@v4
       with:
@@ -33,6 +35,7 @@ runs:
         if-no-files-found: error
         retention-days: 1
     - name: "Windows: Set environment variables"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       run: |
         $gitrev = $(git describe --always)
@@ -49,6 +52,7 @@ runs:
         echo "ForceImportBeforeCppTargets=${env:GITHUB_WORKSPACE}\Windows\VisualStudio\custom_build.props" >> ${env:GITHUB_ENV}
       shell: pwsh
     - name: "Windows: Compile the source code"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       run: |
         $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | Select-Object -First 1
@@ -56,6 +60,7 @@ runs:
         if (-not $?) { throw "Build failed" }
       shell: pwsh
     - name: "Windows: Prepare the artifact"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       run: |
         $compiledir = "Windows\VisualStudio\${env:BUILD_DIR}"
@@ -70,6 +75,7 @@ runs:
         copy LICENSE.txt $zipdir
       shell: pwsh
     - name: "Windows: Pack and upload the artifact"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       uses: actions/upload-artifact@v4
       with:

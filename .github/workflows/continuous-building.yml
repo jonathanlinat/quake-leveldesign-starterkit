@@ -22,8 +22,10 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/continuous-building/trenchbroom-generate-metadata
+        id: trenchbroom-generate-metadata
   trenchbroom-build-binaries:
     name: "TrenchBroom: Build the binaries"
+    needs: trenchbroom-generate-metadata
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

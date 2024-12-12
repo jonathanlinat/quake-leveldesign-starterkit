@@ -2,12 +2,11 @@ name: "Extras: Get the files"
 runs:
   using: composite
   steps:
-    - name: Change the directory
-      run: |
-        mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
-        cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+    - name: Create the working directory
+      run: mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository
       shell: bash
     - name: "${{ env.EXTRA_NAME }}: Download and extract"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: |
         curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip"
         7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/quake/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
@@ -17,6 +16,7 @@ runs:
         EXTRA_DIRECTORY_NAME: prototype-wad
         EXTRA_DOWNLOAD_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263/version/448/download&file=3663
     - name: "${{ env.EXTRA_NAME }}: Download and extract"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: |
         curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip"
         7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/quake/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
@@ -26,6 +26,7 @@ runs:
         EXTRA_DIRECTORY_NAME: quake-palette
         EXTRA_DOWNLOAD_URL: https://quakewiki.org/w/images/d/d2/quake_palette.zip
     - name: "${{ env.EXTRA_NAME }}: Download and extract"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: |
         curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip"
         7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/quake/${{ env.EXTRA_DIRECTORY_NAME }}/" -y
@@ -35,6 +36,7 @@ runs:
         EXTRA_DIRECTORY_NAME: trenchbroom-quake-map-source
         EXTRA_DOWNLOAD_URL: https://toolness-media.s3.amazonaws.com/quake/trenchbroom_quake_map_source.zip
     - name: "${{ env.EXTRA_NAME }}: Download and extract"
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: |
         curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.rar"
         7z x "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.rar" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-files/goldsrc/${{ env.EXTRA_DIRECTORY_NAME }}/" -y 2>/dev/null
@@ -44,6 +46,7 @@ runs:
         EXTRA_DIRECTORY_NAME: digits-developer-textures
         EXTRA_DOWNLOAD_URL: https://files.gamebanana.com/mods/digits-devtex-13.rar
     - name: Pack and upload the artifact
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       uses: actions/upload-artifact@v4
       with:
         path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/

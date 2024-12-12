@@ -3,11 +3,10 @@ runs:
   using: composite
   steps:
     - name: Checkout the artifact repository files
-      run: |
-        git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
-        cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       shell: bash
     - name: Get the latest commit details
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: |
         echo "CURRENT_BRANCH_NAME=$(git branch --show-current)" >> $GITHUB_ENV
         echo "LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
@@ -18,6 +17,7 @@ runs:
         echo "LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
       shell: bash
     - name: Create the content
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       run: |
         mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
         echo "
@@ -31,6 +31,7 @@ runs:
           > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
     - name: Pack and upload the metadata
+      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       uses: actions/upload-artifact@v4
       with:
         path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
