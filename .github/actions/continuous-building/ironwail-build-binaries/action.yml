@@ -26,7 +26,6 @@ runs:
         cp Quake/${{ env.ARTIFACT_DIRECTORY_NAME }}.pak ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}.pak
       shell: bash
     - name: "Linux: Pack and upload the artifact"
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       uses: actions/upload-artifact@v4
       with:
@@ -75,7 +74,6 @@ runs:
         copy LICENSE.txt $zipdir
       shell: pwsh
     - name: "Windows: Pack and upload the artifact"
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       uses: actions/upload-artifact@v4
       with:

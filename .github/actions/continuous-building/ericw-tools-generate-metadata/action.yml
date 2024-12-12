@@ -29,7 +29,6 @@ runs:
           > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
     - name: Pack and upload the metadata
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       uses: actions/upload-artifact@v4
       with:
         path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/

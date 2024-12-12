@@ -25,7 +25,6 @@ runs:
         7z x "$(find build-linux/ -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*.zip' | head -n 1)" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/" -y
       shell: bash
     - name: "Linux: Pack and upload the artifact"
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       uses: actions/upload-artifact@v4
       with:
@@ -57,7 +56,6 @@ runs:
       run: 7z x "build-windows\${env:ARTIFACT_DIRECTORY_NAME}-*.zip" -o"${env:ARTIFACT_DIRECTORY_NAME}-windows\" -y
       shell: pwsh
     - name: "Windows: Pack and upload the artifact"
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       if: ${{ startsWith(matrix.os, 'windows-') }}
       uses: actions/upload-artifact@v4
       with:

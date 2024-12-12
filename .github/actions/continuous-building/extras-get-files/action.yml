@@ -46,7 +46,6 @@ runs:
         EXTRA_DIRECTORY_NAME: digits-developer-textures
         EXTRA_DOWNLOAD_URL: https://files.gamebanana.com/mods/digits-devtex-13.rar
     - name: Pack and upload the artifact
-      working-directory: ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       uses: actions/upload-artifact@v4
       with:
         path: ${{ env.ARTIFACT_DIRECTORY_NAME }}-files/
