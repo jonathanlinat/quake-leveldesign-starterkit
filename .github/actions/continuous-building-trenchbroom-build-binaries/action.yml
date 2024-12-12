@@ -8,11 +8,8 @@ runs:
         cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       shell: bash
     - name: Checkout the artifact repository files
-      uses: actions/checkout@v4
-      with:
-        repository: ${{ env.ARTIFACT_REPOSITORY }}
-        fetch-depth: 0
-        submodules: recursive
+      run: git clone --depth 0 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} .
+      shell: bash
     - name: Create directory ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
       run: mkdir -p $VCPKG_DEFAULT_BINARY_CACHE
       shell: bash
@@ -79,6 +76,3 @@ runs:
         name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-windows
         if-no-files-found: error
         retention-days: 1
-    - name: Get back to the parent directory
-      run: cd ..
-      shell: bash

@@ -8,16 +8,14 @@ runs:
         cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       shell: bash
     - name: Checkout the artifact repository files
-      uses: actions/checkout@v4
-      with:
-        repository: ${{ env.ARTIFACT_REPOSITORY }}
-        fetch-depth: 0
-        submodules: recursive
+      run: git clone --depth 0 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} .
+      shell: bash
     - name: "Linux: Install Qt5"
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: |
         sudo apt update
         sudo apt install qtbase5-dev libqt5svg5-dev
+      shell: bash
     - name: "Linux: Compile the source code"
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
       run: ./build-linux-64.sh
@@ -63,6 +61,3 @@ runs:
         name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-windows
         if-no-files-found: error
         retention-days: 1
-    - name: Get back to the parent directory
-      run: cd ..
-      shell: bash
