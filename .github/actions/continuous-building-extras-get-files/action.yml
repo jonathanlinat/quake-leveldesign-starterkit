@@ -3,7 +3,9 @@ runs:
   using: composite
   steps:
     - name: Change the directory
-      run: cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository
+      run: |
+        mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+        cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       shell: bash
     - name: "${{ env.EXTRA_NAME }}: Download and extract"
       run: |

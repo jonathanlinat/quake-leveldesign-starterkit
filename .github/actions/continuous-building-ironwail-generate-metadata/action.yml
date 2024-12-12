@@ -3,7 +3,7 @@ runs:
   using: composite
   steps:
     - name: Change the directory
-      run: cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository
+      run: cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       shell: bash
     - name: Get the latest commit details
       run: |
