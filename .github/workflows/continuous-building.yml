@@ -4,6 +4,7 @@ on:
     - cron: 0 0 * * 1
   push:
     paths:
+      - .github/actions/**
       - .github/workflows/**
 jobs:
   trenchbroom-generate-metadata:
