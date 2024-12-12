@@ -42,7 +42,7 @@ runs:
         $ver_suffix = ("$gitbranch" -eq "master" -Or "$gitbranch" -eq "main") ? "-$gitrev" : "-$gitbranch-$gitrev"
         $platform_alt = "win64"
         $platform_short = "x64"
-        $build_artifact = "Build-windows"
+        $build_artifact = "${env:ARTIFACT_DIRECTORY_NAME}-windows"
         echo "VER_SUFFIX=$ver_suffix" >> ${env:GITHUB_ENV}
         echo "BUILD_ARTIFACT=$build_artifact" >> ${env:GITHUB_ENV}
         echo "BUILD_DIR=$build_artifact" >> ${env:GITHUB_ENV}

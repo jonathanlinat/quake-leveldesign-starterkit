@@ -40,10 +40,6 @@ jobs:
           - os: windows-2022
             tb-arch: x64
     env:
-      TB_PULL_REQUEST_HEAD_SHA_HASH: ${{ github.event.pull_request.head.sha }}
-      TB_OS_IMAGE: ${{ matrix.os }}
-      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/vcpkg/bincache
-      VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
       ARTIFACT_NAME: TrenchBroom
       ARTIFACT_DIRECTORY_NAME: trenchbroom
       ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
