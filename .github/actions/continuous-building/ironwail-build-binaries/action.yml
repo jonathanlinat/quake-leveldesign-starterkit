@@ -2,13 +2,10 @@ name: "Ironwail: Build the binaries"
 runs:
   using: composite
   steps:
-    - name: Create the artifact repository working directory
-      run: |
-        mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
-        cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
-      shell: bash
     - name: Checkout the artifact repository files
-      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} .
+      run: |
+        git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+        cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       shell: bash
     - name: "Linux: Install common dependencies"
       if: ${{ startsWith(matrix.os, 'ubuntu-') }}
