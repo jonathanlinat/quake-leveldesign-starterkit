@@ -3,7 +3,7 @@ runs:
   using: composite
   steps:
     - name: Create the working directory
-      run: mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository
+      run: mkdir -p working-directory
       shell: bash
     - name: Create initial content
       working-directory: working-directory/
