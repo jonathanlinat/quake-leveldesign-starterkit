@@ -2,9 +2,17 @@ name: "Quake CLI Tools: Generate metadata"
 runs:
   using: composite
   steps:
-    - name: Change the directory
-      run: cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+    - name: Create the artifact repository working directory
+      run: |
+        mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
+        cd ${{ env.ARTIFACT_DIRECTORY_NAME }}-repository/
       shell: bash
+    - name: Checkout the artifact repository files
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ env.ARTIFACT_REPOSITORY }}
+        fetch-depth: 0
+        submodules: recursive
     - name: Get the latest commit details
       run: |
         echo "CURRENT_BRANCH_NAME=$(git branch --show-current)" >> $GITHUB_ENV
