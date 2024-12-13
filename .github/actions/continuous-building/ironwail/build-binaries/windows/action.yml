@@ -18,7 +18,7 @@ runs:
         echo "BUILD_DIR=$build_artifact" >> ${env:GITHUB_ENV}
         echo "PLATFORM_ALT=$platform_alt" >> ${env:GITHUB_ENV}
         echo "PLATFORM_SHORT=$platform_short" >> ${env:GITHUB_ENV}
-        echo "ForceImportBeforeCppTargets=${env:GITHUB_WORKSPACE}\Windows\VisualStudio\custom_build.props" >> ${env:GITHUB_ENV}
+        echo "ForceImportBeforeCppTargets=${env:GITHUB_WORKSPACE}\working-directory\Windows\VisualStudio\custom_build.props" >> ${env:GITHUB_ENV}
       shell: pwsh
     - name: Compile the source code
       working-directory: working-directory/
