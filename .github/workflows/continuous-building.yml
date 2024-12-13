@@ -66,12 +66,9 @@ jobs:
           - name: TrenchBroom
             directory: trenchbroom
             repository: TrenchBroom/TrenchBroom
-            tb-build-type: release
-            tb-arch: default-arch
           - name: ericw-tools
             directory: ericw-tools
             repository: ericwa/ericw-tools
-            use-asan: NO
           - name: Ironwail
             directory: ironwail
             repository: andrei-drexler/ironwail
@@ -82,6 +79,8 @@ jobs:
             directory: goldutil
             repository: L-P/goldutil
         os: [ubuntu-22.04, windows-2022]
+        tb-arch: [default-arch, x64]
+        use-asan: [YES, NO]
         exclude:
           - project: TrenchBroom
             os: windows-2022
@@ -97,9 +96,8 @@ jobs:
       ARTIFACT_NAME: ${{ matrix.project.name }}
       ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}
       ARTIFACT_REPOSITORY: ${{ matrix.project.repository }}
-      TB_BUILD_TYPE: ${{ matrix.project.tb-build-type || '' }}
-      TB_ARCH: ${{ matrix.project.tb-arch || '' }}
-      USE_ASAN: ${{ matrix.project.use-asan || '' }}
+      TB_ARCH: ${{ matrix.tb-arch || '' }}
+      USE_ASAN: ${{ matrix.use-asan || '' }}
     steps:
       - name: Checkout the local repository
         uses: actions/checkout@v4
