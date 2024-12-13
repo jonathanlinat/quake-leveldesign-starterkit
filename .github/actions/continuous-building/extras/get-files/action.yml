@@ -1,4 +1,3 @@
-name: "Extras: Get the files"
 runs:
   using: composite
   steps:

@@ -1,4 +1,4 @@
-name: "Linux: Build the binaries"
+name: Linux
 runs:
   using: composite
   steps:

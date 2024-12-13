@@ -1,4 +1,4 @@
-name: "Windows: Build the binaries"
+name: Windows
 runs:
   using: composite
   steps:
