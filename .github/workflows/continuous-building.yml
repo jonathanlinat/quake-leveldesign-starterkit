@@ -48,7 +48,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/${{ env.ARTIFACT_DIRECTORY_NAME }}/build-binaries/$(echo "${{ matrix.os }}" | cut -d'-' -f1)
+      - if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: ./.github/actions/continuous-building/trenchbroom/build-binaries/ubuntu
+      - if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: ./.github/actions/continuous-building/trenchbroom/build-binaries/windows
   ericw-tools-generate-metadata:
     name: "ericw-tools: Generate metadata"
     runs-on: ubuntu-22.04
@@ -86,7 +89,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/${{ env.ARTIFACT_DIRECTORY_NAME }}/build-binaries/$(echo "${{ matrix.os }}" | cut -d'-' -f1)
+      - if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: ./.github/actions/continuous-building/ericw-tools/build-binaries/ubuntu
+      - if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: ./.github/actions/continuous-building/ericw-tools/build-binaries/windows
   ironwail-generate-metadata:
     name: "Ironwail: Generate metadata"
     runs-on: ubuntu-22.04
@@ -119,7 +125,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/${{ env.ARTIFACT_DIRECTORY_NAME }}/build-binaries/$(echo "${{ matrix.os }}" | cut -d'-' -f1)
+      - if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: ./.github/actions/continuous-building/ironwail/build-binaries/ubuntu
+      - if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: ./.github/actions/continuous-building/ironwail/build-binaries/windows
   quake-cli-tools-generate-metadata:
     name: "Quake CLI Tools: Generate metadata"
     runs-on: ubuntu-22.04
@@ -153,7 +162,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/${{ env.ARTIFACT_DIRECTORY_NAME }}/build-binaries/$(echo "${{ matrix.os }}" | cut -d'-' -f1)
+      - if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: ./.github/actions/continuous-building/quake-cli-tools/build-binaries/ubuntu
+      - if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: ./.github/actions/continuous-building/quake-cli-tools/build-binaries/windows
   goldutil-generate-metadata:
     name: "goldutil: Generate metadata"
     runs-on: ubuntu-22.04
@@ -185,7 +197,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/${{ env.ARTIFACT_DIRECTORY_NAME }}/build-binaries/$(echo "${{ matrix.os }}" | cut -d'-' -f1)
+      - if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: ./.github/actions/continuous-building/goldutil/build-binaries/ubuntu
+      - if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: ./.github/actions/continuous-building/goldutil/build-binaries/windows
   extras-generate-metadata:
     name: "Extras: Generate metadata"
     runs-on: ubuntu-22.04
@@ -211,4 +226,4 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/${{ env.ARTIFACT_DIRECTORY_NAME }}/get-files
+      - uses: ./.github/actions/continuous-building/extras/get-files
