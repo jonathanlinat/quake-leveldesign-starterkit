@@ -48,9 +48,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      - name: Ubuntu
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         uses: ./.github/actions/continuous-building/trenchbroom/build-binaries/ubuntu
-      - if: ${{ startsWith(matrix.os, 'windows-') }}
+      - name: Windows
+        if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ./.github/actions/continuous-building/trenchbroom/build-binaries/windows
   ericw-tools-generate-metadata:
     name: "ericw-tools: Generate metadata"
@@ -89,9 +91,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      - name: Ubuntu
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         uses: ./.github/actions/continuous-building/ericw-tools/build-binaries/ubuntu
-      - if: ${{ startsWith(matrix.os, 'windows-') }}
+      - name: Windows
+        if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ./.github/actions/continuous-building/ericw-tools/build-binaries/windows
   ironwail-generate-metadata:
     name: "Ironwail: Generate metadata"
@@ -125,9 +129,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      - name: Ubuntu
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         uses: ./.github/actions/continuous-building/ironwail/build-binaries/ubuntu
-      - if: ${{ startsWith(matrix.os, 'windows-') }}
+      - name: Windows
+        if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ./.github/actions/continuous-building/ironwail/build-binaries/windows
   quake-cli-tools-generate-metadata:
     name: "Quake CLI Tools: Generate metadata"
@@ -162,9 +168,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      - name: Ubuntu
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         uses: ./.github/actions/continuous-building/quake-cli-tools/build-binaries/ubuntu
-      - if: ${{ startsWith(matrix.os, 'windows-') }}
+      - name: Windows
+        if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ./.github/actions/continuous-building/quake-cli-tools/build-binaries/windows
   goldutil-generate-metadata:
     name: "goldutil: Generate metadata"
@@ -197,9 +205,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+      - name: Ubuntu
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         uses: ./.github/actions/continuous-building/goldutil/build-binaries/ubuntu
-      - if: ${{ startsWith(matrix.os, 'windows-') }}
+      - name: Windows
+        if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ./.github/actions/continuous-building/goldutil/build-binaries/windows
   extras-generate-metadata:
     name: "Extras: Generate metadata"
