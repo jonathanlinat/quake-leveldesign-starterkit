@@ -1,0 +1,31 @@
+name: "Linux: Build the binaries"
+runs:
+  using: composite
+  steps:
+    - name: Checkout the artifact repository files
+      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
+      shell: bash
+    - name: Install common dependencies
+      working-directory: working-directory/
+      run: |
+        sudo apt update
+        sudo apt install libcurl4-openssl-dev libmpg123-dev libsdl2-dev libvorbis-dev
+      shell: bash
+    - name: Compile the source code
+      working-directory: working-directory/
+      run: make --jobs=3 --keep-going --directory=Quake CC=gcc
+      shell: bash
+    - name: Prepare the artifact
+      working-directory: working-directory/
+      run: |
+        mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
+        cp Quake/${{ env.ARTIFACT_DIRECTORY_NAME }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}
+        cp Quake/${{ env.ARTIFACT_DIRECTORY_NAME }}.pak ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}.pak
+      shell: bash
+    - name: Pack and upload the artifact
+      uses: actions/upload-artifact@v4
+      with:
+        path: working-directory/${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+        name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
+        if-no-files-found: error
+        retention-days: 1

@@ -1,0 +1,30 @@
+name: "Linux: Build the binaries"
+runs:
+  using: composite
+  steps:
+    - name: Checkout the artifact repository files
+      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
+      shell: bash
+    - name: Install Qt5
+      working-directory: working-directory/
+      run: |
+        sudo apt update
+        sudo apt install qtbase5-dev libqt5svg5-dev
+      shell: bash
+    - name: Compile the source code
+      working-directory: working-directory/
+      run: ./build-linux-64.sh
+      shell: bash
+    - name: Prepare the artifact
+      working-directory: working-directory/
+      run: |
+        mkdir ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
+        7z x "$(find build-linux/ -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*.zip' | head -n 1)" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/" -y
+      shell: bash
+    - name: Pack and upload the artifact
+      uses: actions/upload-artifact@v4
+      with:
+        path: working-directory/${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+        name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
+        if-no-files-found: error
+        retention-days: 1

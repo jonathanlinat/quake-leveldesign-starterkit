@@ -1,0 +1,36 @@
+name: "Windows: Build the binaries"
+runs:
+  using: composite
+  steps:
+    - name: Checkout the artifact repository files
+      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
+      shell: bash
+    - name: Setup MSVC environment
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        vsversion: 2022
+    - name: Install Python requirements
+      working-directory: working-directory/
+      run: |
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+      shell: pwsh
+    - name: Compile the source code
+      working-directory: working-directory/
+      run: make build
+      shell: pwsh
+    - name: Prepare the artifact
+      working-directory: working-directory/
+      run: |
+        make package
+        $zipFile = Get-ChildItem -Name "${env:ARTIFACT_DIRECTORY_NAME}-*-windows.zip" | Select-Object -First 1
+        7z x "$zipFile" -y
+        mv ${env:ARTIFACT_DIRECTORY_NAME}-*-windows/ ${env:ARTIFACT_DIRECTORY_NAME}-windows/
+      shell: pwsh
+    - name: Pack and upload the artifact
+      uses: actions/upload-artifact@v4
+      with:
+        path: working-directory/${{ env.ARTIFACT_DIRECTORY_NAME }}-windows/
+        name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-windows
+        if-no-files-found: error
+        retention-days: 1

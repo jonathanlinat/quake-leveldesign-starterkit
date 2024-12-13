@@ -1,0 +1,24 @@
+name: "Linux: Build the binaries"
+runs:
+  using: composite
+  steps:
+    - name: Checkout the artifact repository files
+      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
+      shell: bash
+    - name: Compile the source code
+      working-directory: working-directory/
+      run: make
+      shell: bash
+    - name: Prepare the artifact
+      working-directory: working-directory/
+      run: |
+        mkdir ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
+        cp ${{ env.ARTIFACT_DIRECTORY_NAME }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}
+      shell: bash
+    - name: Pack and upload the artifact
+      uses: actions/upload-artifact@v4
+      with:
+        path: working-directory/${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
+        name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
+        if-no-files-found: error
+        retention-days: 1
