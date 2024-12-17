@@ -64,6 +64,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-22.04, windows-2022]
         project:
           - name: TrenchBroom
             directory: trenchbroom
@@ -80,7 +81,6 @@ jobs:
           - name: goldutil
             directory: goldutil
             repo: L-P/goldutil
-        os: [ubuntu-22.04, windows-2022]
     env:
       ARTIFACT_NAME: ${{ matrix.project.name }}
       ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}
@@ -93,4 +93,4 @@ jobs:
       - name: ${{ matrix.project.name }} (${{ matrix.os }})
         uses: jenseng/dynamic-uses@v1
         with:
-          uses: ./.github/actions/continuous-building/goldutil/build-binaries/${{ matrix.os }}
+          uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/build-binaries/${{ matrix.os }}
