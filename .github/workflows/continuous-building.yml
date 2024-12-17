@@ -53,7 +53,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: ${{ matrix.project.name }}
+      - name: Generate metadata
         uses: jenseng/dynamic-uses@v1
         with:
           uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/generate-metadata
@@ -90,7 +90,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: ${{ matrix.project.name }} (${{ matrix.os }})
+      - name: Get the matrix operating system name
+        run: echo "MATRIX_OS=$(echo "${{ matrix.os }}" | cut -d'-' -f1)" >> $GITHUB_ENV
+      - name: Build binaries
         uses: jenseng/dynamic-uses@v1
         with:
-          uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/build-binaries/$(echo "${{ matrix.os }}" | cut -d'-' -f1)
+          uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/build-binaries/${{ env.MATRIX_OS }}
