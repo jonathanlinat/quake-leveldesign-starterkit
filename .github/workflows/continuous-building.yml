@@ -93,4 +93,4 @@ jobs:
       - name: ${{ matrix.project.name }} (${{ matrix.os }})
         uses: jenseng/dynamic-uses@v1
         with:
-          uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/build-binaries/${{ matrix.os }}
+          uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/build-binaries/$(echo "${{ matrix.os }}" | cut -d'-' -f1)
