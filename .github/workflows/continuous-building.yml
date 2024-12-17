@@ -39,6 +39,8 @@ jobs:
             author: Léo Peltier
             directory: goldutil
             repo: L-P/goldutil
+          - name: Extras
+            directory: extras
     env:
       ARTIFACT_NAME: ${{ matrix.project.name }}
       ARTIFACT_AUTHOR_NAME: ${{ matrix.project.author }}
@@ -64,7 +66,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, windows-2022]
         project:
           - name: TrenchBroom
             directory: trenchbroom
@@ -81,6 +82,7 @@ jobs:
           - name: goldutil
             directory: goldutil
             repo: L-P/goldutil
+        os: [ubuntu-22.04, windows-2022]
     env:
       ARTIFACT_NAME: ${{ matrix.project.name }}
       ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}
@@ -97,3 +99,23 @@ jobs:
         uses: jenseng/dynamic-uses@v1
         with:
           uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/build-binaries/${{ env.MATRIX_OS }}
+  get-extras-files:
+    name: Get extras files
+    needs: build-binaries
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - directory: extras
+    env:
+      ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}
+    steps:
+      - name: Checkout the local repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get extras files
+        uses: jenseng/dynamic-uses@v1
+        with:
+          uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/get-files
