@@ -92,6 +92,7 @@ jobs:
           fetch-depth: 0
       - name: Get the matrix operating system name
         run: echo "MATRIX_OS=$(echo "${{ matrix.os }}" | cut -d'-' -f1)" >> $GITHUB_ENV
+        shell: bash
       - name: Build binaries
         uses: jenseng/dynamic-uses@v1
         with:
