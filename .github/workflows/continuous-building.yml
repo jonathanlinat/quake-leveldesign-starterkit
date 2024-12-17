@@ -50,7 +50,7 @@ jobs:
           fetch-depth: 0
       - name: Ubuntu
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: ./.github/actions/continuous-building/trenchbroom/build-binaries/ubuntu
+        uses: ./.github/actions/continuous-building/trenchbroom/build-binaries/linux
       - name: Windows
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ./.github/actions/continuous-building/trenchbroom/build-binaries/windows
@@ -93,7 +93,7 @@ jobs:
           fetch-depth: 0
       - name: Ubuntu
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: ./.github/actions/continuous-building/ericw-tools/build-binaries/ubuntu
+        uses: ./.github/actions/continuous-building/ericw-tools/build-binaries/linux
       - name: Windows
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ./.github/actions/continuous-building/ericw-tools/build-binaries/windows
@@ -131,7 +131,7 @@ jobs:
           fetch-depth: 0
       - name: Ubuntu
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: ./.github/actions/continuous-building/ironwail/build-binaries/ubuntu
+        uses: ./.github/actions/continuous-building/ironwail/build-binaries/linux
       - name: Windows
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ./.github/actions/continuous-building/ironwail/build-binaries/windows
@@ -170,7 +170,7 @@ jobs:
           fetch-depth: 0
       - name: Ubuntu
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: ./.github/actions/continuous-building/quake-cli-tools/build-binaries/ubuntu
+        uses: ./.github/actions/continuous-building/quake-cli-tools/build-binaries/linux
       - name: Windows
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ./.github/actions/continuous-building/quake-cli-tools/build-binaries/windows
@@ -207,7 +207,7 @@ jobs:
           fetch-depth: 0
       - name: Ubuntu
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: ./.github/actions/continuous-building/goldutil/build-binaries/ubuntu
+        uses: ./.github/actions/continuous-building/goldutil/build-binaries/linux
       - name: Windows
         if: ${{ startsWith(matrix.os, 'windows-') }}
         uses: ./.github/actions/continuous-building/goldutil/build-binaries/windows
