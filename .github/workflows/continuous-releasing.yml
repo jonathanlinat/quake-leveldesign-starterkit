@@ -8,7 +8,7 @@ env:
 jobs:
   run-on-workflow-success:
     name: Check if previous workflow succeeded
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref_name == 'main' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-22.04
     steps:
       - name: Check workflow status

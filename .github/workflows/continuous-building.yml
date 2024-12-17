@@ -7,233 +7,90 @@ on:
       - .github/actions/**
       - .github/workflows/**
 jobs:
-  trenchbroom-generate-metadata:
-    name: "TrenchBroom: Generate metadata"
+  generate-metadata:
+    name: Generate metadata
     runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - name: TrenchBroom
+            author: Kristian Duske
+            directory: trenchbroom
+            repo: TrenchBroom/TrenchBroom
+            website: http://kristianduske.com/trenchbroom
+          - name: ericw-tools
+            author: Eric Wasylishen
+            directory: ericw-tools
+            repo: ericwa/ericw-tools
+            documentation: https://ericw-tools.readthedocs.io
+          - name: Ironwail
+            author: Andrei Drexler
+            directory: ironwail
+            repo: andrei-drexler/ironwail
+            twitter: https://twitter.com/andrei_drexler
+          - name: Quake CLI Tools
+            author: Joshua Skelton
+            directory: quake-cli-tools
+            repo: joshuaskelly/quake-cli-tools
+            website: https://joshua.itch.io/quake-tools
+            howto: https://www.youtube.com/watch?v=zJ0RX62VYaA
+          - name: goldutil
+            author: Léo Peltier
+            directory: goldutil
+            repo: L-P/goldutil
     env:
-      ARTIFACT_NAME: TrenchBroom
-      ARTIFACT_AUTHOR_NAME: Kristian Duske
-      ARTIFACT_DIRECTORY_NAME: trenchbroom
-      ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
-      ARTIFACT_WEBSITE_URL: http://kristianduske.com/trenchbroom
+      ARTIFACT_NAME: ${{ matrix.project.name }}
+      ARTIFACT_AUTHOR_NAME: ${{ matrix.project.author }}
+      ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}
+      ARTIFACT_REPOSITORY: ${{ matrix.project.repo }}
+      ARTIFACT_WEBSITE_URL: ${{ matrix.project.website || '' }}
+      ARTIFACT_DOCUMENTATION_URL: ${{ matrix.project.documentation || '' }}
+      ARTIFACT_TWITTER_URL: ${{ matrix.project.twitter || '' }}
+      ARTIFACT_HOWTO_URL: ${{ matrix.project.howto || '' }}
     steps:
       - name: Checkout the local repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/trenchbroom/generate-metadata
-        id: trenchbroom-generate-metadata
-  trenchbroom-build-binaries:
-    name: "TrenchBroom: Build the binaries"
-    needs: trenchbroom-generate-metadata
+      - name: ${{ matrix.project.name }}
+        uses: jenseng/dynamic-uses@v1
+        with:
+          uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/generate-metadata
+  build-binaries:
+    name: Build binaries
+    needs: generate-metadata
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, windows-2022]
-        tb-build-type: [release]
-        tb-arch: [default-arch]
-        exclude:
-          - os: windows-2022
-            tb-arch: default-arch
-        include:
-          - os: windows-2022
-            tb-arch: x64
-    env:
-      ARTIFACT_NAME: TrenchBroom
-      ARTIFACT_DIRECTORY_NAME: trenchbroom
-      ARTIFACT_REPOSITORY: TrenchBroom/TrenchBroom
-    steps:
-      - name: Checkout the local repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Ubuntu
-        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: ./.github/actions/continuous-building/trenchbroom/build-binaries/linux
-      - name: Windows
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: ./.github/actions/continuous-building/trenchbroom/build-binaries/windows
-  ericw-tools-generate-metadata:
-    name: "ericw-tools: Generate metadata"
-    runs-on: ubuntu-22.04
-    env:
-      ARTIFACT_NAME: ericw-tools
-      ARTIFACT_AUTHOR_NAME: Eric Wasylishen
-      ARTIFACT_DIRECTORY_NAME: ericw-tools
-      ARTIFACT_REPOSITORY: ericwa/ericw-tools
-      ARTIFACT_DOCUMENTATION_URL: https://ericw-tools.readthedocs.io
-    steps:
-      - name: Checkout the local repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/ericw-tools/generate-metadata
-        id: ericw-tools-generate-metadata
-  ericw-tools-build-binaries:
-    name: "ericw-tools: Build the binaries"
-    needs: ericw-tools-generate-metadata
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-22.04, windows-2022]
-        use-asan: [NO]
-        exclude:
-          - os: windows-2022
-            use-asan: YES
-    env:
-      USE_ASAN: ${{ matrix.use-asan }}
-      ARTIFACT_DIRECTORY_NAME: ericw-tools
-      ARTIFACT_REPOSITORY: ericwa/ericw-tools
-    steps:
-      - name: Checkout the local repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Ubuntu
-        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: ./.github/actions/continuous-building/ericw-tools/build-binaries/linux
-      - name: Windows
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: ./.github/actions/continuous-building/ericw-tools/build-binaries/windows
-  ironwail-generate-metadata:
-    name: "Ironwail: Generate metadata"
-    runs-on: ubuntu-22.04
-    env:
-      ARTIFACT_NAME: Ironwail
-      ARTIFACT_AUTHOR_NAME: Andrei Drexler
-      ARTIFACT_DIRECTORY_NAME: ironwail
-      ARTIFACT_REPOSITORY: andrei-drexler/ironwail
-      ARTIFACT_TWITTER_URL: https://twitter.com/andrei_drexler
-    steps:
-      - name: Checkout the local repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/ironwail/generate-metadata
-        id: ironwail-generate-metadata
-  ironwail-build-binaries:
-    name: "Ironwail: Build the binaries"
-    needs: ironwail-generate-metadata
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
+        project:
+          - name: TrenchBroom
+            directory: trenchbroom
+            repo: TrenchBroom/TrenchBroom
+          - name: ericw-tools
+            directory: ericw-tools
+            repo: ericwa/ericw-tools
+          - name: Ironwail
+            directory: ironwail
+            repo: andrei-drexler/ironwail
+          - name: Quake CLI Tools
+            directory: quake-cli-tools
+            repo: joshuaskelly/quake-cli-tools
+          - name: goldutil
+            directory: goldutil
+            repo: L-P/goldutil
         os: [ubuntu-22.04, windows-2022]
     env:
-      ARTIFACT_DIRECTORY_NAME: ironwail
-      ARTIFACT_REPOSITORY: andrei-drexler/ironwail
+      ARTIFACT_NAME: ${{ matrix.project.name }}
+      ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}
+      ARTIFACT_REPOSITORY: ${{ matrix.project.repo }}
     steps:
       - name: Checkout the local repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Ubuntu
-        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: ./.github/actions/continuous-building/ironwail/build-binaries/linux
-      - name: Windows
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: ./.github/actions/continuous-building/ironwail/build-binaries/windows
-  quake-cli-tools-generate-metadata:
-    name: "Quake CLI Tools: Generate metadata"
-    runs-on: ubuntu-22.04
-    env:
-      ARTIFACT_NAME: Quake CLI Tools
-      ARTIFACT_AUTHOR_NAME: Joshua Skelton
-      ARTIFACT_DIRECTORY_NAME: quake-cli-tools
-      ARTIFACT_REPOSITORY: joshuaskelly/quake-cli-tools
-      ARTIFACT_WEBSITE_URL: https://joshua.itch.io/quake-tools
-      ARTIFACT_HOWTO_URL: https://www.youtube.com/watch?v=zJ0RX62VYaA
-    steps:
-      - name: Checkout the local repository
-        uses: actions/checkout@v4
+      - name: ${{ matrix.project.name }} (${{ matrix.os }})
+        uses: jenseng/dynamic-uses@v1
         with:
-          fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/quake-cli-tools/generate-metadata
-        id: quake-cli-tools-generate-metadata
-  quake-cli-tools-build-binaries:
-    name: "Quake CLI Tools: Build the binaries"
-    needs: quake-cli-tools-generate-metadata
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-22.04, windows-2022]
-    env:
-      ARTIFACT_DIRECTORY_NAME: quake-cli-tools
-      ARTIFACT_REPOSITORY: joshuaskelly/quake-cli-tools
-    steps:
-      - name: Checkout the local repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Ubuntu
-        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: ./.github/actions/continuous-building/quake-cli-tools/build-binaries/linux
-      - name: Windows
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: ./.github/actions/continuous-building/quake-cli-tools/build-binaries/windows
-  goldutil-generate-metadata:
-    name: "goldutil: Generate metadata"
-    runs-on: ubuntu-22.04
-    env:
-      ARTIFACT_NAME: goldutil
-      ARTIFACT_AUTHOR_NAME: Léo Peltier
-      ARTIFACT_DIRECTORY_NAME: goldutil
-      ARTIFACT_REPOSITORY: L-P/goldutil
-    steps:
-      - name: Checkout the local repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/goldutil/generate-metadata
-        id: goldutil-generate-metadata
-  goldutil-build-binaries:
-    name: "goldutil: Build the binaries"
-    needs: goldutil-generate-metadata
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-22.04, windows-2022]
-    env:
-      ARTIFACT_DIRECTORY_NAME: goldutil
-      ARTIFACT_REPOSITORY: L-P/goldutil
-    steps:
-      - name: Checkout the local repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Ubuntu
-        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: ./.github/actions/continuous-building/goldutil/build-binaries/linux
-      - name: Windows
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: ./.github/actions/continuous-building/goldutil/build-binaries/windows
-  extras-generate-metadata:
-    name: "Extras: Generate metadata"
-    runs-on: ubuntu-22.04
-    env:
-      ARTIFACT_NAME: Extras
-      ARTIFACT_DIRECTORY_NAME: extras
-    steps:
-      - name: Checkout the local repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/extras/generate-metadata
-        id: goldutil-generate-metadata
-  extras-get-files:
-    name: "Extras: Get the files"
-    needs: extras-generate-metadata
-    runs-on: ubuntu-22.04
-    env:
-      ARTIFACT_NAME: Extras
-      ARTIFACT_DIRECTORY_NAME: extras
-    steps:
-      - name: Checkout the local repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: ./.github/actions/continuous-building/extras/get-files
+          uses: ./.github/actions/continuous-building/goldutil/build-binaries/${{ matrix.os }}
