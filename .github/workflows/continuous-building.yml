@@ -11,7 +11,7 @@ jobs:
     name: Generate metadata
     runs-on: ubuntu-22.04
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         project:
           - name: TrenchBroom
@@ -64,7 +64,7 @@ jobs:
     needs: generate-metadata
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         project:
           - name: TrenchBroom
@@ -104,7 +104,7 @@ jobs:
     needs: build-binaries
     runs-on: ubuntu-22.04
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         project:
           - name: Extras
