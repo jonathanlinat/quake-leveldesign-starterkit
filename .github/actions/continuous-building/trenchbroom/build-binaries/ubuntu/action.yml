@@ -2,7 +2,7 @@ runs:
   using: composite
   steps:
     - name: Checkout the artifact repository files
-      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
+      run: git clone --depth 1 --recursive --shallow-submodules https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
       shell: bash
     - name: Create the VCPKG directory
       working-directory: working-directory/
@@ -14,11 +14,19 @@ runs:
       working-directory: working-directory/
       run: echo "TB_PULL_REQUEST_HEAD_SHA_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
       shell: bash
+    - name: Cache apt packages
+      uses: actions/cache@v4
+      with:
+        path: |
+          /var/cache/apt/archives
+          /var/lib/apt/lists
+        key: ${{ runner.os }}-apt
+        restore-keys: ${{ runner.os }}-apt
     - name: Install common dependencies
       working-directory: working-directory/
       run: |
         sudo apt update
-        sudo apt install build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc ninja-build libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev libfuse2 qtbase5-dev libqt5svg5-dev
+        sudo apt install -y --no-install-recommends build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc ninja-build libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev libfuse2 qtbase5-dev libqt5svg5-dev
       shell: bash
     - name: Compile the source code
       working-directory: working-directory/

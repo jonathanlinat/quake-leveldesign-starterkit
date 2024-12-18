@@ -2,13 +2,21 @@ runs:
   using: composite
   steps:
     - name: Checkout the artifact repository files
-      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
+      run: git clone --depth 1 --recursive --shallow-submodules https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
       shell: bash
-    - name: Install Qt5
+    - name: Cache apt packages
+      uses: actions/cache@v4
+      with:
+        path: |
+          /var/cache/apt/archives
+          /var/lib/apt/lists
+        key: ${{ runner.os }}-apt
+        restore-keys: ${{ runner.os }}-apt
+    - name: Install common dependencies
       working-directory: working-directory/
       run: |
         sudo apt update
-        sudo apt install qtbase5-dev libqt5svg5-dev
+        sudo apt install -y --no-install-recommends qtbase5-dev libqt5svg5-dev
       shell: bash
     - name: Compile the source code
       working-directory: working-directory/

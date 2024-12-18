@@ -2,7 +2,7 @@ runs:
   using: composite
   steps:
     - name: Checkout the artifact repository files
-      run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
+      run: git clone --depth 1 --recursive --shallow-submodules https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
       shell: bash
     - name: Create the VCPKG directory
       working-directory: working-directory/
