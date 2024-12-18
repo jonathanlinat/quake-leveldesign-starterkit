@@ -4,14 +4,6 @@ runs:
     - name: Checkout the artifact repository files
       run: git clone --depth 1 --recursive --shallow-submodules https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
       shell: bash
-    - name: Cache apt packages
-      uses: actions/cache@v4
-      with:
-        path: |
-          /var/cache/apt/archives
-          /var/lib/apt/lists
-        key: ${{ runner.os }}-apt
-        restore-keys: ${{ runner.os }}-apt
     - name: Install common dependencies
       working-directory: working-directory/
       run: |

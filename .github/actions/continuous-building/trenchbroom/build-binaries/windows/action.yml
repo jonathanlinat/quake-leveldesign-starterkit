@@ -4,7 +4,7 @@ runs:
     - name: Checkout the artifact repository files
       run: git clone --depth 1 --recursive --shallow-submodules https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
       shell: bash
-    - name: Create the VCPKG directory
+    - name: Create the vcpkg caching directory
       working-directory: working-directory/
       run: mkdir -p ${{ github.workspace }}/vcpkg/bincache
       shell: bash
