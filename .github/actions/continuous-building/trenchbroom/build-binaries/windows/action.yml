@@ -8,12 +8,11 @@ runs:
       working-directory: working-directory/
       run: mkdir -p ${{ github.workspace }}/vcpkg/bincache
       shell: bash
-    - name: Set some environment variables
+    - name: Expose GitHub runtime
+      uses: crazy-max/ghaction-github-runtime@v3
+    - name: Set current HEAD SHA
       working-directory: working-directory/
-      run: |
-        echo "ACTIONS_CACHE_URL=${{ env.ACTIONS_CACHE_URL }}" >> $GITHUB_ENV
-        echo "ACTIONS_RUNTIME_TOKEN=${{ env.ACTIONS_RUNTIME_TOKEN }}" >> $GITHUB_ENV
-        echo "TB_PULL_REQUEST_HEAD_SHA_HASH=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+      run: echo "TB_PULL_REQUEST_HEAD_SHA_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
       shell: bash
     - name: Install Pandoc
       working-directory: working-directory/

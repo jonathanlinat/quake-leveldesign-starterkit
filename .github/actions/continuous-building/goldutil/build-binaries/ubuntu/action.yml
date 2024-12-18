@@ -11,7 +11,7 @@ runs:
     - name: Prepare the artifact
       working-directory: working-directory/
       run: |
-        mkdir ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
+        mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
         cp ${{ env.ARTIFACT_DIRECTORY_NAME }} ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}
       shell: bash
     - name: Pack and upload the artifact

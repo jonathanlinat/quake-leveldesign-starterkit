@@ -107,7 +107,8 @@ jobs:
       fail-fast: false
       matrix:
         project:
-          - directory: extras
+          - name: Extras
+            directory: extras
     env:
       ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}
     steps:

@@ -17,7 +17,7 @@ runs:
     - name: Prepare the artifact
       working-directory: working-directory/
       run: |
-        mkdir ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
+        mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux
         7z x "$(find build-linux/ -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*.zip' | head -n 1)" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/" -y
       shell: bash
     - name: Pack and upload the artifact
