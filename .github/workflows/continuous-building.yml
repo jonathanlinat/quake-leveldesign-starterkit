@@ -89,7 +89,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Parse the operating system name
-        uses: ./.github/actions/_shared/parse-matrix-operating-system-name
+        uses: ./.github/actions/_shared/parse-operating-system-name
         with:
           matrix_os: ${{ matrix.os }}
       - name: Build the binaries
