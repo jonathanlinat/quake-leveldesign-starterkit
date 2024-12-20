@@ -1,0 +1,15 @@
+inputs:
+  name:
+    required: true
+  workflow:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Download the artifact
+      uses: dawidd6/action-download-artifact@v7
+      with:
+        name_is_regexp: true
+        name: ${{ inputs.name }}
+        workflow: ${{ inputs.workflow }}
+        skip_unpack: true

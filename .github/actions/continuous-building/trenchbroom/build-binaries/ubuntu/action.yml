@@ -4,7 +4,7 @@ runs:
     - name: Checkout the artifact repository files
       run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
       shell: bash
-    - name: Create the vcpkg caching directory
+    - name: Create the VCPKG caching directory
       working-directory: working-directory/
       run: mkdir -p ${{ github.workspace }}/vcpkg/bincache
       shell: bash
@@ -14,12 +14,17 @@ runs:
       working-directory: working-directory/
       run: echo "TB_PULL_REQUEST_HEAD_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
       shell: bash
-    - name: Install common dependencies
+    - name: Install the common dependencies
       working-directory: working-directory/
       run: |
         sudo apt update
-        sudo apt install -y --no-install-recommends build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc ninja-build libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev libfuse2 qtbase5-dev libqt5svg5-dev
+        sudo apt install -y --no-install-recommends build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc ninja-build libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev libfuse2
       shell: bash
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: 5.15.2
+        arch: gcc_64
     - name: Compile the source code
       working-directory: working-directory/
       run: ./CI-linux.sh
@@ -31,9 +36,7 @@ runs:
         mv build/${{ env.ARTIFACT_NAME }}-* ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
       shell: bash
     - name: Pack and upload the artifact
-      uses: actions/upload-artifact@v4
+      uses: ./.github/actions/_shared/pack-upload-artifact
       with:
         path: working-directory/${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
         name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
-        if-no-files-found: error
-        retention-days: 1

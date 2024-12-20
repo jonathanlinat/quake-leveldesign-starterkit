@@ -1,0 +1,6 @@
+runs:
+  using: composite
+  steps:
+    - name: Set the current date
+      run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
+      shell: bash

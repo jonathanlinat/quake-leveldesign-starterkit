@@ -41,17 +41,8 @@ jobs:
             repo: L-P/goldutil
           - name: Extras
             directory: extras
-    env:
-      ARTIFACT_NAME: ${{ matrix.project.name }}
-      ARTIFACT_AUTHOR_NAME: ${{ matrix.project.author }}
-      ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}
-      ARTIFACT_REPOSITORY: ${{ matrix.project.repo }}
-      ARTIFACT_WEBSITE_URL: ${{ matrix.project.website || '' }}
-      ARTIFACT_DOCUMENTATION_URL: ${{ matrix.project.documentation || '' }}
-      ARTIFACT_TWITTER_URL: ${{ matrix.project.twitter || '' }}
-      ARTIFACT_HOWTO_URL: ${{ matrix.project.howto || '' }}
     steps:
-      - name: Checkout the local repository
+      - name: Checkout the local repository files
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -59,8 +50,17 @@ jobs:
         uses: jenseng/dynamic-uses@v1
         with:
           uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/generate-metadata
+        env:
+          ARTIFACT_NAME: ${{ matrix.project.name }}
+          ARTIFACT_AUTHOR_NAME: ${{ matrix.project.author }}
+          ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}
+          ARTIFACT_REPOSITORY: ${{ matrix.project.repo }}
+          ARTIFACT_WEBSITE_URL: ${{ matrix.project.website || '' }}
+          ARTIFACT_DOCUMENTATION_URL: ${{ matrix.project.documentation || '' }}
+          ARTIFACT_TWITTER_URL: ${{ matrix.project.twitter || '' }}
+          ARTIFACT_HOWTO_URL: ${{ matrix.project.howto || '' }}
   build-binaries:
-    name: Build binaries
+    name: Build the binaries
     needs: generate-metadata
     runs-on: ${{ matrix.os }}
     strategy:
@@ -83,24 +83,25 @@ jobs:
             directory: goldutil
             repo: L-P/goldutil
         os: [ubuntu-22.04, windows-2022]
-    env:
-      ARTIFACT_NAME: ${{ matrix.project.name }}
-      ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}
-      ARTIFACT_REPOSITORY: ${{ matrix.project.repo }}
     steps:
-      - name: Checkout the local repository
+      - name: Checkout the local repository files
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Get the matrix operating system name
-        run: echo "MATRIX_OS=$(echo "${{ matrix.os }}" | cut -d'-' -f1)" >> $GITHUB_ENV
-        shell: bash
-      - name: Build binaries
+      - name: Parse the operating system name
+        uses: ./.github/actions/_shared/parse-matrix-operating-system-name
+        with:
+          matrix_os: ${{ matrix.os }}
+      - name: Build the binaries
         uses: jenseng/dynamic-uses@v1
         with:
-          uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/build-binaries/${{ env.MATRIX_OS }}
+          uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/build-binaries/${{ env.PARSED_MATRIX_OS }}
+        env:
+          ARTIFACT_NAME: ${{ matrix.project.name }}
+          ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}
+          ARTIFACT_REPOSITORY: ${{ matrix.project.repo }}
   get-extras-files:
-    name: Get extras files
+    name: Get the extras files
     needs: build-binaries
     runs-on: ubuntu-22.04
     strategy:
@@ -109,14 +110,14 @@ jobs:
         project:
           - name: Extras
             directory: extras
-    env:
-      ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}
     steps:
-      - name: Checkout the local repository
+      - name: Checkout the local repository files
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Get extras files
+      - name: Get the extras files
         uses: jenseng/dynamic-uses@v1
         with:
           uses: ./.github/actions/continuous-building/${{ matrix.project.directory }}/get-files
+        env:
+          ARTIFACT_DIRECTORY_NAME: ${{ matrix.project.directory }}

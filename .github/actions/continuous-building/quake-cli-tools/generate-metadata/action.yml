@@ -27,10 +27,8 @@ runs:
           > **Branch**: \`${{ env.CURRENT_BRANCH_NAME }}\`
           > **Repository**: https://github.com/${{ env.ARTIFACT_REPOSITORY }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
-    - name: Pack and upload the metadata
-      uses: actions/upload-artifact@v4
+    - name: Pack and upload the artifact
+      uses: ./.github/actions/_shared/pack-upload-artifact
       with:
         path: working-directory/${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
         name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata
-        if-no-files-found: error
-        retention-days: 1

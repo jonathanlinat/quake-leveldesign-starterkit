@@ -4,7 +4,7 @@ runs:
     - name: Create the working directory
       run: mkdir -p working-directory
       shell: bash
-    - name: "${{ env.EXTRA_NAME }}: Download and extract"
+    - name: Download and extract the artifact (${{ env.EXTRA_NAME }})
       working-directory: working-directory/
       run: |
         curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip"
@@ -14,7 +14,7 @@ runs:
         EXTRA_NAME: Prototype WAD
         EXTRA_DIRECTORY_NAME: prototype-wad
         EXTRA_DOWNLOAD_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263/version/448/download&file=3663
-    - name: "${{ env.EXTRA_NAME }}: Download and extract"
+    - name: Download and extract the artifact (${{ env.EXTRA_NAME }})
       working-directory: working-directory/
       run: |
         curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip"
@@ -24,7 +24,7 @@ runs:
         EXTRA_NAME: Quake Palette
         EXTRA_DIRECTORY_NAME: quake-palette
         EXTRA_DOWNLOAD_URL: https://quakewiki.org/w/images/d/d2/quake_palette.zip
-    - name: "${{ env.EXTRA_NAME }}: Download and extract"
+    - name: Download and extract the artifact (${{ env.EXTRA_NAME }})
       working-directory: working-directory/
       run: |
         curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.zip"
@@ -34,7 +34,7 @@ runs:
         EXTRA_NAME: TrenchBroom Quake Map Source
         EXTRA_DIRECTORY_NAME: trenchbroom-quake-map-source
         EXTRA_DOWNLOAD_URL: https://toolness-media.s3.amazonaws.com/quake/trenchbroom_quake_map_source.zip
-    - name: "${{ env.EXTRA_NAME }}: Download and extract"
+    - name: Download and extract the artifact (${{ env.EXTRA_NAME }})
       working-directory: working-directory/
       run: |
         curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ env.ARTIFACT_DIRECTORY_NAME }}-${{ env.EXTRA_DIRECTORY_NAME }}.rar"
@@ -45,9 +45,7 @@ runs:
         EXTRA_DIRECTORY_NAME: digits-developer-textures
         EXTRA_DOWNLOAD_URL: https://files.gamebanana.com/mods/digits-devtex-13.rar
     - name: Pack and upload the artifact
-      uses: actions/upload-artifact@v4
+      uses: ./.github/actions/_shared/pack-upload-artifact
       with:
         path: working-directory/${{ env.ARTIFACT_DIRECTORY_NAME }}-files/
         name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-files
-        if-no-files-found: error
-        retention-days: 1

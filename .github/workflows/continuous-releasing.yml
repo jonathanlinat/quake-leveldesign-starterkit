@@ -11,7 +11,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-22.04
     steps:
-      - name: Check workflow status
+      - name: Check the previous workflow status
         run: echo "Previous workflow succeeded"
         shell: bash
   release-starter-kit:
@@ -19,7 +19,7 @@ jobs:
     needs: run-on-workflow-success
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout the repository
+      - name: Checkout the local repository files
         uses: actions/checkout@v4
       - name: Get the latest commit details
         run: echo "LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
@@ -27,14 +27,14 @@ jobs:
       - name: Set current release date
         run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
         shell: bash
-      - name: Download packed binaries
+      - name: Download the packed binaries
         uses: dawidd6/action-download-artifact@v7
         with:
           name_is_regexp: true
           name: ^${{ env.PROJECT_NAME_PREFIX }}.*$
           workflow: continuous-packing.yml
           skip_unpack: true
-      - name: Download packed release notes
+      - name: Download the packed release notes
         uses: dawidd6/action-download-artifact@v7
         with:
           name_is_regexp: true

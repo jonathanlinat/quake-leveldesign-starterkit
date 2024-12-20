@@ -42,9 +42,7 @@ runs:
         copy LICENSE.txt $zipdir
       shell: pwsh
     - name: Pack and upload the artifact
-      uses: actions/upload-artifact@v4
+      uses: ./.github/actions/_shared/pack-upload-artifact
       with:
         path: working-directory/${{ env.ARTIFACT_DIRECTORY_NAME }}-windows/
         name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-windows
-        if-no-files-found: error
-        retention-days: 1

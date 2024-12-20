@@ -4,7 +4,7 @@ runs:
     - name: Checkout the artifact repository files
       run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
       shell: bash
-    - name: Install common dependencies
+    - name: Install the common dependencies
       working-directory: working-directory/
       run: |
         sudo apt update
@@ -22,9 +22,7 @@ runs:
         cp Quake/${{ env.ARTIFACT_DIRECTORY_NAME }}.pak ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/${{ env.ARTIFACT_DIRECTORY_NAME }}.pak
       shell: bash
     - name: Pack and upload the artifact
-      uses: actions/upload-artifact@v4
+      uses: ./.github/actions/_shared/pack-upload-artifact
       with:
         path: working-directory/${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
         name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
-        if-no-files-found: error
-        retention-days: 1

@@ -1,0 +1,9 @@
+inputs:
+  matrix_os:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Parse the operating system name
+      run: echo "PARSED_MATRIX_OS=$(echo "${{ inputs.matrix_os }}" | cut -d'-' -f1)" >> $GITHUB_ENV
+      shell: bash

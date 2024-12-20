@@ -11,7 +11,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-22.04
     steps:
-      - name: Check workflow status
+      - name: Check the previous workflow status
         run: echo "Previous workflow succeeded"
         shell: bash
   pack-binaries:
@@ -23,22 +23,18 @@ jobs:
       matrix:
         os: [ubuntu-22.04, windows-2022]
     steps:
-      - name: Checkout the repository
+      - name: Checkout the local repository files
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: "Linux: Set current packing date"
+      - name: Set the current date
+        uses: ./.github/actions/_shared/set-current-date
+      - name: "Linux: Download the packed artifact (${{ env.ARTIFACT_NAME }})"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
-        shell: bash
-      - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
-        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*linux$
           workflow: continuous-building.yml
-          skip_unpack: true
         env:
           ARTIFACT_NAME: TrenchBroom
           ARTIFACT_DIRECTORY_NAME: trenchbroom
@@ -49,14 +45,12 @@ jobs:
         env:
           ARTIFACT_NAME: TrenchBroom
           ARTIFACT_DIRECTORY_NAME: trenchbroom
-      - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
+      - name: "Linux: Download the packed artifact (${{ env.ARTIFACT_NAME }})"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*linux$
           workflow: continuous-building.yml
-          skip_unpack: true
         env:
           ARTIFACT_NAME: ericw-tools
           ARTIFACT_DIRECTORY_NAME: ericw-tools
@@ -67,14 +61,12 @@ jobs:
         env:
           ARTIFACT_NAME: ericw-tools
           ARTIFACT_DIRECTORY_NAME: ericw-tools
-      - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
+      - name: "Linux: Download the packed artifact (${{ env.ARTIFACT_NAME }})"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*linux$
           workflow: continuous-building.yml
-          skip_unpack: true
         env:
           ARTIFACT_NAME: Ironwail
           ARTIFACT_DIRECTORY_NAME: ironwail
@@ -85,14 +77,12 @@ jobs:
         env:
           ARTIFACT_NAME: Ironwail
           ARTIFACT_DIRECTORY_NAME: ironwail
-      - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
+      - name: "Linux: Download the packed artifact (${{ env.ARTIFACT_NAME }})"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*linux$
           workflow: continuous-building.yml
-          skip_unpack: true
         env:
           ARTIFACT_NAME: Quake CLI Tools
           ARTIFACT_DIRECTORY_NAME: quake-cli-tools
@@ -103,14 +93,12 @@ jobs:
         env:
           ARTIFACT_NAME: Quake CLI Tools
           ARTIFACT_DIRECTORY_NAME: quake-cli-tools
-      - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
+      - name: "Linux: Download the packed artifact (${{ env.ARTIFACT_NAME }})"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*linux$
           workflow: continuous-building.yml
-          skip_unpack: true
         env:
           ARTIFACT_NAME: goldutil
           ARTIFACT_DIRECTORY_NAME: goldutil
@@ -121,14 +109,12 @@ jobs:
         env:
           ARTIFACT_NAME: goldutil
           ARTIFACT_DIRECTORY_NAME: goldutil
-      - name: "Linux: Download ${{ env.ARTIFACT_NAME }} artifact"
+      - name: "Linux: Download the packed artifact (${{ env.ARTIFACT_NAME }})"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*$
           workflow: continuous-building.yml
-          skip_unpack: true
         env:
           ARTIFACT_NAME: Extras
           ARTIFACT_DIRECTORY_NAME: extras
@@ -139,30 +125,22 @@ jobs:
         env:
           ARTIFACT_NAME: Extras
           ARTIFACT_DIRECTORY_NAME: extras
-      - name: "Linux: Copy Markdown and LICENSE files"
+      - name: "Linux: Copy the Markdown and LICENSE files"
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: cp *.md LICENSE "${{ env.PROJECT_NAME_PREFIX }}-linux/"
         shell: bash
       - name: "Linux: Pack and upload the artifact"
-        uses: actions/upload-artifact@v4
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        uses: ./.github/actions/_shared/pack-upload-artifact
         with:
           path: ${{ env.PROJECT_NAME_PREFIX }}-linux/
           name: ${{ env.PROJECT_NAME_PREFIX }}-${{ env.CURRENT_DATE }}-linux
-          if-no-files-found: error
-          retention-days: 1
-      - name: "Windows: Set current packing date"
+      - name: "Windows: Download the packed artifact (${{ env.ARTIFACT_NAME }})"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        run: echo "CURRENT_DATE=$(Get-Date -Format 'yyyyMMdd')" | Out-File -Append -FilePath $env:GITHUB_ENV
-        shell: pwsh
-      - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
-        if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*windows$
           workflow: continuous-building.yml
-          skip_unpack: true
         env:
           ARTIFACT_NAME: TrenchBroom
           ARTIFACT_DIRECTORY_NAME: trenchbroom
@@ -173,14 +151,12 @@ jobs:
         env:
           ARTIFACT_NAME: TrenchBroom
           ARTIFACT_DIRECTORY_NAME: trenchbroom
-      - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
+      - name: "Windows: Download the packed artifact (${{ env.ARTIFACT_NAME }})"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*windows$
           workflow: continuous-building.yml
-          skip_unpack: true
         env:
           ARTIFACT_NAME: ericw-tools
           ARTIFACT_DIRECTORY_NAME: ericw-tools
@@ -191,14 +167,12 @@ jobs:
         env:
           ARTIFACT_NAME: ericw-tools
           ARTIFACT_DIRECTORY_NAME: ericw-tools
-      - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
+      - name: "Windows: Download the packed artifact (${{ env.ARTIFACT_NAME }})"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*windows$
           workflow: continuous-building.yml
-          skip_unpack: true
         env:
           ARTIFACT_NAME: Ironwail
           ARTIFACT_DIRECTORY_NAME: ironwail
@@ -209,14 +183,12 @@ jobs:
         env:
           ARTIFACT_NAME: Ironwail
           ARTIFACT_DIRECTORY_NAME: ironwail
-      - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
+      - name: "Windows: Download the packed artifact (${{ env.ARTIFACT_NAME }})"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*windows$
           workflow: continuous-building.yml
-          skip_unpack: true
         env:
           ARTIFACT_NAME: Quake CLI Tools
           ARTIFACT_DIRECTORY_NAME: quake-cli-tools
@@ -227,14 +199,12 @@ jobs:
         env:
           ARTIFACT_NAME: Quake CLI Tools
           ARTIFACT_DIRECTORY_NAME: quake-cli-tools
-      - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
+      - name: "Windows: Download the packed artifact (${{ env.ARTIFACT_NAME }})"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*windows$
           workflow: continuous-building.yml
-          skip_unpack: true
         env:
           ARTIFACT_NAME: goldutil
           ARTIFACT_DIRECTORY_NAME: goldutil
@@ -245,14 +215,12 @@ jobs:
         env:
           ARTIFACT_NAME: goldutil
           ARTIFACT_DIRECTORY_NAME: goldutil
-      - name: "Windows: Download ${{ env.ARTIFACT_NAME }} artifact"
+      - name: "Windows: Download the packed artifact (${{ env.ARTIFACT_NAME }})"
         if: ${{ startsWith(matrix.os, 'windows-') }}
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.ARTIFACT_DIRECTORY_NAME }}.*$
           workflow: continuous-building.yml
-          skip_unpack: true
         env:
           ARTIFACT_NAME: Extras
           ARTIFACT_DIRECTORY_NAME: extras
@@ -263,33 +231,28 @@ jobs:
         env:
           ARTIFACT_NAME: Extras
           ARTIFACT_DIRECTORY_NAME: extras
-      - name: "Windows: Copy Markdown and LICENSE files"
+      - name: "Windows: Copy the Markdown and LICENSE files"
         if: ${{ startsWith(matrix.os, 'windows-') }}
         run: Copy-Item *.md, LICENSE -Destination "${{ env.PROJECT_NAME_PREFIX }}-windows/"
         shell: pwsh
       - name: "Windows: Pack and upload the artifact"
-        uses: actions/upload-artifact@v4
         if: ${{ startsWith(matrix.os, 'windows-') }}
+        uses: ./.github/actions/_shared/pack-upload-artifact
         with:
           path: ${{ env.PROJECT_NAME_PREFIX }}-windows/
           name: ${{ env.PROJECT_NAME_PREFIX }}-${{ env.CURRENT_DATE }}-windows
-          if-no-files-found: error
-          retention-days: 1
   create-release-notes:
     name: Create the release notes
     needs: run-on-workflow-success
     runs-on: ubuntu-22.04
     steps:
-      - name: Set current packing date
-        run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
-        shell: bash
-      - name: Download packed metadata
-        uses: dawidd6/action-download-artifact@v7
+      - name: Set the current date
+        uses: ./.github/actions/_shared/set-current-date
+      - name: Download the packed metadata files
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^.*-metadata.*$
           workflow: continuous-building.yml
-          skip_unpack: true
       - name: Parse the metadata files
         run: |
           mkdir -p "${{ env.PROJECT_NAME_PREFIX }}-release-notes/"
@@ -305,10 +268,8 @@ jobs:
         shell: bash
         env:
           METADATA_FILES: trenchbroom,ericw-tools,ironwail,quake-cli-tools,goldutil,extras
-      - name: Pack and upload the release notes
-        uses: actions/upload-artifact@v4
+      - name: Pack and upload the artifact
+        uses: ./.github/actions/_shared/pack-upload-artifact
         with:
           path: ${{ env.PROJECT_NAME_PREFIX }}-release-notes/
           name: ${{ env.PROJECT_NAME_PREFIX }}-release-notes-${{ env.CURRENT_DATE }}
-          if-no-files-found: error
-          retention-days: 1

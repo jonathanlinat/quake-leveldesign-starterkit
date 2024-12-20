@@ -4,12 +4,11 @@ runs:
     - name: Checkout the artifact repository files
       run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
       shell: bash
-    - name: Install common dependencies
-      working-directory: working-directory/
-      run: |
-        sudo apt update
-        sudo apt install -y --no-install-recommends qtbase5-dev libqt5svg5-dev
-      shell: bash
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: 5.15.2
+        arch: gcc_64
     - name: Compile the source code
       working-directory: working-directory/
       run: ./build-linux-64.sh
@@ -21,9 +20,7 @@ runs:
         7z x "$(find build-linux/ -type f -name '${{ env.ARTIFACT_DIRECTORY_NAME }}-*.zip' | head -n 1)" -o"${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/" -y
       shell: bash
     - name: Pack and upload the artifact
-      uses: actions/upload-artifact@v4
+      uses: ./.github/actions/_shared/pack-upload-artifact
       with:
         path: working-directory/${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
         name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
-        if-no-files-found: error
-        retention-days: 1

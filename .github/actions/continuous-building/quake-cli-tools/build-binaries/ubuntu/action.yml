@@ -22,9 +22,7 @@ runs:
         mv ${{ env.ARTIFACT_DIRECTORY_NAME }}-*-linux/ ${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
       shell: bash
     - name: Pack and upload the artifact
-      uses: actions/upload-artifact@v4
+      uses: ./.github/actions/_shared/pack-upload-artifact
       with:
         path: working-directory/${{ env.ARTIFACT_DIRECTORY_NAME }}-linux/
         name: ${{ env.ARTIFACT_DIRECTORY_NAME }}-binaries-linux
-        if-no-files-found: error
-        retention-days: 1

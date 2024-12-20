@@ -1,0 +1,15 @@
+inputs:
+  path:
+    required: true
+  name:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Pack and upload the artifact
+      uses: actions/upload-artifact@v4
+      with:
+        path: ${{ inputs.path }}
+        name: ${{ inputs.name }}
+        if-no-files-found: error
+        retention-days: 1
