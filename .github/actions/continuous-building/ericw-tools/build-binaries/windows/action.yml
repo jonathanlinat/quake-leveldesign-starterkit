@@ -4,7 +4,7 @@ runs:
     - name: Checkout the artifact repository files
       run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
       shell: bash
-    - name: Setup MSVC environment
+    - name: Setup the MSVC environment
       uses: ilammy/msvc-dev-cmd@v1
       with:
         vsversion: 2022

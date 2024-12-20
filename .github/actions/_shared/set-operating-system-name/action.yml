@@ -4,6 +4,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Parse the operating system name
+    - name: Set the operating system name
       run: echo "PARSED_MATRIX_OS=$([[ "${{ inputs.matrix_os }}" == ubuntu* ]] && echo linux || echo "${{ inputs.matrix_os }}" | cut -d'-' -f1)" >> $GITHUB_ENV
       shell: bash

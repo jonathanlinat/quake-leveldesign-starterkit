@@ -1,0 +1,17 @@
+inputs:
+  working_directory:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Set the latest commit details
+      working-directory: ${{ inputs.working_directory }}
+      run: |
+        echo "CURRENT_BRANCH_NAME=$(git branch --show-current)" >> $GITHUB_ENV
+        echo "LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+        echo "LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')" >> $GITHUB_ENV
+        echo "LAST_COMMIT_LOGIN_NAME=$(curl -s 'https://api.github.com/search/users?q='$(git log -1 --pretty=format:'%ae') | jq -r '.items[0].login')" >> $GITHUB_ENV
+        echo "LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)" >> $GITHUB_ENV
+        echo "LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+        echo "LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
+      shell: bash

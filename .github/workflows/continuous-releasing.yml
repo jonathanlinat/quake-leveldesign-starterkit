@@ -7,13 +7,12 @@ env:
   PROJECT_NAME_PREFIX: quake-leveldesign-starterkit
 jobs:
   run-on-workflow-success:
-    name: Check if previous workflow succeeded
+    name: Check the previous workflow status
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-22.04
     steps:
       - name: Check the previous workflow status
-        run: echo "Previous workflow succeeded"
-        shell: bash
+        uses: ./.github/actions/_shared/check-previous-workflow-status
   release-starter-kit:
     name: Release the starter kit
     needs: run-on-workflow-success
@@ -21,26 +20,21 @@ jobs:
     steps:
       - name: Checkout the local repository files
         uses: actions/checkout@v4
-      - name: Get the latest commit details
-        run: echo "LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
+      - name: Set the current HEAD SHA
+        run: echo "LAST_COMMIT_HEAD_SHA=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
         shell: bash
-      - name: Set current release date
-        run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
-        shell: bash
-      - name: Download the packed binaries
-        uses: dawidd6/action-download-artifact@v7
+      - name: Set the current date
+        uses: ./.github/actions/_shared/set-current-date
+      - name: Download the packed release notes
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.PROJECT_NAME_PREFIX }}.*$
           workflow: continuous-packing.yml
-          skip_unpack: true
       - name: Download the packed release notes
-        uses: dawidd6/action-download-artifact@v7
+        uses: ./.github/actions/_shared/download-artifact
         with:
-          name_is_regexp: true
           name: ^${{ env.PROJECT_NAME_PREFIX }}-release-notes.*$
           workflow: continuous-packing.yml
-          skip_unpack: true
       - name: Unpack the release notes
         run: |
           file=$(find . -type f -name "${{ env.PROJECT_NAME_PREFIX }}-release-notes-*.zip" | head -n 1)
@@ -52,6 +46,6 @@ jobs:
           allowUpdates: true
           makeLatest: true
           artifacts: ${{ env.PROJECT_NAME_PREFIX }}-*-windows.zip,${{ env.PROJECT_NAME_PREFIX }}-*-linux.zip
-          name: QLDSK v${{ env.CURRENT_DATE }} (${{ env.LAST_COMMIT_SHA_HASH }})
-          tag: v${{ env.CURRENT_DATE }}-${{ env.LAST_COMMIT_SHA_HASH }}
+          name: QLDSK v${{ env.CURRENT_DATE }} (${{ env.LAST_COMMIT_HEAD_SHA }})
+          tag: v${{ env.CURRENT_DATE }}-${{ env.LAST_COMMIT_HEAD_SHA }}
           bodyFile: ${{ env.PROJECT_NAME_PREFIX }}/RELEASE_NOTES.md

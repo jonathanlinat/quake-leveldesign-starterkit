@@ -4,17 +4,10 @@ runs:
     - name: Checkout the artifact repository files
       run: git clone --depth 1 --recursive https://github.com/${{ env.ARTIFACT_REPOSITORY }} working-directory/
       shell: bash
-    - name: Get the latest commit details
-      working-directory: working-directory/
-      run: |
-        echo "CURRENT_BRANCH_NAME=$(git branch --show-current)" >> $GITHUB_ENV
-        echo "LAST_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
-        echo "LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')" >> $GITHUB_ENV
-        echo "LAST_COMMIT_LOGIN_NAME=$(curl -s 'https://api.github.com/search/users?q='$(git log -1 --pretty=format:'%ae') | jq -r '.items[0].login')" >> $GITHUB_ENV
-        echo "LAST_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)" >> $GITHUB_ENV
-        echo "LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
-        echo "LAST_COMMIT_SHA_HASH=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
-      shell: bash
+    - name: Set the latest commit details
+      uses: ./.github/actions/_shared/set-latest-commit-details
+      with:
+        working_directory: working-directory/
     - name: Create the content
       working-directory: working-directory/
       run: |

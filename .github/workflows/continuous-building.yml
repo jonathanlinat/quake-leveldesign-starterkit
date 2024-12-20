@@ -88,8 +88,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Parse the operating system name
-        uses: ./.github/actions/_shared/parse-operating-system-name
+      - name: Set the operating system name
+        uses: ./.github/actions/_shared/set-operating-system-name
         with:
           matrix_os: ${{ matrix.os }}
       - name: Build the binaries

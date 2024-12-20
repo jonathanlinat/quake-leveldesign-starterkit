@@ -10,7 +10,7 @@ runs:
       shell: bash
     - name: Expose GitHub runtime
       uses: crazy-max/ghaction-github-runtime@v3
-    - name: Set current HEAD SHA
+    - name: Set the current HEAD SHA
       working-directory: working-directory/
       run: echo "TB_PULL_REQUEST_HEAD_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
       shell: bash

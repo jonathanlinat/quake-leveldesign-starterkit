@@ -1,0 +1,6 @@
+runs:
+  using: composite
+  steps:
+    - name: Check the previous workflow status
+      run: echo "Previous workflow succeeded"
+      shell: bash

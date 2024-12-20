@@ -4,15 +4,14 @@ runs:
     - name: Create the working directory
       run: mkdir -p working-directory
       shell: bash
-    - name: Create initial content
+    - name: Create the initial content
       working-directory: working-directory/
       run: |
         mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
         echo "
-        ### ${{ env.ARTIFACT_NAME }}
-        " >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
+        ### ${{ env.ARTIFACT_NAME }}" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
-    - name: Create Quake section
+    - name: Create the Quake section
       working-directory: working-directory/
       run: |
         mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
@@ -20,7 +19,7 @@ runs:
         #### Quake
         " >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
-    - name: "${{ env.EXTRA_NAME }}: Create the content"
+    - name: Create the content (${{ env.EXTRA_NAME }})
       working-directory: working-directory/
       run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
@@ -29,7 +28,7 @@ runs:
         EXTRA_AUTHOR_NAME: Aleksander Marhall
         EXTRA_SOURCE_NAME: Slipseer
         EXTRA_DETAILS_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263
-    - name: "${{ env.EXTRA_NAME }}: Create the content"
+    - name: Create the content (${{ env.EXTRA_NAME }})
       working-directory: working-directory/
       run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
@@ -38,7 +37,7 @@ runs:
         EXTRA_AUTHOR_NAME: Spiney
         EXTRA_SOURCE_NAME: Quake Wiki
         EXTRA_DETAILS_URL: https://quakewiki.org/wiki/Quake_palette
-    - name: "${{ env.EXTRA_NAME }}: Create the content"
+    - name: Create the content (${{ env.EXTRA_NAME }})
       working-directory: working-directory/
       run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
@@ -47,7 +46,7 @@ runs:
         EXTRA_AUTHOR_NAME: Atul Varma
         EXTRA_SOURCE_NAME: The Level Design Book
         EXTRA_DETAILS_URL: https://book.leveldesignbook.com/appendix/resources/quake
-    - name: Create GoldSrc section
+    - name: Create the GoldSrc section
       working-directory: working-directory/
       run: |
         mkdir -p ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/
@@ -55,7 +54,7 @@ runs:
         #### GoldSrc
         " >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash
-    - name: "${{ env.EXTRA_NAME }}: Create the content"
+    - name: Create the content (${{ env.EXTRA_NAME }})
       working-directory: working-directory/
       run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ env.ARTIFACT_DIRECTORY_NAME }}-metadata/METADATA.md
       shell: bash

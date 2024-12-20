@@ -7,13 +7,12 @@ env:
   PROJECT_NAME_PREFIX: quake-leveldesign-starterkit
 jobs:
   run-on-workflow-success:
-    name: Check if previous workflow succeeded
+    name: Check the previous workflow status
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-22.04
     steps:
       - name: Check the previous workflow status
-        run: echo "Previous workflow succeeded"
-        shell: bash
+        uses: ./.github/actions/_shared/check-previous-workflow-status
   pack-binaries:
     name: Pack the binaries
     needs: run-on-workflow-success
