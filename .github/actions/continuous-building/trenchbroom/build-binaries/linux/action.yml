@@ -1,0 +1,72 @@
+inputs:
+  ARTIFACT_FILENAME:
+    required: true
+  ARTIFACT_REPOSITORY:
+    required: true
+  CICD_OPERATING_SYSTEM_NAME:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Checkout the artifact repository files
+      uses: ./.github/actions/_shared/checkout-artifact-repository-files
+      with:
+        ARTIFACT_REPOSITORY: ${{ inputs.ARTIFACT_REPOSITORY }}
+    - name: Set the current commit HEAD SHA
+      uses: ./.github/actions/_shared/set-current-commit-head-sha
+      with:
+        CICD_WORKING_DIRECTORY: working-directory/
+    - name: Restore the artifact from cache
+      id: restore-cached-artifact
+      uses: actions/cache/restore@v4
+      with:
+        key: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
+        path: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+    - name: Create the VCPKG caching directory
+      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      working-directory: working-directory/
+      run: mkdir -p ${{ github.workspace }}/vcpkg/bincache/
+      shell: bash
+    - name: Expose GitHub runtime
+      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      uses: crazy-max/ghaction-github-runtime@v3
+    - name: Set specific environment variables
+      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      working-directory: working-directory/
+      run: |
+        echo "TB_ARCH=x64" >> $GITHUB_ENV
+        echo "TB_OS_IMAGE=${{ matrix.os }}" >> $GITHUB_ENV
+        echo "TB_PULL_REQUEST_HEAD_SHA=${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}" >> $GITHUB_ENV
+        echo "VCPKG_BINARY_SOURCES=clear;x-gha,readwrite" >> $GITHUB_ENV
+      shell: bash
+    - name: Install dependencies
+      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      working-directory: working-directory/
+      run: |
+        sudo apt update
+        sudo apt install -y --no-install-recommends build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc ninja-build libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev libfuse2
+      shell: bash
+    - name: Install Qt
+      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: 5.15.2
+        arch: gcc_64
+    - name: Compile the source code
+      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      working-directory: working-directory/
+      run: ./CI-linux.sh
+      shell: bash
+    - name: Prepare the artifact
+      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      working-directory: working-directory/
+      run: |
+        mkdir -p ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+        mv build/TrenchBroom-* ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+      shell: bash
+    - name: Save the artifact as cache
+      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        key: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
+        path: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/

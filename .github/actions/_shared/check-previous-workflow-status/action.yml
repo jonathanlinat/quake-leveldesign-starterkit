@@ -1,0 +1,5 @@
+runs:
+  using: composite
+  steps:
+    - run: echo "Previous workflow succeeded"
+      shell: bash

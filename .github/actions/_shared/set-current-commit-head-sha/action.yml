@@ -1,0 +1,9 @@
+inputs:
+  CICD_WORKING_DIRECTORY:
+    required: false
+runs:
+  using: composite
+  steps:
+    - working-directory: ${{ inputs.CICD_WORKING_DIRECTORY }}
+      run: echo "GIT_CURRENT_COMMIT_HEAD_SHA=$(git rev-parse --short=10 HEAD)" >> $GITHUB_ENV
+      shell: bash
