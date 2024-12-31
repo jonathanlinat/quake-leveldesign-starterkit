@@ -1,0 +1,80 @@
+inputs:
+  ARTIFACT_AUTHOR_NAME:
+    required: true
+  ARTIFACT_DOCUMENTATION_URL:
+    required: false
+  ARTIFACT_FILENAME:
+    required: true
+  ARTIFACT_HOWTO_URL:
+    required: false
+  ARTIFACT_NAME:
+    required: true
+  ARTIFACT_REPOSITORY:
+    required: true
+  ARTIFACT_TWITTER_URL:
+    required: false
+  ARTIFACT_WEBSITE_URL:
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: Create the working directory
+      run: mkdir -p working-directory/
+      shell: bash
+    - name: Create the initial content
+      working-directory: working-directory/
+      run: |
+        mkdir -p ${{ inputs.ARTIFACT_FILENAME }}-metadata/
+        echo "
+        ### ${{ inputs.ARTIFACT_NAME }}" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
+      shell: bash
+    - name: Create the Quake section
+      working-directory: working-directory/
+      run: |
+        echo "
+        #### Quake
+        " >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
+      shell: bash
+    - name: "${{ env.EXTRA_NAME }}: Create the content"
+      working-directory: working-directory/
+      run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
+      shell: bash
+      env:
+        EXTRA_NAME: Prototype WAD
+        EXTRA_AUTHOR_NAME: Aleksander Marhall
+        EXTRA_SOURCE_NAME: Slipseer
+        EXTRA_DETAILS_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263
+    - name: "${{ env.EXTRA_NAME }}: Create the content"
+      working-directory: working-directory/
+      run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
+      shell: bash
+      env:
+        EXTRA_NAME: Quake Palette
+        EXTRA_AUTHOR_NAME: Spiney
+        EXTRA_SOURCE_NAME: Quake Wiki
+        EXTRA_DETAILS_URL: https://quakewiki.org/wiki/Quake_palette
+    - name: "${{ env.EXTRA_NAME }}: Create the content"
+      working-directory: working-directory/
+      run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
+      shell: bash
+      env:
+        EXTRA_NAME: TrenchBroom Quake Map Source
+        EXTRA_AUTHOR_NAME: Atul Varma
+        EXTRA_SOURCE_NAME: The Level Design Book
+        EXTRA_DETAILS_URL: https://book.leveldesignbook.com/appendix/resources/quake
+    - name: Create the GoldSrc section
+      working-directory: working-directory/
+      run: |
+        echo "
+        #### GoldSrc
+        " >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
+      shell: bash
+    - name: "${{ env.EXTRA_NAME }}: Create the content"
+      working-directory: working-directory/
+      run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
+      shell: bash
+      env:
+        EXTRA_NAME: Digit's Developer Textures
+        EXTRA_AUTHOR_NAME: Digit404
+        EXTRA_SOURCE_NAME: GameBanana
+        EXTRA_DETAILS_URL: https://gamebanana.com/mods/6693

@@ -1,0 +1,51 @@
+inputs:
+  ARTIFACT_FILENAME:
+    required: true
+  CICD_OPERATING_SYSTEM_NAME:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Create the working directory
+      run: mkdir -p working-directory/
+      shell: bash
+    - name: "${{ env.EXTRA_NAME }}: Download and extract the artifact"
+      working-directory: working-directory/
+      run: |
+        curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ inputs.ARTIFACT_FILENAME }}-files-${{ env.EXTRA_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}.zip"
+        7z x "${{ inputs.ARTIFACT_FILENAME }}-files-${{ env.EXTRA_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}.zip" -o"${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/quake/${{ env.EXTRA_FILENAME }}/" -y
+      shell: bash
+      env:
+        EXTRA_NAME: Prototype WAD
+        EXTRA_FILENAME: prototype-wad
+        EXTRA_DOWNLOAD_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263/version/448/download&file=3663
+    - name: "${{ env.EXTRA_NAME }}: Download and extract the artifact"
+      working-directory: working-directory/
+      run: |
+        curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ inputs.ARTIFACT_FILENAME }}-files-${{ env.EXTRA_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}.zip"
+        7z x "${{ inputs.ARTIFACT_FILENAME }}-files-${{ env.EXTRA_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}.zip" -o"${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/quake/${{ env.EXTRA_FILENAME }}/" -y
+      shell: bash
+      env:
+        EXTRA_NAME: Quake Palette
+        EXTRA_FILENAME: quake-palette
+        EXTRA_DOWNLOAD_URL: https://quakewiki.org/w/images/d/d2/quake_palette.zip
+    - name: "${{ env.EXTRA_NAME }}: Download and extract the artifact"
+      working-directory: working-directory/
+      run: |
+        curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ inputs.ARTIFACT_FILENAME }}-files-${{ env.EXTRA_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}.zip"
+        7z x "${{ inputs.ARTIFACT_FILENAME }}-files-${{ env.EXTRA_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}.zip" -o"${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/quake/${{ env.EXTRA_FILENAME }}/" -y
+      shell: bash
+      env:
+        EXTRA_NAME: TrenchBroom Quake Map Source
+        EXTRA_FILENAME: trenchbroom-quake-map-source
+        EXTRA_DOWNLOAD_URL: https://toolness-media.s3.amazonaws.com/quake/trenchbroom_quake_map_source.zip
+    - name: "${{ env.EXTRA_NAME }}: Download and extract the artifact"
+      working-directory: working-directory/
+      run: |
+        curl -L "${{ env.EXTRA_DOWNLOAD_URL }}" -o "${{ inputs.ARTIFACT_FILENAME }}-files-${{ env.EXTRA_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}.rar"
+        7z x "${{ inputs.ARTIFACT_FILENAME }}-files-${{ env.EXTRA_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}.rar" -o"${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/goldsrc/${{ env.EXTRA_FILENAME }}/" -y 2>/dev/null
+      shell: bash
+      env:
+        EXTRA_NAME: Digit's Developer Textures
+        EXTRA_FILENAME: digits-developer-textures
+        EXTRA_DOWNLOAD_URL: https://files.gamebanana.com/mods/digits-devtex-13.rar

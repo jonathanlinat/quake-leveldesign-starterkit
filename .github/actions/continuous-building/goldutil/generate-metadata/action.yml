@@ -1,0 +1,58 @@
+inputs:
+  ARTIFACT_AUTHOR_NAME:
+    required: true
+  ARTIFACT_DOCUMENTATION_URL:
+    required: false
+  ARTIFACT_FILENAME:
+    required: true
+  ARTIFACT_HOWTO_URL:
+    required: false
+  ARTIFACT_NAME:
+    required: true
+  ARTIFACT_REPOSITORY:
+    required: true
+  ARTIFACT_TWITTER_URL:
+    required: false
+  ARTIFACT_WEBSITE_URL:
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: Checkout the artifact repository files
+      uses: ./.github/actions/_shared/checkout-artifact-repository-files
+      with:
+        ARTIFACT_REPOSITORY: ${{ inputs.ARTIFACT_REPOSITORY }}
+    - name: Set the current commit HEAD SHA
+      uses: ./.github/actions/_shared/set-current-commit-head-sha
+      with:
+        CICD_WORKING_DIRECTORY: working-directory/
+    - name: Restore the artifact from cache
+      id: restore-cached-artifact
+      uses: ./.github/actions/_shared/restore-artifact-cache
+      with:
+        ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-metadata/
+        CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-metadata-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
+    - name: Set the current commit details
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/set-current-commit-details
+      with:
+        CICD_WORKING_DIRECTORY: working-directory/
+    - name: Create the content
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      working-directory: working-directory/
+      run: |
+        mkdir -p ${{ inputs.ARTIFACT_FILENAME }}-metadata/
+        echo "
+        - **${{ inputs.ARTIFACT_NAME }}**, ${{ inputs.ARTIFACT_AUTHOR_NAME }}
+
+          > **Commit**: [${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}](https://github.com/${{ inputs.ARTIFACT_REPOSITORY }}/commit/${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}) pushed by [${{ env.GIT_CURRENT_COMMIT_AUTHOR_NAME }}](https://github.com/${{ env.GIT_CURRENT_COMMIT_LOGIN_NAME }}) on **${{ env.GIT_CURRENT_COMMIT_DATE }}**
+          > **Message**: \`${{ env.GIT_CURRENT_COMMIT_MESSAGE }}\`
+          > **Branch**: \`${{ env.GIT_CURRENT_BRANCH_NAME }}\`
+          > **Repository**: https://github.com/${{ inputs.ARTIFACT_REPOSITORY }}" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
+      shell: bash
+    - name: Save the artifact as cache
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/save-artifact-cache
+      with:
+        ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-metadata/
+        CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-metadata-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}

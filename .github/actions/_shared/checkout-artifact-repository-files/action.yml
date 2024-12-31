@@ -1,0 +1,12 @@
+inputs:
+  ARTIFACT_REPOSITORY:
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        path: working-directory/
+        submodules: true
+        repository: ${{ inputs.ARTIFACT_REPOSITORY }}

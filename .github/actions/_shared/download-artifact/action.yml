@@ -1,0 +1,14 @@
+inputs:
+  ARTIFACT_FILENAME:
+    required: true
+  CICD_WORKFLOW:
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: dawidd6/action-download-artifact@v7
+      with:
+        name: ${{ inputs.ARTIFACT_FILENAME }}
+        name_is_regexp: true
+        skip_unpack: true
+        workflow: ${{ inputs.CICD_WORKFLOW }}

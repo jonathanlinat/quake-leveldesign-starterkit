@@ -1,0 +1,12 @@
+inputs:
+  ARTIFACT_PATH:
+    required: true
+  CACHE_KEY:
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache/save@v4
+      with:
+        key: ${{ inputs.CACHE_KEY }}
+        path: ${{ inputs.ARTIFACT_PATH }}

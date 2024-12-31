@@ -1,0 +1,4 @@
+runs:
+  using: composite
+  steps:
+    - uses: crazy-max/ghaction-github-runtime@v3

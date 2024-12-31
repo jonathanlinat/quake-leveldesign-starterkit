@@ -1,93 +1,66 @@
-# Quake Level Design Starter Kit
+<p align="center"><img src="https://github.com/jonathanlinat/quake-leveldesign-starterkit/assets/14064112/03402bb0-65fe-4b86-a95d-3b92aeb044b7"></p>
+<h1 align="center">Quake Level Design Starter Kit</h1>
 
-![](https://image.ibb.co/cofyte/quakeleveldesignstarterkit_logo.png)
+**Quake Level Design Starter Kit**, also known as **QLDSK**, consolidates various tools and resources into one comprehensive package, facilitating the quick and easy creation of **Quake** and **GoldSrc** engine-based maps with just a few clicks.
 
-This **Starter Kit** primarily consists of files, directory structure, and tools recommended by [dumptruck_ds](https://twitter.com/david_spell).
+![qldsk-preview](https://github.com/user-attachments/assets/2ac3a477-f00e-4de9-a5e5-2d572f3cc259)
 
-> ⚠️ **Important Note**: For Microsoft Windows (x86-64) users only.
+---
+
+## Releases
+
+| 🚀 Get the Latest Stable Release | 🔔 Get the Latest Unstable (Weekly) Release |
+| -- | -- |
+| [![Get the Latest Stable Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit/stable?icon=github&label=Stable)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) | [![Get the Latest Weekly (Unstable) Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Unstable%20(Weekly)&color=orange)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases) |
+
+Great, you're all set! Now, proceed to [read the documentation](https://github.com/jonathanlinat/quake-leveldesign-starterkit/wiki) to install, set up and start this project
+
+| 💬 Do You Still Need Support? |
+| -- |
+| [![Quake Mapping Discord](https://dcbadge.vercel.app/api/server/dh29D3kqrM?style=plastic)](https://discord.gg/dh29D3kqrM) [![TWHL Discord](https://dcbadge.vercel.app/api/server/BXEjbQYdnC?style=plastic)](https://discord.gg/BXEjbQYdnC) |
+
+---
 
 ## Features
 
-Main Tools:
+The current version of **QLDSK** includes the following set of applications, tools and extras:
 
-* **TrenchBroom** `2023.1`, Kristian Duske [[Link](http://kristianduske.com/trenchbroom)] [[GitHub](https://github.com/TrenchBroom/TrenchBroom)]
-* **Quakespasm** `0.96.1`, Eric, Ozkan & Steven [[Link](https://quakespasm.sourceforge.net)] [[SourceForge](https://sourceforge.net/projects/quakespasm/)]
-* **ericw-tools** `0.18.1`, Eric Wasylishen [[Link](https://ericwa.github.io/ericw-tools)] [[GitHub](https://github.com/ericwa/ericw-tools)]
-* **ne_q1spCompilingGui** `1.0.3`, C. Jones [[Link](https://shoresofnis.wordpress.com/utilities/ne_q1spcompilinggui)] [[GitHub](https://github.com/necros0/ne_q1CompilingGui)]
+### Applications
 
-Extras:
+* **TrenchBroom**, Kristian Duske [[GitHub](https://github.com/TrenchBroom/TrenchBroom)] [[Website](http://kristianduske.com/trenchbroom)] [[Discord](https://discord.gg/txsKc3EARW)]
+   - A free, open-source, cross-platform level editor designed explicitly for Quake engine-based games. It is compatible with games like Quake and Half-Life and can be run on multiple operating systems. It is recognized for its ease of use, offering simple and advanced tools that enable designers to craft complex and engaging levels without much hassle.
+* **ericw-tools**, Eric Wasylishen [[GitHub](https://github.com/ericwa/ericw-tools)] [[Documentation](https://ericw-tools.readthedocs.io)]
+   - A suite of command-line utilities for building levels (maps) for games like Quake and Half-Life represents an evolved branch of Tyrann's original Quake tools. The tools focus on adding advanced lighting features, some of which are borrowed from [q3map2](http://q3map2.robotrenegade.com/), and include bugfixes for the `qbsp` tool, which is used for constructing the block structure of the map.
 
-* **Quake Tools** `1.2.1`, Joshua Skelton [[Link](https://joshua.itch.io/quake-tools)] [[GitHub](https://github.com/joshuaskelly/quake-cli-tools)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)]
-* **TexMex** `3.4`, Mike Jackman [[Link](https://quakewiki.org/wiki/TexMex)]
-* **Map2Curve** `0.7`, ToTac [[Link](http://gibshooter.com/map2curve)] [[GitHub](https://github.com/Gibshooter/Map2Curve)]
-* **Prototype WAD textures** `1.3`, Aleksander Marhall [[Link](https://www.slipseer.com/index.php?resources/prototype-wad.263)]
-* **Original Quake maps**, John Romero [[Link](https://rome.ro/news/2016/2/14/quake-map-sources-released)]
-* **Original Quake textures** [[Link](https://www.quaddicted.com)]
+### Tools
 
-## Project Structure
+* **Ironwail**, Andrei Drexler [[GitHub](https://github.com/andrei-drexler/ironwail)] [[Twitter](https://twitter.com/andrei_drexler)] 
+   - An advanced fork of QuakeSpasm, a popular source port of the Quake engine, aimed at enhancing performance and introducing additional features. It has been optimized for high performance, incorporating modern techniques such as culling, GPU-accelerated lightmap updates, and compute shaders, allowing it to handle highly detailed Quake maps at high framerates.
+* **Quake CLI Tools**, Joshua Skelton [[GitHub](https://github.com/joshuaskelly/quake-cli-tools)] [[Usage](https://www.youtube.com/watch?v=zJ0RX62VYaA)] [[Website](https://joshua.itch.io/quake-tools)] [[Discord](https://discord.gg/PyqRPNwnk7)]
+   - A collection of command-line utilities to facilitate the creation of content for the Quake game series. These tools can perform various tasks, including managing `.pak` and `.wad` files, adding and extracting files, converting `.bsp` files to `.wad` files, and even creating `.svg` files from `.bsp` files.
+* **goldutil**, Léo Peltier [[GitHub](https://github.com/L-P/goldutil)]
+   - A comprehensive suite of GoldSrc engine CLI utilities for content creation, offering `.wad` and `.spr` files management, entity graph generation, and `.map` file cleanup to streamline TrenchBroom workflows.
 
-```text
-.
-├── quakespasm               # Quakespasm executable files
-├── source                   # Original Quake map files
-├── tools
-│   ├── ericw-tools          # ericw-tools executable files
-│   ├── Map2Curve_v0.7       # Map2Curve executable files
-│   ├── ne_q1spCompilingGui  # ne_q1spCompilingGui executable files
-│   ├── quake-tools          # Quake Tools executable files
-│   └── texmex               # TexMex executable files
-├── trenchbroom              # TrenchBroom executable files
-└── wads                     # Original Quake texture files + Prototype WAD texture files
-```
+### Extras
 
-## Software Requirements
+#### Quake
 
-Necessary:
+* **Prototype WAD**, Aleksander Marhall [[Slipseer](https://www.slipseer.com/index.php?resources/prototype-wad.263)]
+   - A resource containing Quake textures designed for map prototyping. It features 273 prototype textures that are indexed to Quake's palette. The collection includes basic checker textures in eight base colours, three shades, and four sizes (16x16, 32x32, 64x64, and 128x128). It also contains solid colour textures, including fullbright and specialized textures.
+* **Quake Palette**, Spiney [[Quake Wiki](https://quakewiki.org/wiki/Quake_palette)]
+   - The original Quake's palette provided in multiple formats: `.lmp`, `.aco`, `.act`, `.ase`, `.pal`, `.png` and `.txt`.
+* **TrenchBroom Quake Map Source**, Atul Varma [[The Level Design Book](https://book.leveldesignbook.com/appendix/resources/quake)]
+   - A collection of the original Quake `.map` source files, as released by John Romero in 2006. These files have been converted to a modern format compatible with TrenchBroom. The texture references in these files have also been fixed with a repackaged `quake101.wad` file.
 
-* Microsoft Windows: Vista, 7, 8, 10
-* A legitimate copy of Quake [[Steam](https://store.steampowered.com/app/2310)] [[Good Old Games](https://www.gog.com/game/quake_the_offering)]
-* Git [[Link](https://git-scm.com/)]
-* Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019 [[x86](https://aka.ms/vs/16/release/vc_redist.x86.exe)] [[x64](https://aka.ms/vs/16/release/vc_redist.x64.exe)]
+#### GoldSrc
 
-## Installation
+* **Digit's Developer Textures**, Digit404 [[GameBanana](https://gamebanana.com/mods/6693)]
+   - A curated set of simplified, unobtrusive developer textures designed specifically for map developers, simplifying the process of scene blocking by eliminating the need for texture selection. These textures enhance focus on the layout and structural aspects, facilitating a more productive and uninterrupted mapping experience. Especially suitable for beginners.
 
-### Download
+---
 
-Choose one of the following:
+## License
 
-* Download the [latest ZIP release](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases) and extract its content to a directory named `quake-leveldesign-starterkit`.
-* Open a Terminal session and clone this Git repository:
+**Quake Level Design Starter Kit**, also known as **QLDSK**, and its infrastructure is [CC0 1.0 Universal licensed](LICENSE).
 
-```bash
-cd <path/to/desired/directory/>
-```
-
-```bash
-git clone https://github.com/jonathanlinat/quake-leveldesign-starterkit.git
-```
-
-```bash
-cd quake-leveldesign-starterkit/
-```
-
-### Configuration
-
-Find and open the `quake-leveldesign-starterkit` directory in Windows Explorer.
-
-Create three new directories:
-
-* A `working` directory at the root, which will remain empty until the `ne_q1spCompilingGui` tool is utilized.
-* An `id1` directory within the `quakespasm-spiked` directory.
-* A `maps` directory inside the `id1` directory for saving compiled maps.
-
-Lastly, copy and paste the original `pak0.pak` and `pak1.pak` files from your Quake game copy location into the `id1` directory. These files are necessary to test your map using `Quakespasm`.
-
-## Getting Started
-
-[![Video](http://img.youtube.com/vi/gONePWocbqA/0.jpg)](http://www.youtube.com/watch?v=gONePWocbqA)
-
-This video tutorial is part of a fantastic series by [dumptruck_ds](https://twitter.com/david_spell). Don't forget to [check it out](https://www.youtube.com/playlist?list=PLgDKRPte5Y0AZ_K_PZbWbgBAEt5xf74aE)!
-
-## Acknowledgments
-
-The [image](https://i.imgur.com/p0E4SuR.png) utilized to create the Starter Kit illustration.
+The licenses of the compiled and released tools vary and are independent of **QLDSK**'s licensing. There is no guarantee that all tools will work perfectly in every scenario, and users should use them at their discretion.

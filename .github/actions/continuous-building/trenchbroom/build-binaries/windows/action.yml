@@ -1,0 +1,73 @@
+inputs:
+  ARTIFACT_FILENAME:
+    required: true
+  ARTIFACT_REPOSITORY:
+    required: true
+  CICD_OPERATING_SYSTEM_NAME:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Checkout the artifact repository files
+      uses: ./.github/actions/_shared/checkout-artifact-repository-files
+      with:
+        ARTIFACT_REPOSITORY: ${{ inputs.ARTIFACT_REPOSITORY }}
+    - name: Set the current commit HEAD SHA
+      uses: ./.github/actions/_shared/set-current-commit-head-sha
+      with:
+        CICD_WORKING_DIRECTORY: working-directory/
+    - name: Restore the artifact from cache
+      id: restore-cached-artifact
+      uses: ./.github/actions/_shared/restore-artifact-cache
+      with:
+        ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+        CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
+    - name: Create the VCPKG caching directory
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      working-directory: working-directory/
+      run: mkdir -p ${{ github.workspace }}/vcpkg/bincache/
+      shell: bash
+    - name: Expose GitHub runtime
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/expose-github-runtime
+    - name: Set specific environment variables
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      working-directory: working-directory/
+      run: |
+        echo "TB_ARCH=x64" >> $GITHUB_ENV
+        echo "TB_OS_IMAGE=${{ matrix.os }}" >> $GITHUB_ENV
+        echo "TB_PULL_REQUEST_HEAD_SHA=${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}" >> $GITHUB_ENV
+        echo "VCPKG_BINARY_SOURCES=clear;x-gha,readwrite" >> $GITHUB_ENV
+      shell: bash
+    - name: Install Pandoc
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      working-directory: working-directory/
+      run: |
+        Invoke-WebRequest https://github.com/jgm/pandoc/releases/download/2.11.3.1/pandoc-2.11.3.1-windows-x86_64.zip -OutFile pandoc.zip
+        7z x "pandoc.zip" -o"." -y
+        echo "$(pwd)\pandoc-2.11.3.1" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      shell: pwsh
+    - name: Install Qt
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/install-qt
+      with:
+        QT_VERSION: 6.7.0
+    - name: Compile the source code
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      working-directory: working-directory/
+      run: cmd.exe /c CI-windows.bat
+      shell: pwsh
+    - name: Prepare the artifact
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      working-directory: working-directory/
+      run: 7z x "cmakebuild\TrenchBroom-*.7z" -o"${env:ARTIFACT_FILENAME}-files-${env:CICD_OPERATING_SYSTEM_NAME}\" -y
+      shell: pwsh
+      env:
+        ARTIFACT_FILENAME: ${{ inputs.ARTIFACT_FILENAME }}
+        CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
+    - name: Save the artifact as cache
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/save-artifact-cache
+      with:
+        ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+        CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}

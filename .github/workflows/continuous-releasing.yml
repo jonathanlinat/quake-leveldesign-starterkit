@@ -1,0 +1,48 @@
+name: Continuous Releasing
+on:
+  workflow_run:
+    workflows: Continuous Packing
+    types: completed
+env:
+  CICD_PROJECT_ACRONYM: QLDSK
+  CICD_PROJECT_SLUG: quake-leveldesign-starterkit
+jobs:
+  run-on-workflow-success:
+    name: Check the previous workflow status
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout the local repository files
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check the previous workflow status
+        uses: ./.github/actions/_shared/check-previous-workflow-status
+  release-starter-kit:
+    name: Release the starter kit
+    needs: run-on-workflow-success
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout the local repository files
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set the current commit HEAD SHA
+        uses: ./.github/actions/_shared/set-current-commit-head-sha
+      - name: Set the current date
+        uses: ./.github/actions/_shared/set-current-date
+      - name: "Release Files: Download the artifact"
+        uses: ./.github/actions/_shared/download-artifact
+        with:
+          ARTIFACT_FILENAME: ^${{ env.CICD_PROJECT_SLUG }}.*$
+          CICD_WORKFLOW: continuous-packing.yml
+      - name: "Release Notes: Unpack the artifact"
+        run: 7z x "${{ env.CICD_PROJECT_SLUG }}-release-notes-${{ env.CICD_CURRENT_DATE }}.zip" -o"${{ env.CICD_PROJECT_SLUG }}/" -y
+        shell: bash
+      - name: Release the starter kit
+        uses: ./.github/actions/continuous-releasing/release-starter-kit
+        with:
+          CICD_CURRENT_DATE: ${{ env.CICD_CURRENT_DATE }}
+          CICD_PROJECT_ACRONYM: ${{ env.CICD_PROJECT_ACRONYM }}
+          CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
+          GIT_CURRENT_COMMIT_HEAD_SHA: ${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}

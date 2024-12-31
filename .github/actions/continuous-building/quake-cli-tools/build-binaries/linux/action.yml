@@ -1,0 +1,50 @@
+inputs:
+  ARTIFACT_FILENAME:
+    required: true
+  ARTIFACT_REPOSITORY:
+    required: true
+  CICD_OPERATING_SYSTEM_NAME:
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Checkout the artifact repository files
+      uses: ./.github/actions/_shared/checkout-artifact-repository-files
+      with:
+        ARTIFACT_REPOSITORY: ${{ inputs.ARTIFACT_REPOSITORY }}
+    - name: Set the current commit HEAD SHA
+      uses: ./.github/actions/_shared/set-current-commit-head-sha
+      with:
+        CICD_WORKING_DIRECTORY: working-directory/
+    - name: Restore the artifact from cache
+      id: restore-cached-artifact
+      uses: ./.github/actions/_shared/restore-artifact-cache
+      with:
+        ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+        CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
+    - name: Install Python requirements
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      working-directory: working-directory/
+      run: |
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+      shell: bash
+    - name: Compile the source code
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      working-directory: working-directory/
+      run: make build
+      shell: bash
+    - name: Prepare the artifact
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      working-directory: working-directory/
+      run: |
+        make package
+        7z x "${{ inputs.ARTIFACT_FILENAME }}-*-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}.zip" -y
+        mv ${{ inputs.ARTIFACT_FILENAME }}-*-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/ ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+      shell: bash
+    - name: Save the artifact as cache
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/save-artifact-cache
+      with:
+        ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+        CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}

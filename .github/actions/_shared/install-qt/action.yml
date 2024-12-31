@@ -1,0 +1,9 @@
+inputs:
+  QT_VERSION:
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ inputs.QT_VERSION }}

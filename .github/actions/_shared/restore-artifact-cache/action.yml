@@ -1,0 +1,16 @@
+inputs:
+  ARTIFACT_PATH:
+    required: true
+  CACHE_KEY:
+    required: true
+outputs:
+  CACHE_HIT:
+    value: ${{ steps.cache-restore.outputs.cache-hit }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache/restore@v4
+      id: cache-restore
+      with:
+        key: ${{ inputs.CACHE_KEY }}
+        path: ${{ inputs.ARTIFACT_PATH }}
