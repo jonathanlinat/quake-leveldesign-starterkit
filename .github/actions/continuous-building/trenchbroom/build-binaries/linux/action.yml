@@ -18,20 +18,20 @@ runs:
         CICD_WORKING_DIRECTORY: working-directory/
     - name: Restore the artifact from cache
       id: restore-cached-artifact
-      uses: actions/cache/restore@v4
+      uses: ./.github/actions/_shared/restore-artifact-cache
       with:
-        key: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
-        path: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+        ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+        CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
     - name: Create the VCPKG caching directory
-      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: mkdir -p ${{ github.workspace }}/vcpkg/bincache/
       shell: bash
     - name: Expose GitHub runtime
-      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
-      uses: crazy-max/ghaction-github-runtime@v3
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/expose-github-runtime
     - name: Set specific environment variables
-      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         echo "TB_ARCH=x64" >> $GITHUB_ENV
@@ -40,33 +40,33 @@ runs:
         echo "VCPKG_BINARY_SOURCES=clear;x-gha,readwrite" >> $GITHUB_ENV
       shell: bash
     - name: Install dependencies
-      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         sudo apt update
         sudo apt install -y --no-install-recommends build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc ninja-build libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev libfuse2
       shell: bash
     - name: Install Qt
-      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
-      uses: jurplel/install-qt-action@v4
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/install-qt
       with:
-        version: 5.15.2
-        arch: gcc_64
+        QT_ARCHITECTURE: gcc_64
+        QT_VERSION: 5.15.2
     - name: Compile the source code
-      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: ./CI-linux.sh
       shell: bash
     - name: Prepare the artifact
-      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         mkdir -p ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
         mv build/TrenchBroom-* ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
       shell: bash
     - name: Save the artifact as cache
-      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v4
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/save-artifact-cache
       with:
-        key: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
-        path: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+        ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+        CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}

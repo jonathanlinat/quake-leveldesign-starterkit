@@ -28,17 +28,17 @@ runs:
         CICD_WORKING_DIRECTORY: working-directory/
     - name: Restore the artifact from cache
       id: restore-cached-artifact
-      uses: actions/cache/restore@v4
+      uses: ./.github/actions/_shared/restore-artifact-cache
       with:
-        key: ${{ inputs.ARTIFACT_FILENAME }}-metadata-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
-        path: working-directory/${{ inputs.ARTIFACT_FILENAME }}-metadata/
+        ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-metadata/
+        CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-metadata-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
     - name: Set the current commit details
-      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/set-current-commit-details
       with:
         CICD_WORKING_DIRECTORY: working-directory/
     - name: Create the content
-      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         mkdir -p ${{ inputs.ARTIFACT_FILENAME }}-metadata/
@@ -51,8 +51,8 @@ runs:
           > **Repository**: https://github.com/${{ inputs.ARTIFACT_REPOSITORY }}" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
       shell: bash
     - name: Save the artifact as cache
-      if: steps.restore-cached-artifact.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v4
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/save-artifact-cache
       with:
-        key: ${{ inputs.ARTIFACT_FILENAME }}-metadata-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
-        path: working-directory/${{ inputs.ARTIFACT_FILENAME }}-metadata/
+        ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-metadata/
+        CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-metadata-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
