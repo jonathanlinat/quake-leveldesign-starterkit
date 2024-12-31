@@ -1,0 +1,20 @@
+inputs:
+  ARTIFACT_FILENAME:
+    required: true
+  ARTIFACT_DESTINATION_PATH:
+    required: true
+  CICD_OPERATING_SYSTEM_NAME:
+    required: true
+  CICD_PROJECT_SLUG:
+    required: true
+  CICD_WORKFLOW:
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/_shared/download-artifact
+      with:
+        ARTIFACT_FILENAME: ^${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}$
+        CICD_WORKFLOW: ${{ inputs.CICD_WORKFLOW }}
+    - run: 7z x "${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}.zip" -o"${{ inputs.CICD_PROJECT_SLUG }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/${{ inputs.ARTIFACT_DESTINATION_PATH }}" -y
+      shell: bash

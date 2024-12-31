@@ -1,0 +1,20 @@
+inputs:
+  CICD_CURRENT_DATE:
+    required: true
+  CICD_PROJECT_ACRONYM:
+    required: true
+  CICD_PROJECT_SLUG:
+    required: true
+  GIT_CURRENT_COMMIT_HEAD_SHA:
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: true
+        artifacts: ${{ inputs.CICD_PROJECT_SLUG }}-${{ inputs.CICD_CURRENT_DATE }}-windows.zip,${{ inputs.CICD_PROJECT_SLUG }}-${{ inputs.CICD_CURRENT_DATE }}-linux.zip
+        bodyFile: ${{ inputs.CICD_PROJECT_SLUG }}/RELEASE_NOTES.md
+        makeLatest: false
+        name: ${{ inputs.CICD_PROJECT_ACRONYM }} v${{ inputs.CICD_CURRENT_DATE }} (${{ inputs.GIT_CURRENT_COMMIT_HEAD_SHA }})
+        tag: v${{ inputs.CICD_CURRENT_DATE }}-${{ inputs.GIT_CURRENT_COMMIT_HEAD_SHA }}

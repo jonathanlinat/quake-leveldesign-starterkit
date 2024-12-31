@@ -1,5 +1,0 @@
-rad 512
-res 20
-range_end 50
-shift 5
-bounds 0

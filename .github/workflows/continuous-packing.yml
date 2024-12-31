@@ -1,0 +1,121 @@
+name: Continuous Packing
+on:
+  workflow_run:
+    workflows: Continuous Building
+    types: completed
+env:
+  CICD_PROJECT_ACRONYM: QLDSK
+  CICD_PROJECT_FULL_NAME: Quake Level Design Starter Kit
+  CICD_PROJECT_SLUG: quake-leveldesign-starterkit
+jobs:
+  run-on-workflow-success:
+    name: Check the previous workflow status
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout the local repository files
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check the previous workflow status
+        uses: ./.github/actions/_shared/check-previous-workflow-status
+  create-release-notes:
+    name: Create the release notes
+    needs: run-on-workflow-success
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout the local repository files
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set the current date
+        uses: ./.github/actions/_shared/set-current-date
+      - name: "Metadata: Download and unpack the artifact"
+        uses: ./.github/actions/continuous-packing/download-unpack-artifact/metadata
+        with:
+          ARTIFACT_FILENAME: metadata
+          CICD_PROJECT_ACRONYM: ${{ env.CICD_PROJECT_ACRONYM }}
+          CICD_PROJECT_FULL_NAME: ${{ env.CICD_PROJECT_FULL_NAME }}
+          CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
+          CICD_WORKFLOW: continuous-building.yml
+          LIST_METADATA_FILES: trenchbroom,ericw-tools,ironwail,quake-cli-tools,goldutil,extras
+      - name: Pack and upload the artifact
+        uses: ./.github/actions/_shared/pack-upload-artifact
+        with:
+          ARTIFACT_FILENAME: ${{ env.CICD_PROJECT_SLUG }}-release-notes-${{ env.CICD_CURRENT_DATE }}
+          ARTIFACT_PATH: ${{ env.CICD_PROJECT_SLUG }}-release-notes/
+  pack-binaries:
+    name: Pack the binaries
+    needs: run-on-workflow-success
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-22.04, windows-2022]
+    steps:
+      - name: Checkout the local repository files
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set the current date
+        uses: ./.github/actions/_shared/set-current-date
+      - name: Set the operating system name
+        uses: ./.github/actions/_shared/set-operating-system-name
+        with:
+          MATRIX_OS: ${{ matrix.os }}
+      - name: "TrenchBroom: Download and unpack the artifact"
+        uses: ./.github/actions/continuous-packing/download-unpack-artifact/files
+        with:
+          ARTIFACT_FILENAME: trenchbroom
+          ARTIFACT_DESTINATION_PATH: level-editor/
+          CICD_OPERATING_SYSTEM_NAME: ${{ env.CICD_OPERATING_SYSTEM_NAME }}
+          CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
+          CICD_WORKFLOW: continuous-building.yml
+      - name: "ericw-tools: Download and unpack the artifact"
+        uses: ./.github/actions/continuous-packing/download-unpack-artifact/files
+        with:
+          ARTIFACT_FILENAME: ericw-tools
+          ARTIFACT_DESTINATION_PATH: level-compiler/
+          CICD_OPERATING_SYSTEM_NAME: ${{ env.CICD_OPERATING_SYSTEM_NAME }}
+          CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
+          CICD_WORKFLOW: continuous-building.yml
+      - name: "Ironwail: Download and unpack the artifact"
+        uses: ./.github/actions/continuous-packing/download-unpack-artifact/files
+        with:
+          ARTIFACT_FILENAME: ironwail
+          ARTIFACT_DESTINATION_PATH: tools/ironwail/
+          CICD_OPERATING_SYSTEM_NAME: ${{ env.CICD_OPERATING_SYSTEM_NAME }}
+          CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
+          CICD_WORKFLOW: continuous-building.yml
+      - name: "Quake CLI Tools: Download and unpack the artifact"
+        uses: ./.github/actions/continuous-packing/download-unpack-artifact/files
+        with:
+          ARTIFACT_FILENAME: quake-cli-tools
+          ARTIFACT_DESTINATION_PATH: tools/quake-cli-tools/
+          CICD_OPERATING_SYSTEM_NAME: ${{ env.CICD_OPERATING_SYSTEM_NAME }}
+          CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
+          CICD_WORKFLOW: continuous-building.yml
+      - name: "goldutil: Download and unpack the artifact"
+        uses: ./.github/actions/continuous-packing/download-unpack-artifact/files
+        with:
+          ARTIFACT_FILENAME: goldutil
+          ARTIFACT_DESTINATION_PATH: tools/goldutil/
+          CICD_OPERATING_SYSTEM_NAME: ${{ env.CICD_OPERATING_SYSTEM_NAME }}
+          CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
+          CICD_WORKFLOW: continuous-building.yml
+      - name: "Extras: Download and unpack the artifact"
+        uses: ./.github/actions/continuous-packing/download-unpack-artifact/files
+        with:
+          ARTIFACT_FILENAME: extras
+          ARTIFACT_DESTINATION_PATH: extras
+          CICD_OPERATING_SYSTEM_NAME: ${{ env.CICD_OPERATING_SYSTEM_NAME }}
+          CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
+          CICD_WORKFLOW: continuous-building.yml
+      - name: Copy the local Markdown and LICENSE files
+        run: cp *.md LICENSE "${{ env.CICD_PROJECT_SLUG }}-${{ env.CICD_OPERATING_SYSTEM_NAME }}/"
+        shell: bash
+      - name: Pack and upload the artifact
+        uses: ./.github/actions/_shared/pack-upload-artifact
+        with:
+          ARTIFACT_FILENAME: ${{ env.CICD_PROJECT_SLUG }}-${{ env.CICD_CURRENT_DATE }}-${{ env.CICD_OPERATING_SYSTEM_NAME }}
+          ARTIFACT_PATH: ${{ env.CICD_PROJECT_SLUG }}-${{ env.CICD_OPERATING_SYSTEM_NAME }}/

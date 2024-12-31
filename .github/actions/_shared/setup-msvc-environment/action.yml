@@ -1,0 +1,9 @@
+inputs:
+  MSVC_VERSION:
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        vsversion: ${{ inputs.MSVC_VERSION }}

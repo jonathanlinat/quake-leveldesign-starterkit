@@ -1,0 +1,125 @@
+name: Continuous Building
+on:
+  schedule:
+    - cron: 0 0 * * 1
+  push:
+    paths:
+      - .github/actions/**
+      - .github/workflows/**
+jobs:
+  generate-metadata:
+    name: Generate metadata
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: true
+      matrix:
+        project:
+          - name: TrenchBroom
+            filename: trenchbroom
+            author: Kristian Duske
+            repo: TrenchBroom/TrenchBroom
+            website: http://kristianduske.com/trenchbroom
+          - name: ericw-tools
+            filename: ericw-tools
+            author: Eric Wasylishen
+            repo: ericwa/ericw-tools
+            documentation: https://ericw-tools.readthedocs.io
+          - name: Ironwail
+            filename: ironwail
+            author: Andrei Drexler
+            repo: andrei-drexler/ironwail
+            twitter: https://twitter.com/andrei_drexler
+          - name: Quake CLI Tools
+            filename: quake-cli-tools
+            author: Joshua Skelton
+            repo: joshuaskelly/quake-cli-tools
+            website: https://joshua.itch.io/quake-tools
+            howto: https://www.youtube.com/watch?v=zJ0RX62VYaA
+          - name: goldutil
+            filename: goldutil
+            author: Léo Peltier
+            repo: L-P/goldutil
+          - name: Extras
+            filename: extras
+    steps:
+      - name: Checkout the local repository files
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Generate metadata
+        uses: ./.github/actions/_shared/make-dynamic-uses
+        with:
+          USES_PATH: ./.github/actions/continuous-building/${{ matrix.project.filename }}/generate-metadata
+          USES_INPUTS: '{ "ARTIFACT_AUTHOR_NAME": "${{ matrix.project.author }}", "ARTIFACT_DOCUMENTATION_URL": "${{ matrix.project.documentation }}", "ARTIFACT_FILENAME": "${{ matrix.project.filename }}", "ARTIFACT_HOWTO_URL": "${{ matrix.project.howto }}", "ARTIFACT_NAME": "${{ matrix.project.name }}", "ARTIFACT_REPOSITORY": "${{ matrix.project.repo }}", "ARTIFACT_TWITTER_URL": "${{ matrix.project.twitter }}", "ARTIFACT_WEBSITE_URL": "${{ matrix.project.website }}" }'
+      - name: Pack and upload the artifact
+        uses: ./.github/actions/_shared/pack-upload-artifact
+        with:
+          ARTIFACT_FILENAME: ${{ matrix.project.filename }}-metadata
+          ARTIFACT_PATH: working-directory/${{ matrix.project.filename }}-metadata/
+  build-binaries:
+    name: Build the binaries
+    needs: generate-metadata
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-22.04, windows-2022]
+        project:
+          - filename: trenchbroom
+            repository: TrenchBroom/TrenchBroom
+          - filename: ericw-tools
+            repository: ericwa/ericw-tools
+          - filename: ironwail
+            repository: andrei-drexler/ironwail
+          - filename: quake-cli-tools
+            repository: joshuaskelly/quake-cli-tools
+          - filename: goldutil
+            repository: L-P/goldutil
+    steps:
+      - name: Checkout the local repository files
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set the operating system name
+        uses: ./.github/actions/_shared/set-operating-system-name
+        with:
+          MATRIX_OS: ${{ matrix.os }}
+      - name: Build the binaries
+        uses: ./.github/actions/_shared/make-dynamic-uses
+        with:
+          USES_PATH: ./.github/actions/continuous-building/${{ matrix.project.filename }}/build-binaries/${{ env.CICD_OPERATING_SYSTEM_NAME }}
+          USES_INPUTS: '{ "ARTIFACT_FILENAME": "${{ matrix.project.filename }}", "ARTIFACT_REPOSITORY": "${{ matrix.project.repository }}", "CICD_OPERATING_SYSTEM_NAME": "${{ env.CICD_OPERATING_SYSTEM_NAME }}" }'
+      - name: Pack and upload the artifact
+        uses: ./.github/actions/_shared/pack-upload-artifact
+        with:
+          ARTIFACT_FILENAME: ${{ matrix.project.filename }}-files-${{ env.CICD_OPERATING_SYSTEM_NAME }}
+          ARTIFACT_PATH: working-directory/${{ matrix.project.filename }}-files-${{ env.CICD_OPERATING_SYSTEM_NAME }}/
+  get-extra-files:
+    name: Get the extra files
+    needs: generate-metadata
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-22.04, windows-2022]
+        project:
+          - filename: extras
+    steps:
+      - name: Checkout the local repository files
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set the operating system name
+        uses: ./.github/actions/_shared/set-operating-system-name
+        with:
+          MATRIX_OS: ${{ matrix.os }}
+      - name: Get the extra files
+        uses: ./.github/actions/_shared/make-dynamic-uses
+        with:
+          USES_PATH: ./.github/actions/continuous-building/${{ matrix.project.filename }}/get-files
+          USES_INPUTS: '{ "ARTIFACT_FILENAME": "${{ matrix.project.filename }}", "CICD_OPERATING_SYSTEM_NAME": "${{ env.CICD_OPERATING_SYSTEM_NAME }}" }'
+      - name: Pack and upload the artifact
+        uses: ./.github/actions/_shared/pack-upload-artifact
+        with:
+          ARTIFACT_FILENAME: ${{ matrix.project.filename }}-files-${{ env.CICD_OPERATING_SYSTEM_NAME }}
+          ARTIFACT_PATH: working-directory/${{ matrix.project.filename }}-files-${{ env.CICD_OPERATING_SYSTEM_NAME }}/
