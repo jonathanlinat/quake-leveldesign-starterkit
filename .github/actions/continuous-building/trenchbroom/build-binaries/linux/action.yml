@@ -61,7 +61,7 @@ runs:
       working-directory: working-directory/
       run: |
         mkdir -p ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
-        mv build/TrenchBroom-* ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+        mv cmakebuild/TrenchBroom-* ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
       shell: bash
     - name: Save the artifact as cache
       if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
