@@ -60,7 +60,7 @@ runs:
     - name: Prepare the artifact
       if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
-      run: 7z x "cmakebuild\TrenchBroom-*.7z" -o"${env:ARTIFACT_FILENAME}-files-${env:CICD_OPERATING_SYSTEM_NAME}\" -y
+      run: 7z x "cmakebuild\TrenchBroom-*.zip" -o"${env:ARTIFACT_FILENAME}-files-${env:CICD_OPERATING_SYSTEM_NAME}\" -y
       shell: pwsh
       env:
         ARTIFACT_FILENAME: ${{ inputs.ARTIFACT_FILENAME }}
