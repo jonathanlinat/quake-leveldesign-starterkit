@@ -37,6 +37,7 @@ runs:
         echo "TB_OS_IMAGE=${{ matrix.os }}" >> $GITHUB_ENV
         echo "TB_PULL_REQUEST_HEAD_SHA=${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}" >> $GITHUB_ENV
         echo "VCPKG_BINARY_SOURCES=clear;x-gha,readwrite" >> $GITHUB_ENV
+        echo "X_VCPKG_ASSET_SOURCES=clear;x-azurl,https://assetcache.open-vcpkg.org/assetcache,,read" >> $GITHUB_ENV
       shell: bash
     - name: Install Pandoc
       if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
