@@ -11,7 +11,7 @@
 
 | 🚀 Get the Latest Stable Release | 🔔 Get the Latest Unstable (Weekly) Release |
 | -- | -- |
-| [![Get the Latest Stable Release](https://badgen.net/badge/Stable/QLDSK%20v20250303%20(70790208a0)?icon=github)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) | [![Get the Latest Weekly (Unstable) Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Unstable%20(Weekly)&color=orange)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases) |
+| [![Get the Latest Stable Release](https://badgen.net/badge/Stable/QLDSK%20v20250526%20(a29166e156)?icon=github)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) | [![Get the Latest Weekly (Unstable) Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Unstable%20(Weekly)&color=orange)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases) |
 
 Great, you're all set! Now, proceed to [read the documentation](https://github.com/jonathanlinat/quake-leveldesign-starterkit/wiki) to install, set up and start this project
 
