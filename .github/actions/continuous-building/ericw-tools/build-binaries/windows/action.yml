@@ -31,7 +31,7 @@ runs:
       if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/install-qt
       with:
-        QT_VERSION: 5.15.2
+        QT_VERSION: 6.7.0
     - name: Compile the source code
       if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
