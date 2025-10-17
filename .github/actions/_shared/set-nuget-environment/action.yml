@@ -1,0 +1,7 @@
+runs:
+  using: composite
+  steps:
+    - run: |
+        echo "NUGET_USERNAME=${{ github.repository_owner }}" >> $GITHUB_ENV
+        echo "NUGET_FEED_URL=https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" >> $GITHUB_ENV
+      shell: bash

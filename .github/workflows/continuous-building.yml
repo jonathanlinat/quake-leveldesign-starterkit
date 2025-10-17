@@ -49,7 +49,7 @@ jobs:
             filename: extras
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Generate metadata
@@ -84,7 +84,7 @@ jobs:
             repository: L-P/goldutil
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Set the operating system name
@@ -95,7 +95,7 @@ jobs:
         uses: ./.github/actions/_shared/make-dynamic-uses
         with:
           USES_PATH: ./.github/actions/continuous-building/${{ matrix.project.filename }}/build-binaries/${{ env.CICD_OPERATING_SYSTEM_NAME }}
-          USES_INPUTS: '{ "ARTIFACT_FILENAME": "${{ matrix.project.filename }}", "ARTIFACT_REPOSITORY": "${{ matrix.project.repository }}", "CICD_OPERATING_SYSTEM_NAME": "${{ env.CICD_OPERATING_SYSTEM_NAME }}", "NUGET_USERNAME": "${{ github.repository_owner }}", "NUGET_FEED_URL": "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" }'
+          USES_INPUTS: '{ "ARTIFACT_FILENAME": "${{ matrix.project.filename }}", "ARTIFACT_REPOSITORY": "${{ matrix.project.repository }}", "CICD_OPERATING_SYSTEM_NAME": "${{ env.CICD_OPERATING_SYSTEM_NAME }}" }'
       - name: Pack and upload the artifact
         uses: ./.github/actions/_shared/pack-upload-artifact
         with:
@@ -114,7 +114,7 @@ jobs:
           - filename: extras
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Set the operating system name
