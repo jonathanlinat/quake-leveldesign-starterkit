@@ -5,7 +5,10 @@ on:
     types: completed
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
+permissions:
+  actions: read
+  contents: write
 env:
   CICD_PROJECT_ACRONYM: QLDSK
   CICD_PROJECT_SLUG: quake-leveldesign-starterkit
@@ -17,9 +20,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - name: Check the previous workflow status
         uses: ./.github/actions/_shared/check-previous-workflow-status
   release-starter-kit:
@@ -29,9 +32,9 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - name: Set the current commit HEAD SHA
         uses: ./.github/actions/_shared/set-current-commit-head-sha
       - name: Set the current date

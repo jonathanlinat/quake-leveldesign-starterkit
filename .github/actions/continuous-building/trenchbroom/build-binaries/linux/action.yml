@@ -22,12 +22,32 @@ runs:
       with:
         ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
         CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
+    - name: Restore vcpkg bootstrap from cache
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      id: restore-vcpkg-bootstrap
+      uses: ./.github/actions/_shared/restore-artifact-cache
+      with:
+        ARTIFACT_PATH: working-directory/vcpkg
+        CACHE_KEY: vcpkg-bootstrap-${{ inputs.ARTIFACT_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
+    - name: Restore vcpkg packages from cache
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      id: restore-vcpkg-packages
+      uses: ./.github/actions/_shared/restore-artifact-cache
+      with:
+        ARTIFACT_PATH: working-directory/vcpkg_installed
+        CACHE_KEY: vcpkg-packages-${{ inputs.ARTIFACT_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
     - name: Set NuGet environment variables
       uses: ./.github/actions/_shared/set-nuget-environment
+    - name: Disable vcpkg telemetry
+      working-directory: working-directory/
+      run: echo "VCPKG_DISABLE_METRICS=1" >> $GITHUB_ENV
+      shell: bash
     - name: Set specific environment variables
       if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        echo "CC=gcc-13" >> $GITHUB_ENV
+        echo "CXX=g++-13" >> $GITHUB_ENV
         echo "FEED_URL=${{ env.NUGET_FEED_URL }}" >> $GITHUB_ENV
         echo "MONO_GAC_PREFIX=${HOMEBREW_PREFIX}" >> $GITHUB_ENV
         echo "TB_PULL_REQUEST_HEAD_SHA=${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}" >> $GITHUB_ENV
@@ -45,10 +65,16 @@ runs:
         sudo apt install -y --no-install-recommends gcc-13 g++-13 build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc ninja-build libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev libfuse2 mono-complete
       shell: bash
     - name: Bootstrap vcpkg
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      if: steps.restore-vcpkg-bootstrap.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: ./vcpkg/bootstrap-vcpkg.sh
       shell: bash
+    - name: Save vcpkg bootstrap as cache
+      if: steps.restore-vcpkg-bootstrap.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/save-artifact-cache
+      with:
+        ARTIFACT_PATH: working-directory/vcpkg
+        CACHE_KEY: vcpkg-bootstrap-${{ inputs.ARTIFACT_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
     - name: Add NuGet sources
       if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
@@ -64,17 +90,11 @@ runs:
           setapikey "${{ github.token }}" \
           -Source "${{ env.FEED_URL }}"
       shell: bash
-    - name: Set compiler version
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
-      working-directory: working-directory/
-      run: |
-        echo "CC=gcc-13" >> $GITHUB_ENV
-        echo "CXX=g++-13" >> $GITHUB_ENV
-      shell: bash
     - name: Install Qt
       if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/install-qt
       with:
+        CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
         QT_VERSION: 6.8.*
     - name: Compile the source code
       if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
@@ -88,6 +108,12 @@ runs:
         mkdir -p ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
         mv cmakebuild/TrenchBroom-* ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
       shell: bash
+    - name: Save vcpkg packages as cache
+      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true' && steps.restore-vcpkg-packages.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/save-artifact-cache
+      with:
+        ARTIFACT_PATH: working-directory/vcpkg_installed
+        CACHE_KEY: vcpkg-packages-${{ inputs.ARTIFACT_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
     - name: Save the artifact as cache
       if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/save-artifact-cache

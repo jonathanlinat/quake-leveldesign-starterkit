@@ -26,7 +26,8 @@ runs:
       if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/install-qt
       with:
-        QT_VERSION: 6.7.0
+        CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
+        QT_VERSION: 6.8.*
     - name: Compile the source code
       if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/

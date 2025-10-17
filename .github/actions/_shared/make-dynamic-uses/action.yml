@@ -6,7 +6,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: jenseng/dynamic-uses@v1
+    - uses: jenseng/dynamic-uses@26a7fa196ecfc98e02d08d65a09d03ab999683ae
       with:
         uses: ${{ inputs.USES_PATH }}
         with: ${{ inputs.USES_INPUTS }}
