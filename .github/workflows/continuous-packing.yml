@@ -3,6 +3,9 @@ on:
   workflow_run:
     workflows: Continuous Building
     types: completed
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 env:
   CICD_PROJECT_ACRONYM: QLDSK
   CICD_PROJECT_FULL_NAME: Quake Level Design Starter Kit
@@ -12,6 +15,7 @@ jobs:
     name: Check the previous workflow status
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-22.04
+    timeout-minutes: 10
     steps:
       - name: Checkout the local repository files
         uses: actions/checkout@v4
@@ -23,6 +27,7 @@ jobs:
     name: Create the release notes
     needs: run-on-workflow-success
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
     steps:
       - name: Checkout the local repository files
         uses: actions/checkout@v4
@@ -48,8 +53,9 @@ jobs:
     name: Pack the binaries
     needs: run-on-workflow-success
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os: [ubuntu-22.04, windows-2022]
     steps:

@@ -6,10 +6,16 @@ on:
     paths:
       - .github/actions/**
       - .github/workflows/**
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  packages: write
 jobs:
   generate-metadata:
     name: Generate metadata
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
     strategy:
       fail-fast: true
       matrix:
@@ -60,8 +66,9 @@ jobs:
     name: Build the binaries
     needs: generate-metadata
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 180
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os: [ubuntu-22.04, windows-2022]
         project:
@@ -88,7 +95,7 @@ jobs:
         uses: ./.github/actions/_shared/make-dynamic-uses
         with:
           USES_PATH: ./.github/actions/continuous-building/${{ matrix.project.filename }}/build-binaries/${{ env.CICD_OPERATING_SYSTEM_NAME }}
-          USES_INPUTS: '{ "ARTIFACT_FILENAME": "${{ matrix.project.filename }}", "ARTIFACT_REPOSITORY": "${{ matrix.project.repository }}", "CICD_OPERATING_SYSTEM_NAME": "${{ env.CICD_OPERATING_SYSTEM_NAME }}" }'
+          USES_INPUTS: '{ "ARTIFACT_FILENAME": "${{ matrix.project.filename }}", "ARTIFACT_REPOSITORY": "${{ matrix.project.repository }}", "CICD_OPERATING_SYSTEM_NAME": "${{ env.CICD_OPERATING_SYSTEM_NAME }}", "NUGET_USERNAME": "${{ github.repository_owner }}", "NUGET_FEED_URL": "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" }'
       - name: Pack and upload the artifact
         uses: ./.github/actions/_shared/pack-upload-artifact
         with:
@@ -98,8 +105,9 @@ jobs:
     name: Get the extra files
     needs: generate-metadata
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os: [ubuntu-22.04, windows-2022]
         project:
