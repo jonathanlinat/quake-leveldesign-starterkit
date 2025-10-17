@@ -4,6 +4,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: ilammy/msvc-dev-cmd@v1
+    - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
       with:
         vsversion: ${{ inputs.MSVC_VERSION }}

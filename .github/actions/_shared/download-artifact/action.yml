@@ -6,7 +6,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: dawidd6/action-download-artifact@v11
+    - uses: dawidd6/action-download-artifact@ac66b43f0e6a346234dd65d4d0c8fbb31cb316e5
       with:
         name: ${{ inputs.ARTIFACT_FILENAME }}
         name_is_regexp: true

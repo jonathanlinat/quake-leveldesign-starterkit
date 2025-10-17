@@ -6,6 +6,9 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+permissions:
+  actions: read
+  contents: read
 env:
   CICD_PROJECT_ACRONYM: QLDSK
   CICD_PROJECT_FULL_NAME: Quake Level Design Starter Kit
@@ -18,9 +21,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - name: Check the previous workflow status
         uses: ./.github/actions/_shared/check-previous-workflow-status
   create-release-notes:
@@ -30,9 +33,9 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - name: Set the current date
         uses: ./.github/actions/_shared/set-current-date
       - name: "Metadata: Download and unpack the artifact"
@@ -60,9 +63,9 @@ jobs:
         os: [ubuntu-22.04, windows-2022]
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - name: Set the current date
         uses: ./.github/actions/_shared/set-current-date
       - name: Set the operating system name
@@ -72,48 +75,48 @@ jobs:
       - name: "TrenchBroom: Download and unpack the artifact"
         uses: ./.github/actions/continuous-packing/download-unpack-artifact/files
         with:
-          ARTIFACT_FILENAME: trenchbroom
           ARTIFACT_DESTINATION_PATH: level-editor/
+          ARTIFACT_FILENAME: trenchbroom
           CICD_OPERATING_SYSTEM_NAME: ${{ env.CICD_OPERATING_SYSTEM_NAME }}
           CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
           CICD_WORKFLOW: continuous-building.yml
       - name: "ericw-tools: Download and unpack the artifact"
         uses: ./.github/actions/continuous-packing/download-unpack-artifact/files
         with:
-          ARTIFACT_FILENAME: ericw-tools
           ARTIFACT_DESTINATION_PATH: level-compiler/
+          ARTIFACT_FILENAME: ericw-tools
           CICD_OPERATING_SYSTEM_NAME: ${{ env.CICD_OPERATING_SYSTEM_NAME }}
           CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
           CICD_WORKFLOW: continuous-building.yml
       - name: "Ironwail: Download and unpack the artifact"
         uses: ./.github/actions/continuous-packing/download-unpack-artifact/files
         with:
-          ARTIFACT_FILENAME: ironwail
           ARTIFACT_DESTINATION_PATH: tools/ironwail/
+          ARTIFACT_FILENAME: ironwail
           CICD_OPERATING_SYSTEM_NAME: ${{ env.CICD_OPERATING_SYSTEM_NAME }}
           CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
           CICD_WORKFLOW: continuous-building.yml
       - name: "Quake CLI Tools: Download and unpack the artifact"
         uses: ./.github/actions/continuous-packing/download-unpack-artifact/files
         with:
-          ARTIFACT_FILENAME: quake-cli-tools
           ARTIFACT_DESTINATION_PATH: tools/quake-cli-tools/
+          ARTIFACT_FILENAME: quake-cli-tools
           CICD_OPERATING_SYSTEM_NAME: ${{ env.CICD_OPERATING_SYSTEM_NAME }}
           CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
           CICD_WORKFLOW: continuous-building.yml
       - name: "goldutil: Download and unpack the artifact"
         uses: ./.github/actions/continuous-packing/download-unpack-artifact/files
         with:
-          ARTIFACT_FILENAME: goldutil
           ARTIFACT_DESTINATION_PATH: tools/goldutil/
+          ARTIFACT_FILENAME: goldutil
           CICD_OPERATING_SYSTEM_NAME: ${{ env.CICD_OPERATING_SYSTEM_NAME }}
           CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
           CICD_WORKFLOW: continuous-building.yml
       - name: "Extras: Download and unpack the artifact"
         uses: ./.github/actions/continuous-packing/download-unpack-artifact/files
         with:
-          ARTIFACT_FILENAME: extras
           ARTIFACT_DESTINATION_PATH: extras
+          ARTIFACT_FILENAME: extras
           CICD_OPERATING_SYSTEM_NAME: ${{ env.CICD_OPERATING_SYSTEM_NAME }}
           CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
           CICD_WORKFLOW: continuous-building.yml

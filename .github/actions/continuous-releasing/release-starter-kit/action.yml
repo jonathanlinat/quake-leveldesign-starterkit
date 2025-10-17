@@ -10,7 +10,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: ncipollo/release-action@v1
+    - uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b
       with:
         allowUpdates: true
         artifacts: ${{ inputs.CICD_PROJECT_SLUG }}-${{ inputs.CICD_CURRENT_DATE }}-windows.zip,${{ inputs.CICD_PROJECT_SLUG }}-${{ inputs.CICD_CURRENT_DATE }}-linux.zip

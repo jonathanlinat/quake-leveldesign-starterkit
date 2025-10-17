@@ -49,14 +49,14 @@ jobs:
             filename: extras
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 0
-      - name: Generate metadata
+          fetch-depth: 1
+      - name: Generate the metadata
         uses: ./.github/actions/_shared/make-dynamic-uses
         with:
-          USES_PATH: ./.github/actions/continuous-building/${{ matrix.project.filename }}/generate-metadata
           USES_INPUTS: '{ "ARTIFACT_AUTHOR_NAME": "${{ matrix.project.author }}", "ARTIFACT_DOCUMENTATION_URL": "${{ matrix.project.documentation }}", "ARTIFACT_FILENAME": "${{ matrix.project.filename }}", "ARTIFACT_HOWTO_URL": "${{ matrix.project.howto }}", "ARTIFACT_NAME": "${{ matrix.project.name }}", "ARTIFACT_REPOSITORY": "${{ matrix.project.repo }}", "ARTIFACT_TWITTER_URL": "${{ matrix.project.twitter }}", "ARTIFACT_WEBSITE_URL": "${{ matrix.project.website }}" }'
+          USES_PATH: ./.github/actions/continuous-building/${{ matrix.project.filename }}/generate-metadata
       - name: Pack and upload the artifact
         uses: ./.github/actions/_shared/pack-upload-artifact
         with:
@@ -84,9 +84,9 @@ jobs:
             repository: L-P/goldutil
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - name: Set the operating system name
         uses: ./.github/actions/_shared/set-operating-system-name
         with:
@@ -94,8 +94,8 @@ jobs:
       - name: Build the binaries
         uses: ./.github/actions/_shared/make-dynamic-uses
         with:
-          USES_PATH: ./.github/actions/continuous-building/${{ matrix.project.filename }}/build-binaries/${{ env.CICD_OPERATING_SYSTEM_NAME }}
           USES_INPUTS: '{ "ARTIFACT_FILENAME": "${{ matrix.project.filename }}", "ARTIFACT_REPOSITORY": "${{ matrix.project.repository }}", "CICD_OPERATING_SYSTEM_NAME": "${{ env.CICD_OPERATING_SYSTEM_NAME }}" }'
+          USES_PATH: ./.github/actions/continuous-building/${{ matrix.project.filename }}/build-binaries/${{ env.CICD_OPERATING_SYSTEM_NAME }}
       - name: Pack and upload the artifact
         uses: ./.github/actions/_shared/pack-upload-artifact
         with:
@@ -114,18 +114,18 @@ jobs:
           - filename: extras
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - name: Set the operating system name
         uses: ./.github/actions/_shared/set-operating-system-name
         with:
           MATRIX_OS: ${{ matrix.os }}
-      - name: Get the extra files
+      - name: Download the extra files
         uses: ./.github/actions/_shared/make-dynamic-uses
         with:
-          USES_PATH: ./.github/actions/continuous-building/${{ matrix.project.filename }}/get-files
           USES_INPUTS: '{ "ARTIFACT_FILENAME": "${{ matrix.project.filename }}", "CICD_OPERATING_SYSTEM_NAME": "${{ env.CICD_OPERATING_SYSTEM_NAME }}" }'
+          USES_PATH: ./.github/actions/continuous-building/${{ matrix.project.filename }}/get-files
       - name: Pack and upload the artifact
         uses: ./.github/actions/_shared/pack-upload-artifact
         with:
