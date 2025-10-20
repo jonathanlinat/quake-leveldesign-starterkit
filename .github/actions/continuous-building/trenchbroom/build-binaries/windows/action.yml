@@ -28,14 +28,12 @@ runs:
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
-        set -euo pipefail
-        echo "CC=gcc-13" >> $GITHUB_ENV
-        echo "CXX=g++-13" >> $GITHUB_ENV
-        echo "TB_PULL_REQUEST_HEAD_SHA=${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}" >> $GITHUB_ENV
-        echo "VCPKG_BINARY_SOURCES=clear;nuget,${{ env.NUGET_FEED_URL }},readwrite" >> $GITHUB_ENV
-        echo "VCPKG_EXE=${{ github.workspace }}\working-directory\vcpkg\vcpkg" >> $GITHUB_ENV
-        echo "X_VCPKG_ASSET_SOURCES=clear;x-azurl,https://assetcache.open-vcpkg.org/assetcache,,read" >> $GITHUB_ENV
-      shell: bash
+        $ErrorActionPreference = 'Stop'
+        echo "TB_PULL_REQUEST_HEAD_SHA=${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        echo "VCPKG_BINARY_SOURCES=clear;nuget,${{ env.NUGET_FEED_URL }},readwrite" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        echo "VCPKG_EXE=${{ github.workspace }}\working-directory\vcpkg\vcpkg" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        echo "X_VCPKG_ASSET_SOURCES=clear;x-azurl,https://assetcache.open-vcpkg.org/assetcache,,read" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      shell: pwsh
     - name: Bootstrap vcpkg
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
