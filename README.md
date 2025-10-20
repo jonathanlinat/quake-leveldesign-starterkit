@@ -17,7 +17,7 @@ Great, you're all set! Now, proceed to [read the documentation](https://github.c
 
 | 💬 Do You Still Need Support? |
 | -- |
-| [![Quake Mapping Discord](https://dcbadge.vercel.app/api/server/dh29D3kqrM?style=plastic)](https://discord.gg/dh29D3kqrM) [![TWHL Discord](https://dcbadge.vercel.app/api/server/BXEjbQYdnC?style=plastic)](https://discord.gg/BXEjbQYdnC) |
+| [![Quake Mapping Discord](https://dcbadge.limes.pink/api/server/dh29D3kqrM?style=plastic)](https://discord.gg/dh29D3kqrM) [![TWHL Discord](https://dcbadge.limes.pink/api/server/BXEjbQYdnC?style=plastic)](https://discord.gg/BXEjbQYdnC) |
 
 ---
 

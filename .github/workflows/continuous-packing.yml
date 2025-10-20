@@ -50,7 +50,7 @@ jobs:
       - name: Pack and upload the artifact
         uses: ./.github/actions/_shared/pack-upload-artifact
         with:
-          ARTIFACT_FILENAME: ${{ env.CICD_PROJECT_SLUG }}-release-notes-${{ env.CICD_CURRENT_DATE }}
+          ARTIFACT_FILENAME: ${{ env.CICD_PROJECT_SLUG }}-${{ env.CICD_CURRENT_DATE }}-release-notes
           ARTIFACT_PATH: ${{ env.CICD_PROJECT_SLUG }}-release-notes/
   pack-binaries:
     name: Pack the binaries
