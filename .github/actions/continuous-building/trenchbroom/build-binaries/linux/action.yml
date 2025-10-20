@@ -31,11 +31,9 @@ runs:
         set -euo pipefail
         echo "CC=gcc-13" >> $GITHUB_ENV
         echo "CXX=g++-13" >> $GITHUB_ENV
-        echo "MONO_GAC_PREFIX=${HOMEBREW_PREFIX}" >> $GITHUB_ENV
         echo "TB_PULL_REQUEST_HEAD_SHA=${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}" >> $GITHUB_ENV
         echo "VCPKG_BINARY_SOURCES=clear;nuget,${{ env.NUGET_FEED_URL }},readwrite" >> $GITHUB_ENV
         echo "VCPKG_EXE=${{ github.workspace }}/working-directory/vcpkg/vcpkg" >> $GITHUB_ENV
-        echo "X_VCPKG_ASSET_SOURCES=clear;x-azurl,https://assetcache.open-vcpkg.org/assetcache,,read" >> $GITHUB_ENV
       shell: bash
     - name: Install dependencies
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
