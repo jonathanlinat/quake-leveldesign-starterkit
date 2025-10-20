@@ -17,15 +17,15 @@ runs:
       with:
         CICD_WORKING_DIRECTORY: working-directory/
     - name: Restore the artifact from cache
-      id: restore-artifact-cache
-      uses: ./.github/actions/_shared/restore-artifact-cache
+      id: cache-restore
+      uses: ./.github/actions/_shared/cache-restore
       with:
-        ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+        PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
         CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
     - name: Set NuGet environment variables
       uses: ./.github/actions/_shared/set-nuget-environment
     - name: Set specific environment variables
-      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         $ErrorActionPreference = 'Stop'
@@ -34,14 +34,14 @@ runs:
         echo "VCPKG_EXE=${{ github.workspace }}\working-directory\vcpkg\vcpkg" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       shell: pwsh
     - name: Bootstrap vcpkg
-      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         $ErrorActionPreference = 'Stop'
         .\vcpkg\bootstrap-vcpkg.bat -disableMetrics
       shell: pwsh
     - name: Add NuGet sources
-      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         $ErrorActionPreference = 'Stop'
@@ -57,7 +57,7 @@ runs:
           -Source "${{ env.NUGET_FEED_URL }}"
       shell: pwsh
     - name: Install Pandoc
-      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         $ErrorActionPreference = 'Stop'
@@ -65,27 +65,27 @@ runs:
         7z x "pandoc.zip" -o"." -y
       shell: pwsh
     - name: Add Pandoc to PATH
-      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         $ErrorActionPreference = 'Stop'
         echo "$(pwd)\pandoc-2.11.3.1" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       shell: pwsh
     - name: Install Qt
-      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/install-qt
       with:
         CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
         QT_VERSION: 6.8.0
     - name: Compile the source code
-      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         $ErrorActionPreference = 'Stop'
         cmd.exe /c CI-windows.bat
       shell: pwsh
     - name: Prepare the artifact
-      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         $ErrorActionPreference = 'Stop'
@@ -95,8 +95,8 @@ runs:
         ARTIFACT_FILENAME: ${{ inputs.ARTIFACT_FILENAME }}
         CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
     - name: Save the artifact as cache
-      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
-      uses: ./.github/actions/_shared/save-artifact-cache
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/cache-save
       with:
-        ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+        PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
         CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}

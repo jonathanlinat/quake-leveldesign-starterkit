@@ -1,5 +1,5 @@
 inputs:
-  ARTIFACT_PATH:
+  PATH:
     required: true
   CACHE_KEY:
     required: true
@@ -9,4 +9,4 @@ runs:
     - uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
       with:
         key: ${{ inputs.CACHE_KEY }}
-        path: ${{ inputs.ARTIFACT_PATH }}
+        path: ${{ inputs.PATH }}
