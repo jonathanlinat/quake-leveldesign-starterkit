@@ -17,18 +17,18 @@ runs:
       with:
         CICD_WORKING_DIRECTORY: working-directory/
     - name: Restore the artifact from cache
-      id: restore-cached-artifact
+      id: restore-artifact-cache
       uses: ./.github/actions/_shared/restore-artifact-cache
       with:
         ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
         CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
     - name: Compile the source code
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: make windows
       shell: pwsh
     - name: Prepare the artifact
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         $zipdir = "${env:ARTIFACT_FILENAME}-files-${env:CICD_OPERATING_SYSTEM_NAME}"
@@ -39,7 +39,7 @@ runs:
         CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
       shell: pwsh
     - name: Save the artifact as cache
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/save-artifact-cache
       with:
         ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/

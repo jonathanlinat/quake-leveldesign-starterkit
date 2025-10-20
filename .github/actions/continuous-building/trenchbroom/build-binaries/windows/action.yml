@@ -17,116 +17,77 @@ runs:
       with:
         CICD_WORKING_DIRECTORY: working-directory/
     - name: Restore the artifact from cache
-      id: restore-cached-artifact
+      id: restore-artifact-cache
       uses: ./.github/actions/_shared/restore-artifact-cache
       with:
         ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
         CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
-    - name: Restore vcpkg bootstrap from cache
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
-      id: restore-vcpkg-bootstrap
-      uses: ./.github/actions/_shared/restore-artifact-cache
-      with:
-        ARTIFACT_PATH: working-directory/vcpkg
-        CACHE_KEY: vcpkg-bootstrap-${{ inputs.ARTIFACT_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
-    - name: Restore vcpkg packages from cache
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
-      id: restore-vcpkg-packages
-      uses: ./.github/actions/_shared/restore-artifact-cache
-      with:
-        ARTIFACT_PATH: working-directory/vcpkg_installed
-        CACHE_KEY: vcpkg-packages-${{ inputs.ARTIFACT_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
     - name: Set NuGet environment variables
       uses: ./.github/actions/_shared/set-nuget-environment
     - name: Set specific environment variables
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
-        echo "FEED_URL=${{ env.NUGET_FEED_URL }}" >> $GITHUB_ENV
+        echo "CC=gcc-13" >> $GITHUB_ENV
+        echo "CXX=g++-13" >> $GITHUB_ENV
         echo "TB_PULL_REQUEST_HEAD_SHA=${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}" >> $GITHUB_ENV
-        echo "USERNAME=${{ env.NUGET_USERNAME }}" >> $GITHUB_ENV
         echo "VCPKG_BINARY_SOURCES=clear;nuget,${{ env.NUGET_FEED_URL }},readwrite" >> $GITHUB_ENV
-        echo "VCPKG_EXE=${{ github.workspace }}/working-directory/vcpkg/vcpkg" >> $GITHUB_ENV
+        echo "VCPKG_EXE=${{ github.workspace }}\working-directory\vcpkg\vcpkg" >> $GITHUB_ENV
         echo "X_VCPKG_ASSET_SOURCES=clear;x-azurl,https://assetcache.open-vcpkg.org/assetcache,,read" >> $GITHUB_ENV
       shell: bash
     - name: Bootstrap vcpkg
-      if: steps.restore-vcpkg-bootstrap.outputs.CACHE_HIT != 'true'
+      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: .\vcpkg\bootstrap-vcpkg.bat -disableMetrics
       shell: pwsh
-    - name: Save vcpkg bootstrap as cache
-      if: steps.restore-vcpkg-bootstrap.outputs.CACHE_HIT != 'true'
-      uses: ./.github/actions/_shared/save-artifact-cache
-      with:
-        ARTIFACT_PATH: working-directory/vcpkg
-        CACHE_KEY: vcpkg-bootstrap-${{ inputs.ARTIFACT_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
     - name: Add NuGet sources
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         .$(${{ env.VCPKG_EXE }} fetch nuget) `
           sources add `
-          -Source "${{ env.FEED_URL }}" `
+          -Source "${{ env.NUGET_FEED_URL }}" `
           -StorePasswordInClearText `
           -Name GitHubPackages `
-          -UserName "${{ env.USERNAME }}" `
+          -UserName "${{ env.NUGET_USERNAME }}" `
           -Password "${{ github.token }}"
         .$(${{ env.VCPKG_EXE }} fetch nuget) `
           setapikey "${{ github.token }}" `
-          -Source "${{ env.FEED_URL }}"
+          -Source "${{ env.NUGET_FEED_URL }}"
       shell: pwsh
-    - name: Restore Pandoc from cache
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
-      id: restore-pandoc-cache
-      uses: ./.github/actions/_shared/restore-artifact-cache
-      with:
-        ARTIFACT_PATH: working-directory/pandoc-2.11.3.1
-        CACHE_KEY: pandoc-2.11.3.1-${{ inputs.ARTIFACT_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
     - name: Install Pandoc
-      if: steps.restore-pandoc-cache.outputs.CACHE_HIT != 'true'
+      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         Invoke-WebRequest https://github.com/jgm/pandoc/releases/download/2.11.3.1/pandoc-2.11.3.1-windows-x86_64.zip -OutFile pandoc.zip
         7z x "pandoc.zip" -o"." -y
       shell: pwsh
-    - name: Save Pandoc as cache
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true' && steps.restore-pandoc-cache.outputs.CACHE_HIT != 'true'
-      uses: ./.github/actions/_shared/save-artifact-cache
-      with:
-        ARTIFACT_PATH: working-directory/pandoc-2.11.3.1
-        CACHE_KEY: pandoc-2.11.3.1-${{ inputs.ARTIFACT_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
     - name: Add Pandoc to PATH
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: echo "$(pwd)\pandoc-2.11.3.1" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       shell: pwsh
     - name: Install Qt
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/install-qt
       with:
         CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
-        QT_VERSION: 6.8.*
+        QT_VERSION: 6.8.0
     - name: Compile the source code
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: cmd.exe /c CI-windows.bat
       shell: pwsh
     - name: Prepare the artifact
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: 7z x "cmakebuild\TrenchBroom-*.zip" -o"${env:ARTIFACT_FILENAME}-files-${env:CICD_OPERATING_SYSTEM_NAME}\" -y
       shell: pwsh
       env:
         ARTIFACT_FILENAME: ${{ inputs.ARTIFACT_FILENAME }}
         CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
-    - name: Save vcpkg packages as cache
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true' && steps.restore-vcpkg-packages.outputs.CACHE_HIT != 'true'
-      uses: ./.github/actions/_shared/save-artifact-cache
-      with:
-        ARTIFACT_PATH: working-directory/vcpkg_installed
-        CACHE_KEY: vcpkg-packages-${{ inputs.ARTIFACT_FILENAME }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
     - name: Save the artifact as cache
-      if: steps.restore-cached-artifact.outputs.CACHE_HIT != 'true'
+      if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/save-artifact-cache
       with:
         ARTIFACT_PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
