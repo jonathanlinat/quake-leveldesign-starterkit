@@ -26,18 +26,22 @@ runs:
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        set -euo pipefail
         sudo apt update
         sudo apt install -y --no-install-recommends libcurl4-openssl-dev libmpg123-dev libsdl2-dev libvorbis-dev
       shell: bash
     - name: Compile the source code
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
-      run: make --jobs=3 --keep-going --directory=Quake CC=gcc
+      run: |
+        set -euo pipefail
+        make --jobs=3 --keep-going --directory=Quake CC=gcc
       shell: bash
     - name: Prepare the artifact
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        set -euo pipefail
         mkdir -p ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
         cp Quake/${{ inputs.ARTIFACT_FILENAME }} ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/${{ inputs.ARTIFACT_FILENAME }}
         cp Quake/${{ inputs.ARTIFACT_FILENAME }}.pak ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/${{ inputs.ARTIFACT_FILENAME }}.pak

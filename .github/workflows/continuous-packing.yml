@@ -121,7 +121,9 @@ jobs:
           CICD_PROJECT_SLUG: ${{ env.CICD_PROJECT_SLUG }}
           CICD_WORKFLOW: continuous-building.yml
       - name: Copy the local Markdown and LICENSE files
-        run: cp *.md LICENSE "${{ env.CICD_PROJECT_SLUG }}-${{ env.CICD_OPERATING_SYSTEM_NAME }}/"
+        run: |
+          set -euo pipefail
+          cp *.md LICENSE "${{ env.CICD_PROJECT_SLUG }}-${{ env.CICD_OPERATING_SYSTEM_NAME }}/"
         shell: bash
       - name: Pack and upload the artifact
         uses: ./.github/actions/_shared/pack-upload-artifact

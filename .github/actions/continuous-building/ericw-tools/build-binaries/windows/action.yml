@@ -36,12 +36,16 @@ runs:
     - name: Compile the source code
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
-      run: .\build-windows.ps1
+      run: |
+        $ErrorActionPreference = 'Stop'
+        .\build-windows.ps1
       shell: pwsh
     - name: Prepare the artifact
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
-      run: 7z x "build-${env:CICD_OPERATING_SYSTEM_NAME}\${env:ARTIFACT_FILENAME}-*.zip" -o"${env:ARTIFACT_FILENAME}-files-${env:CICD_OPERATING_SYSTEM_NAME}\" -y
+      run: |
+        $ErrorActionPreference = 'Stop'
+        7z x "build-${env:CICD_OPERATING_SYSTEM_NAME}\${env:ARTIFACT_FILENAME}-*.zip" -o"${env:ARTIFACT_FILENAME}-files-${env:CICD_OPERATING_SYSTEM_NAME}\" -y
       env:
         ARTIFACT_FILENAME: ${{ inputs.ARTIFACT_FILENAME }}
         CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}

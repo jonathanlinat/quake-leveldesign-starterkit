@@ -4,5 +4,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: echo "CICD_OPERATING_SYSTEM_NAME=$([[ "${{ inputs.MATRIX_OS }}" == ubuntu* ]] && echo linux || echo "${{ inputs.MATRIX_OS }}" | cut -d'-' -f1)" >> $GITHUB_ENV
+    - run: |
+        set -euo pipefail
+        echo "CICD_OPERATING_SYSTEM_NAME=$([[ "${{ inputs.MATRIX_OS }}" == ubuntu* ]] && echo linux || echo "${{ inputs.MATRIX_OS }}" | cut -d'-' -f1)" >> $GITHUB_ENV
       shell: bash

@@ -26,18 +26,22 @@ runs:
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        set -euo pipefail
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
       shell: bash
     - name: Compile the source code
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
-      run: make build
+      run: |
+        set -euo pipefail
+        make build
       shell: bash
     - name: Prepare the artifact
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        set -euo pipefail
         make package
         7z x "${{ inputs.ARTIFACT_FILENAME }}-*-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}.zip" -y
         mv ${{ inputs.ARTIFACT_FILENAME }}-*-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/ ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/

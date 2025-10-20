@@ -41,6 +41,7 @@ runs:
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        set -euo pipefail
         mkdir -p ${{ inputs.ARTIFACT_FILENAME }}-metadata/
         echo "
         - **${{ inputs.ARTIFACT_NAME }}**, ${{ inputs.ARTIFACT_AUTHOR_NAME }} [[Documentation](${{ inputs.ARTIFACT_DOCUMENTATION_URL }})]

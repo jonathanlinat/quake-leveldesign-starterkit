@@ -45,7 +45,9 @@ jobs:
           ARTIFACT_FILENAME: ^${{ env.CICD_PROJECT_SLUG }}.*$
           CICD_WORKFLOW: continuous-packing.yml
       - name: "Release Notes: Unpack the artifact"
-        run: 7z x "${{ env.CICD_PROJECT_SLUG }}-release-notes-${{ env.CICD_CURRENT_DATE }}.zip" -o"${{ env.CICD_PROJECT_SLUG }}/" -y
+        run: |
+          set -euo pipefail
+          7z x "${{ env.CICD_PROJECT_SLUG }}-release-notes-${{ env.CICD_CURRENT_DATE }}.zip" -o"${{ env.CICD_PROJECT_SLUG }}/" -y
         shell: bash
       - name: Release the starter kit
         uses: ./.github/actions/continuous-releasing/release-starter-kit

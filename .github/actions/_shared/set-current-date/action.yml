@@ -1,5 +1,7 @@
 runs:
   using: composite
   steps:
-    - run: echo "CICD_CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
+    - run: |
+        set -euo pipefail
+        echo "CICD_CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
       shell: bash

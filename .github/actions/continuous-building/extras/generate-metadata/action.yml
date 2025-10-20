@@ -19,11 +19,14 @@ runs:
   using: composite
   steps:
     - name: Create the working directory
-      run: mkdir -p working-directory/
+      run: |
+        set -euo pipefail
+        mkdir -p working-directory/
       shell: bash
     - name: Create the initial content
       working-directory: working-directory/
       run: |
+        set -euo pipefail
         mkdir -p ${{ inputs.ARTIFACT_FILENAME }}-metadata/
         echo "
         ### ${{ inputs.ARTIFACT_NAME }}" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
@@ -31,13 +34,16 @@ runs:
     - name: Create the Quake section
       working-directory: working-directory/
       run: |
+        set -euo pipefail
         echo "
         #### Quake
         " >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
       shell: bash
     - name: "${{ env.EXTRA_NAME }}: Create the content"
       working-directory: working-directory/
-      run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
+      run: |
+        set -euo pipefail
+        echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
       shell: bash
       env:
         EXTRA_NAME: Prototype WAD
@@ -46,7 +52,9 @@ runs:
         EXTRA_DETAILS_URL: https://www.slipseer.com/index.php?resources/prototype-wad.263
     - name: "${{ env.EXTRA_NAME }}: Create the content"
       working-directory: working-directory/
-      run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
+      run: |
+        set -euo pipefail
+        echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
       shell: bash
       env:
         EXTRA_NAME: Quake Palette
@@ -55,7 +63,9 @@ runs:
         EXTRA_DETAILS_URL: https://quakewiki.org/wiki/Quake_palette
     - name: "${{ env.EXTRA_NAME }}: Create the content"
       working-directory: working-directory/
-      run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
+      run: |
+        set -euo pipefail
+        echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
       shell: bash
       env:
         EXTRA_NAME: TrenchBroom Quake Map Source
@@ -65,13 +75,16 @@ runs:
     - name: Create the GoldSrc section
       working-directory: working-directory/
       run: |
+        set -euo pipefail
         echo "
         #### GoldSrc
         " >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
       shell: bash
     - name: "${{ env.EXTRA_NAME }}: Create the content"
       working-directory: working-directory/
-      run: echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
+      run: |
+        set -euo pipefail
+        echo "- **${{ env.EXTRA_NAME }}**, ${{ env.EXTRA_AUTHOR_NAME }} [[${{ env.EXTRA_SOURCE_NAME }}](${{ env.EXTRA_DETAILS_URL }})]" >> ${{ inputs.ARTIFACT_FILENAME }}-metadata/METADATA.md
       shell: bash
       env:
         EXTRA_NAME: Digit's Developer Textures

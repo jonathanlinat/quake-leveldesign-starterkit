@@ -1,5 +1,7 @@
 runs:
   using: composite
   steps:
-    - run: echo "Previous workflow succeeded"
+    - run: |
+        set -euo pipefail
+        echo "Previous workflow succeeded"
       shell: bash

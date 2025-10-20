@@ -31,18 +31,22 @@ runs:
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        $ErrorActionPreference = 'Stop'
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
       shell: pwsh
     - name: Compile the source code
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
-      run: make build
+      run: |
+        $ErrorActionPreference = 'Stop'
+        make build
       shell: pwsh
     - name: Prepare the artifact
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        $ErrorActionPreference = 'Stop'
         make package
         $zipFile = Get-ChildItem -Name "${env:ARTIFACT_FILENAME}-*-${env:CICD_OPERATING_SYSTEM_NAME}.zip" | Select-Object -First 1
         7z x "$zipFile" -y

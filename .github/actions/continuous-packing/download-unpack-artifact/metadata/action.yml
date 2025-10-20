@@ -19,6 +19,7 @@ runs:
         ARTIFACT_FILENAME: ^.*-${{ inputs.ARTIFACT_FILENAME }}.*$
         CICD_WORKFLOW: ${{ inputs.CICD_WORKFLOW }}
     - run: |
+        set -euo pipefail
         mkdir -p ${{ inputs.CICD_PROJECT_SLUG }}-release-notes/
         echo "This is a release of [${{ inputs.CICD_PROJECT_FULL_NAME }}](https://github.com/${{ github.repository_owner }}/${{ inputs.CICD_PROJECT_SLUG }}). For comprehensive details about the project and setup guidance, please [refer to the instructions](https://github.com/${{ github.repository_owner }}/${{ inputs.CICD_PROJECT_SLUG }}/wiki).
 

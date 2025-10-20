@@ -28,6 +28,7 @@ runs:
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        set -euo pipefail
         echo "CC=gcc-13" >> $GITHUB_ENV
         echo "CXX=g++-13" >> $GITHUB_ENV
         echo "MONO_GAC_PREFIX=${HOMEBREW_PREFIX}" >> $GITHUB_ENV
@@ -40,6 +41,7 @@ runs:
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        set -euo pipefail
         sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
         sudo apt update
         sudo apt install -y --no-install-recommends gcc-13 g++-13 build-essential libxi-dev libxrandr-dev libxxf86vm-dev freeglut3-dev mesa-common-dev libgl1-mesa-dev libglu1-mesa-dev libglm-dev pandoc ninja-build libglew-dev libfreeimage-dev libfreetype6-dev libtinyxml2-dev libassimp-dev libfuse2 mono-complete
@@ -47,12 +49,15 @@ runs:
     - name: Bootstrap vcpkg
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
-      run: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+      run: |
+        set -euo pipefail
+        ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
       shell: bash
     - name: Add NuGet sources
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        set -euo pipefail
         mono `${{ env.VCPKG_EXE }} fetch nuget | tail -n 1` \
           sources add \
           -Source "${{ env.NUGET_FEED_URL }}" \
@@ -69,16 +74,19 @@ runs:
       uses: ./.github/actions/_shared/install-qt
       with:
         CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
-        QT_VERSION: 6.8.*
+        QT_VERSION: 6.8.0
     - name: Compile the source code
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
-      run: ./CI-linux.sh
+      run: |
+        set -euo pipefail
+        ./CI-linux.sh
       shell: bash
     - name: Prepare the artifact
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        set -euo pipefail
         mkdir -p ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
         mv cmakebuild/TrenchBroom-* ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
       shell: bash

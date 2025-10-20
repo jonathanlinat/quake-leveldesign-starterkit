@@ -9,4 +9,4 @@ runs:
         fetch-depth: 0
         path: working-directory/
         repository: ${{ inputs.ARTIFACT_REPOSITORY }}
-        submodules: true
+        submodules: recursive

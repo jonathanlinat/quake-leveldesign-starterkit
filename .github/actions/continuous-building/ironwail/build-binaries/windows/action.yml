@@ -26,6 +26,7 @@ runs:
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        $ErrorActionPreference = 'Stop'
         $gitrev = $(git describe --always)
         $gitbranch = $(git branch --show-current)
         $ver_suffix = ("$gitbranch" -eq "master" -Or "$gitbranch" -eq "main") ? "-$gitrev" : "-$gitbranch-$gitrev"
@@ -46,6 +47,7 @@ runs:
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        $ErrorActionPreference = 'Stop'
         $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | Select-Object -First 1
         & $msbuild Windows\VisualStudio\${env:ARTIFACT_FILENAME}.sln -property:Configuration=Release -property:Platform=x64 -maxcpucount -verbosity:minimal
         if (-not $?) { throw "Build failed" }
@@ -56,6 +58,7 @@ runs:
       if: steps.restore-artifact-cache.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
+        $ErrorActionPreference = 'Stop'
         $compiledir = "Windows\VisualStudio\${env:BUILD_DIR}"
         $zipdir = "${env:BUILD_ARTIFACT}"
         mkdir -p $zipdir | Out-Null
