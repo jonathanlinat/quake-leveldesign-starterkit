@@ -90,6 +90,13 @@ runs:
       with:
         CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
         QT_VERSION: 6.8.0
+    - name: Patch CI script for parallel compilation
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
+      working-directory: working-directory/
+      run: |
+        $ErrorActionPreference = 'Stop'
+        (Get-Content CI-windows.bat) -replace 'cmake --build \. --config Release', "cmake --build . --config Release -- -j $env:NUMBER_OF_PROCESSORS" | Set-Content CI-windows.bat
+      shell: pwsh
     - name: Compile the source code
       if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
