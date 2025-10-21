@@ -1,7 +1,7 @@
 <p align="center"><img src="https://github.com/jonathanlinat/quake-leveldesign-starterkit/assets/14064112/03402bb0-65fe-4b86-a95d-3b92aeb044b7"></p>
 <h1 align="center">Quake Level Design Starter Kit</h1>
 
-**Quake Level Design Starter Kit**, also known as **QLDSK**, consolidates various tools and resources into one comprehensive package, facilitating the quick and easy creation of **Quake** and **GoldSrc** engine-based maps with just a few clicks.
+**Quake Level Design Starter Kit**, also known as **QLDSK**, consolidates various tools and resources into one comprehensive package, facilitating quick and easy creation of **Quake** and **GoldSrc** engine-based maps with just a few clicks.
 
 ![qldsk-preview](https://github.com/user-attachments/assets/2ac3a477-f00e-4de9-a5e5-2d572f3cc259)
 
@@ -10,13 +10,13 @@
 ## Releases
 
 | 🚀 Get the Latest Stable Release | 🔔 Get the Latest Unstable (Weekly) Release |
-| -- | -- |
+| --- | --- |
 | [![Get the Latest Stable Release](https://badgen.net/badge/Stable/QLDSK%20v20250526%20(a29166e156)?icon=github)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases/latest) | [![Get the Latest Weekly (Unstable) Release](https://badgen.net/github/release/jonathanlinat/quake-leveldesign-starterkit?icon=github&label=Unstable%20(Weekly)&color=orange)](https://github.com/jonathanlinat/quake-leveldesign-starterkit/releases) |
 
-Great, you're all set! Now, proceed to [read the documentation](https://github.com/jonathanlinat/quake-leveldesign-starterkit/wiki) to install, set up and start this project
+Now, proceed to [read the documentation](https://github.com/jonathanlinat/quake-leveldesign-starterkit/wiki) to install, set up and start using this project
 
 | 💬 Do You Still Need Support? |
-| -- |
+| --- |
 | [![Quake Mapping Discord](https://dcbadge.limes.pink/api/server/dh29D3kqrM?style=plastic)](https://discord.gg/dh29D3kqrM) [![TWHL Discord](https://dcbadge.limes.pink/api/server/BXEjbQYdnC?style=plastic)](https://discord.gg/BXEjbQYdnC) |
 
 ---
@@ -28,9 +28,9 @@ The current version of **QLDSK** includes the following set of applications, too
 ### Applications
 
 * **TrenchBroom**, Kristian Duske [[GitHub](https://github.com/TrenchBroom/TrenchBroom)] [[Website](http://kristianduske.com/trenchbroom)] [[Discord](https://discord.gg/txsKc3EARW)]
-   - A free, open-source, cross-platform level editor designed explicitly for Quake engine-based games. It is compatible with games like Quake and Half-Life and can be run on multiple operating systems. It is recognized for its ease of use, offering simple and advanced tools that enable designers to craft complex and engaging levels without much hassle.
+   - A free, open-source, cross-platform level editor designed specifically for Quake engine-based games. It is compatible with games like Quake and Half-Life and can be run on multiple operating systems. It is recognized for its ease of use, offering simple and advanced tools that enable designers to craft complex and engaging levels without much difficulty.
 * **ericw-tools**, Eric Wasylishen [[GitHub](https://github.com/ericwa/ericw-tools)] [[Documentation](https://ericw-tools.readthedocs.io)]
-   - A suite of command-line utilities for building levels (maps) for games like Quake and Half-Life represents an evolved branch of Tyrann's original Quake tools. The tools focus on adding advanced lighting features, some of which are borrowed from [q3map2](http://q3map2.robotrenegade.com/), and include bugfixes for the `qbsp` tool, which is used for constructing the block structure of the map.
+   - A suite of command-line utilities for building levels (maps) for games like Quake and Half-Life represents an evolved branch of Tyrann's original Quake tools. This suite focuses on adding advanced lighting features, some of which are borrowed from [q3map2](http://q3map2.robotrenegade.com/), and includes bugfixes for the `qbsp` tool, which is used for constructing the block structure of the map.
 
 ### Tools
 
@@ -61,6 +61,6 @@ The current version of **QLDSK** includes the following set of applications, too
 
 ## License
 
-**Quake Level Design Starter Kit**, also known as **QLDSK**, and its infrastructure is [CC0 1.0 Universal licensed](LICENSE).
+**Quake Level Design Starter Kit**, also known as **QLDSK**, and its infrastructure are [CC0 1.0 Universal licensed](LICENSE).
 
 The licenses of the compiled and released tools vary and are independent of **QLDSK**'s licensing. There is no guarantee that all tools will work perfectly in every scenario, and users should use them at their discretion.

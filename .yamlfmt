@@ -1,0 +1,7 @@
+line_ending: lf
+formatter:
+  type: basic
+  indent: 2
+  retain_line_breaks: true
+  trim_trailing_whitespace: true
+  scan_folded_as_literal: true

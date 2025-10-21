@@ -9,8 +9,8 @@ runs:
         set -euo pipefail
         echo "GIT_CURRENT_BRANCH_NAME=$(git branch --show-current)" >> $GITHUB_ENV
         echo "GIT_CURRENT_COMMIT_AUTHOR_NAME=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+        echo "GIT_CURRENT_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)" >> $GITHUB_ENV
         echo "GIT_CURRENT_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')" >> $GITHUB_ENV
         echo "GIT_CURRENT_COMMIT_LOGIN_NAME=${{ github.actor }}" >> $GITHUB_ENV
-        echo "GIT_CURRENT_COMMIT_DATE=$(git log -1 --pretty=format:'%ad' --date=short)" >> $GITHUB_ENV
         echo "GIT_CURRENT_COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
       shell: bash

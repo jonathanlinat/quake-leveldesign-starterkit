@@ -7,9 +7,9 @@ inputs:
     required: true
   CICD_PROJECT_SLUG:
     required: true
-  LIST_METADATA_FILES:
-    required: true
   CICD_WORKFLOW:
+    required: true
+  LIST_METADATA_FILES:
     required: true
 runs:
   using: composite

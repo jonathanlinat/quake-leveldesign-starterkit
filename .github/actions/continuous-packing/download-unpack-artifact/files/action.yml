@@ -1,7 +1,7 @@
 inputs:
-  ARTIFACT_FILENAME:
-    required: true
   ARTIFACT_DESTINATION_PATH:
+    required: true
+  ARTIFACT_FILENAME:
     required: true
   CICD_OPERATING_SYSTEM_NAME:
     required: true

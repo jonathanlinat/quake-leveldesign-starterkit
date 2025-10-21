@@ -30,8 +30,8 @@ runs:
       id: cache-restore
       uses: ./.github/actions/_shared/cache-restore
       with:
-        PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-metadata/
         CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-metadata-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
+        PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-metadata/
     - name: Set the current commit details
       if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/set-current-commit-details
@@ -55,5 +55,5 @@ runs:
       if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/cache-save
       with:
-        PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-metadata/
         CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-metadata-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
+        PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-metadata/

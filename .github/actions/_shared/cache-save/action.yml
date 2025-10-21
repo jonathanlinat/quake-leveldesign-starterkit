@@ -1,7 +1,7 @@
 inputs:
-  PATH:
-    required: true
   CACHE_KEY:
+    required: true
+  PATH:
     required: true
 runs:
   using: composite

@@ -20,15 +20,15 @@ runs:
       id: cache-restore
       uses: ./.github/actions/_shared/cache-restore
       with:
-        PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
         CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
+        PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
     - name: Restore pip cache
       if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       id: cache-pip
       uses: ./.github/actions/_shared/cache-restore
       with:
-        PATH: ~/.cache/pip
         CACHE_KEY: pip-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ hashFiles('working-directory/requirements*.txt') }}
+        PATH: ~/.cache/pip
     - name: Install Python requirements
       if: steps.cache-restore.outputs.CACHE_HIT != 'true' && steps.cache-pip.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
@@ -41,8 +41,8 @@ runs:
       if: steps.cache-restore.outputs.CACHE_HIT != 'true' && steps.cache-pip.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/cache-save
       with:
-        PATH: ~/.cache/pip
         CACHE_KEY: pip-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ hashFiles('working-directory/requirements*.txt') }}
+        PATH: ~/.cache/pip
     - name: Compile the source code
       if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
@@ -63,5 +63,5 @@ runs:
       if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       uses: ./.github/actions/_shared/cache-save
       with:
-        PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
         CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
+        PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/

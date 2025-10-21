@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-yaml
+        args: ['--unsafe']
+      - id: end-of-file-fixer
+        files: \.(yml|yaml)$
+      - id: trailing-whitespace
+        files: \.(yml|yaml)$
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.19.0
+    hooks:
+      - id: yamlfmt
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        args:
+          - --strict
+          - -d
+          - |-
+            extends: default
+            rules:
+              document-start: disable
+              line-length: disable
+              truthy: disable
+              comments:
+                min-spaces-from-content: 1
+              indentation:
+                spaces: 2
+                indent-sequences: true
+              trailing-spaces: enable
+              new-lines:
+                type: unix
