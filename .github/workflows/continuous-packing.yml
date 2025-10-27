@@ -23,7 +23,7 @@ jobs:
       - name: Checkout the local repository files
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 1
+          fetch-depth: 0
       - name: Check the previous workflow status
         uses: ./.github/actions/_shared/check-previous-workflow-status
   create-release-notes:
@@ -35,7 +35,7 @@ jobs:
       - name: Checkout the local repository files
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 1
+          fetch-depth: 0
       - name: Set the current date
         uses: ./.github/actions/_shared/set-current-date
       - name: "Metadata: Download and unpack the artifact"
@@ -65,7 +65,7 @@ jobs:
       - name: Checkout the local repository files
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 1
+          fetch-depth: 0
       - name: Set the current date
         uses: ./.github/actions/_shared/set-current-date
       - name: Set the operating system name
@@ -123,7 +123,8 @@ jobs:
       - name: Copy the local Markdown and LICENSE files
         run: |
           set -euo pipefail
-          cp *.md LICENSE "${{ env.CICD_PROJECT_SLUG }}-${{ env.CICD_OPERATING_SYSTEM_NAME }}/"
+          find . -maxdepth 1 -name '*.md' ! -name 'YAML_LINTING_SETUP.md' -exec cp {} "${{ env.CICD_PROJECT_SLUG }}-${{ env.CICD_OPERATING_SYSTEM_NAME }}/" \;
+          cp LICENSE "${{ env.CICD_PROJECT_SLUG }}-${{ env.CICD_OPERATING_SYSTEM_NAME }}/"
         shell: bash
       - name: Pack and upload the artifact
         uses: ./.github/actions/_shared/pack-upload-artifact

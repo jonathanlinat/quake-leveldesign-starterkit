@@ -22,7 +22,7 @@ jobs:
       - name: Checkout the local repository files
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 1
+          fetch-depth: 0
       - name: Check the previous workflow status
         uses: ./.github/actions/_shared/check-previous-workflow-status
   release-starter-kit:
@@ -34,7 +34,7 @@ jobs:
       - name: Checkout the local repository files
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 1
+          fetch-depth: 0
       - name: Set the current commit HEAD SHA
         uses: ./.github/actions/_shared/set-current-commit-head-sha
       - name: Set the current date
