@@ -32,7 +32,7 @@ runs:
       uses: ./.github/actions/_shared/install-qt
       with:
         CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
-        QT_VERSION: 6.7.0
+        QT_VERSION: 6.7.*
     - name: Compile the source code
       if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
