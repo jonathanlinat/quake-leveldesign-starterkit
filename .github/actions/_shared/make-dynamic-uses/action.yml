@@ -1,3 +1,5 @@
+name: make-dynamic-uses
+description: Invokes a composite action dynamically by path and inputs.
 inputs:
   USES_INPUTS:
     required: true
@@ -6,7 +8,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: jenseng/dynamic-uses@26a7fa196ecfc98e02d08d65a09d03ab999683ae
+    - uses: jenseng/dynamic-uses@v1
       with:
         uses: ${{ inputs.USES_PATH }}
         with: ${{ inputs.USES_INPUTS }}

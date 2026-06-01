@@ -1,3 +1,5 @@
+name: cache-save
+description: Saves a cache entry identified by key and path.
 inputs:
   CACHE_KEY:
     required: true
@@ -6,7 +8,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
+    - uses: actions/cache/save@v5
       with:
         key: ${{ inputs.CACHE_KEY }}
         path: ${{ inputs.PATH }}

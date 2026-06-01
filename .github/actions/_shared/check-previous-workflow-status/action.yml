@@ -1,3 +1,5 @@
+name: check-previous-workflow-status
+description: Validates that the previous workflow run completed successfully.
 runs:
   using: composite
   steps:

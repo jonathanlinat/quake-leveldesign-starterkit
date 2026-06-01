@@ -1,3 +1,5 @@
+name: windows
+description: Builds quake-cli-tools from source on Windows and caches the compiled binaries.
 inputs:
   ARTIFACT_FILENAME:
     required: true

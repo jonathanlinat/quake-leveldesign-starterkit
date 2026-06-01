@@ -1,3 +1,5 @@
+name: install-qt
+description: Installs a specific Qt version with caching support.
 inputs:
   CICD_OPERATING_SYSTEM_NAME:
     required: true
@@ -6,7 +8,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: jurplel/install-qt-action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005
+    - uses: jurplel/install-qt-action@v4
       with:
         cache: true
         cache-key-prefix: qt-${{ inputs.QT_VERSION }}-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}

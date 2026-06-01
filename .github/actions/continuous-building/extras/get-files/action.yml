@@ -1,3 +1,5 @@
+name: get-files
+description: Downloads and caches third-party extra files for the starter kit.
 inputs:
   ARTIFACT_FILENAME:
     required: true

@@ -1,3 +1,5 @@
+name: linux
+description: Builds ironwail from source on Linux and caches the compiled binaries.
 inputs:
   ARTIFACT_FILENAME:
     required: true

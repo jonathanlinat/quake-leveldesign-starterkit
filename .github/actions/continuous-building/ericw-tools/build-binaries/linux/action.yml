@@ -1,3 +1,5 @@
+name: linux
+description: Builds ericw-tools from source on Linux and caches the compiled binaries.
 inputs:
   ARTIFACT_FILENAME:
     required: true
@@ -27,7 +29,20 @@ runs:
       uses: ./.github/actions/_shared/install-qt
       with:
         CICD_OPERATING_SYSTEM_NAME: ${{ inputs.CICD_OPERATING_SYSTEM_NAME }}
-        QT_VERSION: 6.7.*
+        QT_VERSION: 6.7.0
+    - name: Set specific environment variables
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
+      run: |
+        set -euo pipefail
+        echo "USE_SYSTEM_TBB_AND_EMBREE=1" >> $GITHUB_ENV
+      shell: bash
+    - name: Install dependencies
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
+      run: |
+        set -euo pipefail
+        sudo apt update
+        sudo apt install -y --no-install-recommends libtbb-dev libembree-dev libgl1-mesa-dev
+      shell: bash
     - name: Compile the source code
       if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/

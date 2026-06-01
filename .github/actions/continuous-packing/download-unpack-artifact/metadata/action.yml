@@ -1,3 +1,5 @@
+name: metadata
+description: Downloads metadata artifacts and assembles release notes.
 inputs:
   ARTIFACT_FILENAME:
     required: true

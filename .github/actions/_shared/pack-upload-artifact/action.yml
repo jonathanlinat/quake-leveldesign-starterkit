@@ -1,3 +1,5 @@
+name: pack-upload-artifact
+description: Packs and uploads a build artifact with minimal retention.
 inputs:
   ARTIFACT_FILENAME:
     required: true
@@ -6,7 +8,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+    - uses: actions/upload-artifact@v7
       with:
         compression-level: 0
         if-no-files-found: error

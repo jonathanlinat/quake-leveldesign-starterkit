@@ -14,7 +14,7 @@ permissions:
 jobs:
   generate-metadata:
     name: Generate metadata
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       fail-fast: true
@@ -49,7 +49,7 @@ jobs:
             filename: extras
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Generate the metadata
@@ -70,7 +70,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, windows-2022]
+        os: [ubuntu-24.04, windows-2022]
         project:
           - filename: trenchbroom
             repository: TrenchBroom/TrenchBroom
@@ -84,7 +84,7 @@ jobs:
             repository: L-P/goldutil
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set the operating system name
@@ -109,12 +109,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, windows-2022]
+        os: [ubuntu-24.04, windows-2022]
         project:
           - filename: extras
     steps:
       - name: Checkout the local repository files
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set the operating system name

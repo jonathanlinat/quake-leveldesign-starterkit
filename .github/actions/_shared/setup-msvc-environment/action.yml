@@ -1,9 +1,11 @@
+name: setup-msvc-environment
+description: Initializes the MSVC developer command-line environment.
 inputs:
   MSVC_VERSION:
     required: true
 runs:
   using: composite
   steps:
-    - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
+    - uses: ilammy/msvc-dev-cmd@v1
       with:
         vsversion: ${{ inputs.MSVC_VERSION }}

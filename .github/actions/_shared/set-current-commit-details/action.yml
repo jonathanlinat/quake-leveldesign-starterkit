@@ -1,3 +1,5 @@
+name: set-current-commit-details
+description: Extracts git commit metadata into environment variables.
 inputs:
   CICD_WORKING_DIRECTORY:
     required: true

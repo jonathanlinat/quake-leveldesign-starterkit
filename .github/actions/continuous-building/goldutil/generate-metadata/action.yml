@@ -1,3 +1,5 @@
+name: generate-metadata
+description: Generates release metadata for goldutil from its git history.
 inputs:
   ARTIFACT_AUTHOR_NAME:
     required: true
@@ -22,6 +24,7 @@ runs:
       uses: ./.github/actions/_shared/checkout-artifact-repository-files
       with:
         ARTIFACT_REPOSITORY: ${{ inputs.ARTIFACT_REPOSITORY }}
+        CHECKOUT_SUBMODULES: false
     - name: Set the current commit HEAD SHA
       uses: ./.github/actions/_shared/set-current-commit-head-sha
       with:

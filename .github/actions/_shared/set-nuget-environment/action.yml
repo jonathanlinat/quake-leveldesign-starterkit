@@ -1,3 +1,5 @@
+name: set-nuget-environment
+description: Configures NuGet feed URL and credentials as environment variables.
 runs:
   using: composite
   steps:

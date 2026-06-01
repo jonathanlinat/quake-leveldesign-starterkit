@@ -1,3 +1,5 @@
+name: set-current-commit-head-sha
+description: Sets the short HEAD SHA of the current commit as an environment variable.
 inputs:
   CICD_WORKING_DIRECTORY:
     required: false

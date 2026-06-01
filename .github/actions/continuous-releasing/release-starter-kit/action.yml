@@ -1,3 +1,5 @@
+name: release-starter-kit
+description: Creates a GitHub release with packaged starter kit archives.
 inputs:
   CICD_CURRENT_DATE:
     required: true
@@ -10,7 +12,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b
+    - uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
         artifacts: ${{ inputs.CICD_PROJECT_SLUG }}-${{ inputs.CICD_CURRENT_DATE }}-windows.zip,${{ inputs.CICD_PROJECT_SLUG }}-${{ inputs.CICD_CURRENT_DATE }}-linux.zip

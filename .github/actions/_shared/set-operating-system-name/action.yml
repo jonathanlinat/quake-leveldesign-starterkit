@@ -1,3 +1,5 @@
+name: set-operating-system-name
+description: Derives the operating system name from the runner matrix value.
 inputs:
   MATRIX_OS:
     required: true

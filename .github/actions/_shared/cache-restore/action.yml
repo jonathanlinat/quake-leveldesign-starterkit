@@ -1,3 +1,5 @@
+name: cache-restore
+description: Restores a previously saved cache by key and path.
 inputs:
   CACHE_KEY:
     required: true
@@ -9,7 +11,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
+    - uses: actions/cache/restore@v5
       id: cache-restore
       with:
         key: ${{ inputs.CACHE_KEY }}

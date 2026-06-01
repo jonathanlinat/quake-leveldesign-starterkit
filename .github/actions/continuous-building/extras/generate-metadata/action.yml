@@ -1,3 +1,5 @@
+name: generate-metadata
+description: Generates release metadata for bundled extra files.
 inputs:
   ARTIFACT_AUTHOR_NAME:
     required: true

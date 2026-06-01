@@ -1,3 +1,5 @@
+name: windows
+description: Builds goldutil from source on Windows and caches the compiled binaries.
 inputs:
   ARTIFACT_FILENAME:
     required: true
@@ -12,6 +14,7 @@ runs:
       uses: ./.github/actions/_shared/checkout-artifact-repository-files
       with:
         ARTIFACT_REPOSITORY: ${{ inputs.ARTIFACT_REPOSITORY }}
+        CHECKOUT_SUBMODULES: false
     - name: Set the current commit HEAD SHA
       uses: ./.github/actions/_shared/set-current-commit-head-sha
       with:
@@ -22,12 +25,17 @@ runs:
       with:
         CACHE_KEY: ${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}-${{ env.GIT_CURRENT_COMMIT_HEAD_SHA }}
         PATH: working-directory/${{ inputs.ARTIFACT_FILENAME }}-files-${{ inputs.CICD_OPERATING_SYSTEM_NAME }}/
+    - name: Set up Go
+      if: steps.cache-restore.outputs.CACHE_HIT != 'true'
+      uses: ./.github/actions/_shared/setup-go
+      with:
+        GO_VERSION: 1.26
     - name: Compile the source code
       if: steps.cache-restore.outputs.CACHE_HIT != 'true'
       working-directory: working-directory/
       run: |
         $ErrorActionPreference = 'Stop'
-        make windows
+        go build -mod=readonly -o goldutil.exe ./cmd
       shell: pwsh
     - name: Prepare the artifact
       if: steps.cache-restore.outputs.CACHE_HIT != 'true'

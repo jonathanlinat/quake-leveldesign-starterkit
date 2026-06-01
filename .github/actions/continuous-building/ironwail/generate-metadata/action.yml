@@ -1,3 +1,5 @@
+name: generate-metadata
+description: Generates release metadata for ironwail from its git history.
 inputs:
   ARTIFACT_AUTHOR_NAME:
     required: true

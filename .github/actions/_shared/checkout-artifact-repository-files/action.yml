@@ -1,12 +1,17 @@
+name: checkout-artifact-repository-files
+description: Checks out the source files of an upstream artifact repository.
 inputs:
   ARTIFACT_REPOSITORY:
     required: true
+  CHECKOUT_SUBMODULES:
+    required: false
+    default: recursive
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 0
         path: working-directory/
         repository: ${{ inputs.ARTIFACT_REPOSITORY }}
-        submodules: recursive
+        submodules: ${{ inputs.CHECKOUT_SUBMODULES }}

@@ -1,3 +1,5 @@
+name: set-current-date
+description: Sets the current date in YYYYMMDD format as an environment variable.
 runs:
   using: composite
   steps:

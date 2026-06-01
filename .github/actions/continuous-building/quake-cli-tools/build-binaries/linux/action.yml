@@ -1,3 +1,5 @@
+name: linux
+description: Builds quake-cli-tools from source on Linux and caches the compiled binaries.
 inputs:
   ARTIFACT_FILENAME:
     required: true

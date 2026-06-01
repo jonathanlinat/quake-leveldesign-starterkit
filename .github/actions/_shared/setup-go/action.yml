@@ -1,0 +1,12 @@
+name: setup-go
+description: Installs a specific Go version.
+inputs:
+  GO_VERSION:
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-go@v6
+      with:
+        go-version: ${{ inputs.GO_VERSION }}
+        cache: false

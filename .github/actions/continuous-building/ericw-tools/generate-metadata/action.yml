@@ -1,3 +1,5 @@
+name: generate-metadata
+description: Generates release metadata for ericw-tools from its git history.
 inputs:
   ARTIFACT_AUTHOR_NAME:
     required: true

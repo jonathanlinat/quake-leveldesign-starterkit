@@ -1,3 +1,5 @@
+name: files
+description: Downloads and unpacks built binary artifacts for packaging.
 inputs:
   ARTIFACT_DESTINATION_PATH:
     required: true
